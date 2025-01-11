@@ -5,8 +5,16 @@
 package frc.robot;
 
 
+import edu.wpi.first.wpilibj.Joystick;
+
+import com.pathplanner.lib.auto.AutoBuilder;
+
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.SwerveJoystick;
+import frc.robot.subsystems.SwerveDrive;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -16,13 +24,18 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  
+  private final SwerveDrive m_swerve = new SwerveDrive();
 
-
-
+  private final Joystick m_driverJoystick = new Joystick(0);
+  private final Joystick m_secondJoystick = new Joystick(1);
+  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  private SendableChooser<Command> m_autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+    m_autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -47,6 +60,13 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
+    return m_autoChooser.getSelected();
+  }
+
+  public Command getTeleopCommand() {
+    m_swerve.setDefaultCommand(m_swerveJoystick);
     return null;
   }
+
+  
 }

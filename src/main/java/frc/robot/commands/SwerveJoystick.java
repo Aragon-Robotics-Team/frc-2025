@@ -4,8 +4,6 @@
 
 package frc.robot.commands;
 
-import java.util.function.Supplier;
-
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -44,14 +42,15 @@ public class SwerveJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = m_joystick.getRawAxis(0);
-    double ySpeed = m_joystick.getRawAxis(1);
+    double xSpeed = m_joystick.getRawAxis(1);
+    double ySpeed = m_joystick.getRawAxis(0);
+    double turningSpeed = m_joystick.getRawAxis(4);
 
     //Makes the speed response x squared in relation to the joystick input.
     //That way, the first little bit of joystick input gives more control.  
     xSpeed = Math.signum(xSpeed) * xSpeed;
     ySpeed = Math.signum(ySpeed) * ySpeed;
-    double turningSpeed = m_joystick.getRawAxis(2);
+    
 
     SmartDashboard.putNumber("Joystick/xSpeedRaw", xSpeed);
     SmartDashboard.putNumber("Joystick/ySpeedRaw", ySpeed);

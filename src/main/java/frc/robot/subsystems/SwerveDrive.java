@@ -4,17 +4,17 @@
 
 package frc.robot.subsystems;
 
-import com.fasterxml.jackson.databind.util.Named;
+//import com.fasterxml.jackson.databind.util.Named;
 
 import com.reduxrobotics.sensors.canandgyro.*;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+//import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.util.swerve.*;
+//import com.pathplanner.lib.util.swerve.*;
 
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -22,7 +22,6 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -38,48 +37,46 @@ public class SwerveDrive extends SubsystemBase
   private final SwerveModule m_frontLeft = new SwerveModule(
     DriveConstants.kFrontLeftDriveId, 
     DriveConstants.kFrontLeftTurnId,
-    DriveConstants.kFrontLeftAbsoluteEncoderPort, 
-    DriveConstants.kFrontLeftAbsoluteEncoderOffset, 
+    DriveConstants.kFrontLeftTurnEncoderPort, 
+    DriveConstants.kFrontLeftTurnEncoderOffset, 
     DriveConstants.kFrontLeftDriveReversed,
     DriveConstants.kFrontLeftTurningReversed, 
-    0
+    "FrontLeft"
   );
 
   private final SwerveModule m_frontRight = new SwerveModule(
     DriveConstants.kFrontRightDriveId, 
     DriveConstants.kFrontRightTurnId,
-    DriveConstants.kFrontRightAbsoluteEncoderPort, 
-    DriveConstants.kFrontRightAbsoluteEncoderOffset, 
+    DriveConstants.kFrontRightTurnEncoderPort, 
+    DriveConstants.kFrontRightTurnEncoderOffset, 
     DriveConstants.kFrontRightDriveReversed, 
     DriveConstants.kFrontRightTurningReversed, 
-    1
+    "FrontRight"
   );
 
   private final SwerveModule m_backLeft = new SwerveModule(
     DriveConstants.kBackLeftDriveId, 
     DriveConstants.kBackLeftTurnId,
-    DriveConstants.kBackLeftAbsoluteEncoderPort, 
-    DriveConstants.kBackLeftAbsoluteEncoderOffset, 
+    DriveConstants.kBackLeftTurnEncoderPort, 
+    DriveConstants.kBackLeftTurnEncoderOffset, 
     DriveConstants.kBackLeftDriveReversed, 
     DriveConstants.kBackLeftTurningReversed, 
-    2
+    "BackLeft"
   );
 
   private final SwerveModule m_backRight = new SwerveModule(
     DriveConstants.kBackRightDriveId, 
     DriveConstants.kBackRightTurnId,
-    DriveConstants.kBackRightAbsoluteEncoderPort, 
-    DriveConstants.kBackRightAbsoluteEncoderOffset, 
+    DriveConstants.kBackRightTurnEncoderPort, 
+    DriveConstants.kBackRightTurnEncoderOffset, 
     DriveConstants.kBackRightDriveReversed, 
     DriveConstants.kBackRightTurningReversed, 
-    3
+    "BackRight"
   );
 
-  private SwerveDriveKinematics m_kinematics = new SwerveDriveKinematics(m_frontLeft.getTranslation(), m_frontRight.getTranslation(), m_backLeft.getTranslation(), m_backRight.getTranslation());
 
   private final Canandgyro m_imu = new Canandgyro(OIConstants.kIMUCanID);
 
-  private double m_totalCurrent;
 
   private final Field2d m_field = new Field2d();
 
@@ -131,13 +128,6 @@ public class SwerveDrive extends SubsystemBase
     m_backRight.setDesiredState(states[3]);
   }
 
-  Rotation2d degree = new Rotation2d(Math.PI/2);
-  SwerveModuleState frontLeft = new SwerveModuleState(3.0, degree);
-  SwerveModuleState frontRight = new SwerveModuleState(3.0, degree);
-  SwerveModuleState backLeft = new SwerveModuleState(3.0, degree);
-  SwerveModuleState backRight = new SwerveModuleState(3.0, degree);
-  SwerveModuleState[] testStates = {frontLeft, frontRight, backLeft, backRight};
-
   public void setSwerveModuleStatesAuto(SwerveModuleState[] states) {
     setModuleStates(states);  
   }
@@ -173,12 +163,6 @@ public class SwerveDrive extends SubsystemBase
     );
   }
 
- 
-  public double getFrontLeftRotation()
-
-  {
-    return m_frontLeft.getRotationActual();
-  }
 
   SwerveModule[] m_modules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
   public String[] m_moduleNames = {"frontLeft", "frontRight", "backLeft", "backRight"};
@@ -200,7 +184,8 @@ public class SwerveDrive extends SubsystemBase
   }
 
   public void driveRobotRelative(ChassisSpeeds speeds) { 
-    SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
+    ChassisSpeeds dis = ChassisSpeeds.discretize(speeds, 0.02); //needed to correct skew whilst rotating and translating simultaneously.
+    SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(dis);
     setModuleStates(states);
   }
 
@@ -211,29 +196,32 @@ public class SwerveDrive extends SubsystemBase
       }, new Pose2d(m_xStartPose, m_yStartPose, getAngle()));
   }
 
-  public SwerveDrive(Command stowed, Command autoShoot, Command autoIntake, Command groundIntake, Command outtake, Command subwoofer, Command rightUnderStage) 
+  
+
+  public SwerveDrive() 
   {
-    NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
-    NamedCommands.registerCommand("Stow", stowed);
-    NamedCommands.registerCommand("AutoShoot", autoShoot);
-    NamedCommands.registerCommand("AutoIntake", autoIntake);
-    NamedCommands.registerCommand("GroundIntake", groundIntake);
-    NamedCommands.registerCommand("Outtake", outtake);
-    NamedCommands.registerCommand("Subwoofer", subwoofer);
-    NamedCommands.registerCommand("RightUnderStage", rightUnderStage);
-    
-    try {
+    // NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
+    // NamedCommands.registerCommand("Stow", stowed);
+    // NamedCommands.registerCommand("AutoShoot", autoShoot);
+    // NamedCommands.registerCommand("AutoIntake", autoIntake);
+    // NamedCommands.registerCommand("GroundIntake", groundIntake);
+    // NamedCommands.registerCommand("Outtake", outtake);
+    // NamedCommands.registerCommand("Subwoofer", subwoofer);
+    // NamedCommands.registerCommand("RightUnderStage", rightUnderStage);
+
+    try 
+    {
       RobotConfig config = RobotConfig.fromGUISettings();
-    };
-    AutoBuilder.configure
-    (
-      this::getPoseMeters,
-      this::resetOdo,
+      AutoBuilder.configure
+      (
+        this::getPoseMeters,
+        this::resetOdo,
         this::getChassisSpeeds, 
         this::driveRobotRelative, 
         new PPHolonomicDriveController(DriveConstants.kTranslationConstants, DriveConstants.kRotationConstants), 
         config,
-        () -> {
+        () -> 
+        {
           // Boolean supplier that controls when the path will be mirrored for the red alliance
           // This will flip the path being followed to the red side of the field.
           // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
@@ -243,29 +231,34 @@ public class SwerveDrive extends SubsystemBase
               return alliance.get() == DriverStation.Alliance.Red;
           }
           return false;
-      },
+        },
       this
-    );
+      );
 
-    SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
-    double m_angle = SmartDashboard.getNumber("Driving/Adjust angle", 0);
-    SmartDashboard.putNumber("Driving/Adjust angle", m_angle);
-    adjustAngle(m_angle);
+      SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
+      double m_angle = SmartDashboard.getNumber("Driving/Adjust angle", 0);
+      SmartDashboard.putNumber("Driving/Adjust angle", m_angle);
+      adjustAngle(m_angle);
 
-    new Thread(
-      () -> {
-        try 
-        {
-          Thread.sleep(1000);
-          resetHeading();
-        } 
-        catch (Exception e) 
-        {
-        // System.out.println("ERROR in sleep thread: " + e);
-        }
-      }).start();
+      new Thread(() -> {
+          try 
+          {
+            Thread.sleep(1000);
+            resetHeading();
+          } 
+          catch (Exception e) 
+          {
+            System.out.println("ERROR in sleep thread: " + e);
+          }
+        }).start();
     }
-
+    catch(Exception e)
+    {
+      System.out.println("RobotConfig GUI Settings error");
+    }
+  }
+  
+  
   public void stop() 
   {
     m_frontLeft.stop();
@@ -288,7 +281,7 @@ public class SwerveDrive extends SubsystemBase
 
     //SmartDashboard.putNumber("Angle", getAngle().getDegrees());
     
-    m_totalCurrent = m_frontLeft.getDriveCurrent() + m_frontLeft.getTurnCurrent() + m_frontRight.getDriveCurrent() + m_frontRight.getTurnCurrent() + m_backLeft.getDriveCurrent() + m_backLeft.getTurnCurrent() + m_backRight.getDriveCurrent() + m_backRight.getTurnCurrent();
+    //m_totalCurrent = m_frontLeft.getDriveCurrent() + m_frontLeft.getTurnCurrent() + m_frontRight.getDriveCurrent() + m_frontRight.getTurnCurrent() + m_backLeft.getDriveCurrent() + m_backLeft.getTurnCurrent() + m_backRight.getDriveCurrent() + m_backRight.getTurnCurrent();
     //SmartDashboard.putNumber("Total Current", m_totalCurrent);
 
     m_field.setRobotPose(m_odo.getPoseMeters());
@@ -299,16 +292,8 @@ public class SwerveDrive extends SubsystemBase
     SmartDashboard.putNumber("Swerve/Odo/X", m_xStartPose);
     SmartDashboard.putNumber("Swerve/Odo/Y", m_yStartPose);
 
-    SmartDashboard.putNumber("Swerve/Odo/FrontLeftRotation", getFrontLeftRotation());
 
     SmartDashboard.putNumber("X", getPoseMeters().getX());
     SmartDashboard.putNumber("Y", getPoseMeters().getY());
-    // SmartDashboard.putNumber("Swerve/Odo/FrontRightRotation", getFrontRightRotation());
-    // SmartDashboard.putNumber("Swerve/Odo/BackLeftRotation", getBackLeftRotation());
-    // SmartDashboard.putNumber("Swerve/Odo/BackRightRotation", getBackRightRotation());
-
-    
-    // // System.out.println("Chassis speeds:" + this.getChassisSpeeds());
-    // // System.out.println("X error: " + (3 - m_odo.getPoseMeters().getX()));
   }
 }
