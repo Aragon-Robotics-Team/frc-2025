@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 import frc.robot.constants.*;
 
+
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -131,6 +132,16 @@ public class SwerveModule extends SubsystemBase {
   public void stop() {
     m_driveMotor.set(0.0);
     m_turnMotor.set(0.0);
+  }
+
+  public StatusSignal<Angle> getDrivePos()
+  {
+    return m_drivePos;
+  }
+
+  public StatusSignal<AngularVelocity> getDriveVel()
+  {
+    return m_driveVel;
   }
 
   public double getDriveCurrent() {
