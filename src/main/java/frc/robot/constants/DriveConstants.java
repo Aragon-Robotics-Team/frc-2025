@@ -6,16 +6,22 @@ package frc.robot.constants;
 
 import com.pathplanner.lib.config.PIDConstants;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 
 /** Add your docs here. */
 public final class DriveConstants {
-    public static final double kMaxTranslationalMetersPerSecond = Units.feetToMeters(18.9); // used to be 18.9
+    public static final double kMaxTranslationalMetersPerSecond = Units.feetToMeters(18.9); //should probably reduce these
     public static final double kMaxAngularAccelBotRotsPerSecondSquared = 3;
     public static final double kMaxTurningRadiansPerSecond = 1.5 * Math.PI;
+    public static final double kTranslationalDeadbandMetersPerSecond = 0.01;
 
+    public static final PIDConstants kTranslationConstants = new PIDConstants(0.75); //PID constants for whole robot chassis speeds
+    public static final PIDConstants kRotationConstants = new PIDConstants(0.75);
+
+    //ALL OF THESE WILL HAVE TO BE DIFFERENT WITH THE NEW DRIVETRAIN
 
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
             new Translation2d(0.3556 - 0.065, 0.3556 - 0.068),
@@ -23,34 +29,48 @@ public final class DriveConstants {
             new Translation2d(0.3556 - 0.645, -0.3556 + 0.644),
             new Translation2d(0.3556 - 0.644, -0.3556 + 0.063));
 
-    public static int kFrontLeftDriveId = 2;
-    public static int kFrontLeftTurnId = 1;
-    public static int kFrontLeftAbsoluteEncoderPort = 0;
-    public static double kFrontLeftAbsoluteEncoderOffset = -0.529990463821544 - (Math.PI / 2.0);
-    public static boolean kFrontLeftDriveReversed = false;
-    public static boolean kFrontLeftTurningReversed = true;
+    public static final int kFrontLeftDriveId = 2; //CAN
+    public static final int kFrontLeftTurnId = 1; //CAN
+    public static final int kFrontLeftTurnEncoderPort = 0; //PWM
+    public static final double kFrontLeftTurnEncoderOffset = -0.529990463821544 - (Math.PI / 2.0);
+    public static final boolean kFrontLeftDriveReversed = false;
+    public static final boolean kFrontLeftTurningReversed = true;
         
-    public static int kFrontRightDriveId = 4;
-    public static int kFrontRightTurnId = 3;
-    public static int kFrontRightAbsoluteEncoderPort = 1;
-    public static double kFrontRightAbsoluteEncoderOffset = 1.415447275814819 + (Math.PI / 2.0);
-    public static boolean kFrontRightDriveReversed = true;
-    public static boolean kFrontRightTurningReversed = true;
+    public static final int kFrontRightDriveId = 4; //CAN
+    public static final int kFrontRightTurnId = 3; //CAN
+    public static final int kFrontRightTurnEncoderPort = 1; //PWM
+    public static final double kFrontRightTurnEncoderOffset = 1.415447275814819 + (Math.PI / 2.0);
+    public static final boolean kFrontRightDriveReversed = true;
+    public static final boolean kFrontRightTurningReversed = true;
         
-    public static int kBackLeftDriveId = 8;
-    public static int kBackLeftTurnId = 7;
-    public static int kBackLeftAbsoluteEncoderPort = 3;
-    public static double kBackLeftAbsoluteEncoderOffset = 1.253910661599266 + (Math.PI / 2.0);
-    public static boolean kBackLeftDriveReversed = false;
-    public static boolean kBackLeftTurningReversed = true;
+    public static final int kBackLeftDriveId = 8; //CAN
+    public static final int kBackLeftTurnId = 7; //CAN
+    public static final int kBackLeftTurnEncoderPort = 3; //PWM
+    public static final double kBackLeftTurnEncoderOffset = 1.253910661599266 + (Math.PI / 2.0);
+    public static final boolean kBackLeftDriveReversed = false;
+    public static final boolean kBackLeftTurningReversed = true;
         
-    public static int kBackRightDriveId = 6;
-    public static int kBackRightTurnId = 5;
-    public static int kBackRightAbsoluteEncoderPort = 2;
-    public static double kBackRightAbsoluteEncoderOffset = -0.456511594330128 - (Math.PI / 2.0);
-    public static boolean kBackRightDriveReversed = true;
-    public static boolean kBackRightTurningReversed = true;
+    public static final int kBackRightDriveId = 6; //CAN
+    public static final int kBackRightTurnId = 5; //CAN
+    public static final int kBackRightTurnEncoderPort = 2; //PWM
+    public static final double kBackRightTurnEncoderOffset = -0.456511594330128 - (Math.PI / 2.0);
+    public static final boolean kBackRightDriveReversed = true;
+    public static final boolean kBackRightTurningReversed = true;
 
-    public static PIDConstants kTranslationConstants = new PIDConstants(0.75);
-    public static PIDConstants kRotationConstants = new PIDConstants(0.75);
+
+    public static final PIDController kModuleDrivePIDConstants = new PIDController(0.17, 1.7, 0.0); //PID constants for the drive and steer of each module
+    public static final PIDController kModuleTurnPIDConstants = new PIDController(0.4, 0.0, 0.0);
+
+
+    // VERY IMPORTANT NUMBERS BELOW
+
+    public static final double kDriveGearRatio = 5.9;
+    public static final double kWheelCircumference = Math.PI * Units.inchesToMeters(4);
+    public static final double kDriveSensorToMechanismRatio = kDriveGearRatio/kWheelCircumference; //how much distance is traveled for one rotation on the drive TalonFX
+
+    public static final double kTurnEncoderPositionToRadians = Math.PI * 2; //since turn encoder is right on the output shaft, we only need to convert rotations into radians
+
+
+
+
 }
