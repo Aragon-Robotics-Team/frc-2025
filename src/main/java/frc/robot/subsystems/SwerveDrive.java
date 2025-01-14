@@ -365,7 +365,13 @@ public class SwerveDrive extends SubsystemBase
 
       while(m_running)
       {
-        Timer.delay(1.0 / kUpdateFrequency);
+        try{
+          Thread.sleep(10);
+        }
+        catch(Exception e)
+        {
+          ;
+        }
         try
         {
           m_stateLock.writeLock().lock();
