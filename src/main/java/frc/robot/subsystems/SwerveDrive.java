@@ -8,12 +8,10 @@ package frc.robot.subsystems;
 
 import com.reduxrobotics.sensors.canandgyro.*;
 
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.Utils;
-import com.fasterxml.jackson.databind.JsonSerializable.Base;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 //import com.pathplanner.lib.config.ModuleConfig;
@@ -366,7 +364,7 @@ public class SwerveDrive extends SubsystemBase
       while(m_running)
       {
         try{
-          Thread.sleep(10);
+          Thread.sleep(1/kUpdateFrequency);
         }
         catch(Exception e)
         {

@@ -48,8 +48,8 @@ public class SwerveJoystick extends Command {
 
     //Makes the speed response x squared in relation to the joystick input.
     //That way, the first little bit of joystick input gives more control.  
-    xSpeed = Math.signum(xSpeed) * xSpeed;
-    ySpeed = Math.signum(ySpeed) * ySpeed;
+    xSpeed *= Math.signum(xSpeed) * xSpeed;
+    ySpeed *= Math.signum(ySpeed) * ySpeed;
     
 
     SmartDashboard.putNumber("Joystick/xSpeedRaw", xSpeed);
