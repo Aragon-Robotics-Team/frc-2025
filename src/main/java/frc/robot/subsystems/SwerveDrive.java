@@ -86,7 +86,6 @@ public class SwerveDrive extends SubsystemBase
   int kUpdateFrequency = 100;
   protected final ReentrantReadWriteLock m_stateLock = new ReentrantReadWriteLock();
   protected OdometryThread m_odometryThread;
-
   protected SwerveModulePosition[] m_modulePositions;
   protected SwerveModuleState[] m_moduleStates;
 
@@ -100,6 +99,12 @@ public class SwerveDrive extends SubsystemBase
 
   private final Canandgyro m_imu = new Canandgyro(OIConstants.kIMUCanID);
 
+  private double currentAccelerationX;
+  private double currentAccelerationY;
+  private double previousAccelerationX = 0;
+  private double previousAccelerationY = 0;
+  private double Xjerk;
+  private double Yjerk;
 
   private final Field2d m_field = new Field2d();
 
@@ -118,6 +123,15 @@ public class SwerveDrive extends SubsystemBase
 
   public void adjustAngle(double angle){
     m_imu.setYaw(angle);
+  }
+
+  public boolean collisionOccured(){
+    //Will move constant later - where should this go?
+    double kJerkLimit = 0.5;
+    if(absJerk > kJerkLimit){
+      return true;
+    }
+    return false;
   }
 
   public void resetOdo(Pose2d pose) {
@@ -395,6 +409,13 @@ public class SwerveDrive extends SubsystemBase
   @Override
   public void periodic() 
   {
+
+    currentAccelerationX = previousAccelerationX;
+    currentAccelerationY = previousAccelerationY;
+    previousAccelerationX = m_imu.getAccelerationX();
+    previousAccelerationY = m_imu.getAccelerationY();
+    Xjerk = currentAccelerationX - previousAccelerationX;
+    Yjerk = currentAccelerationY - previousAccelerationY;
 
     // m_odo.update(getAngle(),
     //   new SwerveModulePosition[] {
