@@ -128,6 +128,7 @@ public class SwerveDrive extends SubsystemBase
   public boolean collisionOccured(){
     //Will move constant later - where should this go?
     double kJerkLimit = 0.5;
+    double absJerk = Math.pow(Math.pow(Xjerk,2) + Math.pow(Yjerk,2),0.5);
     if(absJerk > kJerkLimit){
       return true;
     }
