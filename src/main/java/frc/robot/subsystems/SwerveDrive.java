@@ -109,8 +109,8 @@ public class SwerveDrive extends SubsystemBase
   private double currentAccelerationY;
   private double previousAccelerationX = 0;
   private double previousAccelerationY = 0;
-  private double Xjerk;
-  private double Yjerk;
+  private double dAccelerationX;
+  private double dAccelerationY;
 
   private final Field2d m_field = new Field2d();
 
@@ -134,8 +134,8 @@ public class SwerveDrive extends SubsystemBase
   public boolean collisionOccured(){
     //Will move constant later - where should this go?
     double kJerkLimit = 0.5;
-    double absJerk = Math.pow(Math.pow(Xjerk,2) + Math.pow(Yjerk,2),0.5);
-    if(absJerk > kJerkLimit){
+    double dAcceleration = Math.pow(Math.pow(dAccelerationX,2) + Math.pow(dAccelerationY,2),0.5);
+    if(dAcceleration > kJerkLimit){
       return true;
     }
     return false;
@@ -411,12 +411,12 @@ public class SwerveDrive extends SubsystemBase
   public void periodic() 
   {
 
-    currentAccelerationX = previousAccelerationX;
-    currentAccelerationY = previousAccelerationY;
-    previousAccelerationX = m_imu.getAccelerationX();
-    previousAccelerationY = m_imu.getAccelerationY();
-    Xjerk = currentAccelerationX - previousAccelerationX;
-    Yjerk = currentAccelerationY - previousAccelerationY;
+    previousAccelerationX = currentAccelerationX;
+    previousAccelerationY = currentAccelerationY;
+    currentAccelerationX = m_imu.getAccelerationX();
+    currentAccelerationY = m_imu.getAccelerationY();
+    dAccelerationX = currentAccelerationX - previousAccelerationX;
+    dAccelerationY = currentAccelerationY - previousAccelerationY;
 
     // m_odo.update(getAngle(),
     //   new SwerveModulePosition[] {
