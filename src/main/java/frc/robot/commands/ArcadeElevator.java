@@ -4,18 +4,22 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.Elevator;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class SwerveJoystick extends Command {
-  private XboxController m_joystick = new XboxController(0);
-  /** Creates a new SwerveJoystick. */
-  public SwerveJoystick(XboxController joystick) 
-  {
-    m_joystick=joystick;
-
+public class ArcadeElevator extends Command {
+  private static final class Config {
+    public static final int kElevatorYAxis = 5;
+    public static final double kElevatorMultiplier = Math.PI/26;
+  }
+    private Joystick m_joystick;
+    private Elevator m_elevator;
+  /** Creates a new ArcadeElevator. */
+  public ArcadeElevator(Joystick joystick, Elevator elevator) {
     // Use addRequirements() here to declare subsystem dependencies.
+    m_joystick = joystick;
+    m_elevator = elevator;
   }
 
   // Called when the command is initially scheduled.
@@ -25,14 +29,14 @@ public class SwerveJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double ySpeed=m_joystick.getRawAxis(0);
-    double xSpeed=m_joystick.getRawAxis(0);
-    double rotation=m_joystick.getRawAxis(4);
+    m_elevator.setSpeed(m_joystick.getRawAxis(Config.kElevatorYAxis) * Config.kElevatorMultiplier);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_elevator.setSpeed(0);
+  }
 
   // Returns true when the command should end.
   @Override
