@@ -61,5 +61,11 @@ public final class Constants {
         public static final int kIndexerInButtonID = 5;
         public static final int kIndexerOutButtonID = 6;
         public static final int kIntakeWithIndexerButtonID = 7;    }
-    } 
  
+
+    public static final class PivotConstants {
+        public static final int kLeftPivotMotorID = 0; 
+        public static final int kRightPivotMotorID = 1; //change
+    }
+
+}
