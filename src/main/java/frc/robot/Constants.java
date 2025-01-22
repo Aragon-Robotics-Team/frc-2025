@@ -46,5 +46,10 @@ public final class Constants {
     public static final int kJoystickPort = 1;
 
    }
-   
+
+    public static final class PivotConstants {
+        public static final int kLeftPivotMotorID = 0; 
+        public static final int kRightPivotMotorID = 1; //change
+    }
+
 }
