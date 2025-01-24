@@ -10,6 +10,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -37,6 +38,8 @@ public class RobotContainer {
   private SendableChooser<Command> m_autoChooser;
   private Intake m_intakeMotor = new Intake();
   private IntakeIn m_intakeIn = new IntakeIn(m_intakeMotor);
+  private XboxController m_joystick = new XboxController(0);
+  private JoystickButton m_intakeButton = new JoystickButton(m_joystick, 8); //change number later
 
   private Elevator m_elevator = new Elevator();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
