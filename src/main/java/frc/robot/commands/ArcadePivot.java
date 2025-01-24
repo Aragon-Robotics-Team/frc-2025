@@ -28,6 +28,7 @@ public class ArcadePivot extends Command {
   @Override
   public void initialize() {
     m_pivot.setPivotSpeed(0);
+    m_initialPosition = m_pivot.getPivotPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -63,6 +64,9 @@ public class ArcadePivot extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(m_currentPosition - m_goal < 0.01 && m_currentPosition - m_goal > -0.01) {
+      return true;
+    }
     return false;
   }
 }
