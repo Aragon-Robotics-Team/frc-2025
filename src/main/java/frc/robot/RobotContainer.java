@@ -14,6 +14,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.commands.Spin;
+import frc.robot.subsystems.Motor;
+
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ArcadeElevator;
@@ -33,6 +36,11 @@ public class RobotContainer {
   private final Joystick m_secondJoystick = new Joystick(1);
   private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private SendableChooser<Command> m_autoChooser;
+  
+  private final Motor m_motor = new Motor();
+  private final Joystick m_joystick = new Joystick(0);
+  private final Spin m_spin = new Spin(m_joystick, m_motor);
+  
 
   private Elevator m_elevator = new Elevator();
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
