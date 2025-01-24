@@ -11,6 +11,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.subsystems.SwerveDrive;
@@ -18,6 +19,8 @@ import frc.robot.subsystems.SwerveDrive;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.subsystems.Elevator;
+import frc.robot.commands.IntakeIn;
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,12 +33,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
-  private final Joystick m_secondJoystick = new Joystick(1);
   private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private SendableChooser<Command> m_autoChooser;
+  private Intake m_intakeMotor = new Intake();
+  private IntakeIn m_intakeIn = new IntakeIn(m_intakeMotor);
 
   private Elevator m_elevator = new Elevator();
-  private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
@@ -56,6 +59,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
    
+    m_intakeButton.whileTrue(m_intakeIn);
   }
 
   /**
