@@ -14,6 +14,7 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.ArcadeElevator;
+import frc.robot.commands.ArcadePivot;
 import frc.robot.commands.ArmToPos;
 import frc.robot.commands.ElevatorPosition;
 import frc.robot.commands.ElevatorRatioTest;
@@ -27,6 +28,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.Pivot;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -50,6 +52,14 @@ public class RobotContainer {
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   // private SendableChooser<Command> m_autoChooser;
 
+  private Pivot m_pivot = new Pivot();
+  private double m_speed = 0; //change later
+  private ArcadePivot m_pivotToA = new ArcadePivot(m_pivot, m_speed, 0);
+  private ArcadePivot m_pivotToB = new ArcadePivot(m_pivot, m_speed, 0);
+  private ArcadePivot m_pivotToC = new ArcadePivot(m_pivot, m_speed, 0);
+  private JoystickButton m_pivotButtonToA = new JoystickButton(m_secondJoystick, 0);
+  private JoystickButton m_pivotButtonToB = new JoystickButton(m_secondJoystick, 0);
+  private JoystickButton m_pivotButtonToC = new JoystickButton(m_secondJoystick, 0);
 
   private Intake m_intake = new Intake();
   private RunIntake m_intakeIn = new RunIntake(m_intake, 0.3); // positive speed == intake in
@@ -128,6 +138,14 @@ public class RobotContainer {
     m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
     m_armToPosButton.whileTrue(m_armToPos);
     m_elevatorPositionButton.whileTrue(m_elevatorPosition);
+    m_elevatorTestButton.onTrue(m_elevatorTest);
+    //m_elevatorRatioTestButton.whileTrue(m_elevatorRatioTestone);
+    //m_elevatorRatioTestButtonTwo.whileTrue(m_elevatorRatioTesttwo);
+    //m_elevatorRatioTestButtonThree.whileTrue(m_elevatorRatioTestthree);
+
+    m_pivotButtonToA.onTrue(m_pivotToA);
+    m_pivotButtonToB.onTrue(m_pivotToB);
+    m_pivotButtonToC.onTrue(m_pivotToC);
   }
 
   /**
