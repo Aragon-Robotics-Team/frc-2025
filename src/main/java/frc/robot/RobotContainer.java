@@ -34,6 +34,8 @@ import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeWithIndexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.SpinArmOuttakeMotor;
+import frc.robot.commands.IntakeIn;
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -87,6 +89,7 @@ public class RobotContainer {
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change rotation number
   
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
+  private Elevator m_elevator = new Elevator();
 
 
   private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
