@@ -13,12 +13,18 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.commands.ArcadeArm;
+import frc.robot.commands.SwerveJoystick;
+import frc.robot.subsystems.SwerveDrive;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.ArmToPos;
 import frc.robot.commands.ElevatorToPosition;
@@ -29,6 +35,7 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.commands.ElevatorPosition;
 import frc.robot.commands.ElevatorRatioTest;
 import frc.robot.subsystems.SwerveDrive;
+
 import frc.robot.commands.SpinArmOuttakeMotor;
 
 import frc.robot.Constants.PivotConstants;
@@ -36,6 +43,10 @@ import frc.robot.commands.ArcadePivot;
 import frc.robot.commands.PIDForPivot;
 import frc.robot.commands.PivotToPosition;
 import frc.robot.subsystems.Pivot;
+
+import frc.robot.commands.IntakeIn;
+import frc.robot.subsystems.Intake;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -57,10 +68,16 @@ public class RobotContainer {
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
   
   private SendableChooser<Command> m_autoChooser;
+
   private final JoystickButton m_armIntakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeIntakeButtonID);
   private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeOuttakeButtonID);
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   // private SendableChooser<Command> m_autoChooser;
+
+  private Intake m_intake = new Intake();
+  private IntakeIn m_intakeIn = new IntakeIn(m_intake);
+  private JoystickButton m_intakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeButtonID); //change number later
+
 
   private Pivot m_pivot = new Pivot();
   private double m_speed = PivotConstants.kPivotSpeed; //change later
@@ -78,6 +95,7 @@ public class RobotContainer {
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
 
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
+
 
 
   private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
@@ -123,6 +141,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
+
     
     // make sure this doesn't accidently run
     // m_armToPosButton.whileTrue(m_armToPos);
@@ -137,6 +156,8 @@ public class RobotContainer {
 
     m_pivotButtonToStow.onTrue(m_pivotPIDToStow);
     m_pivotButtonToIntake.onTrue(m_pivotPIDToIntake);
+
+    m_intakeButton.whileTrue(m_intakeIn);
   }
 
   /**
@@ -160,3 +181,4 @@ public class RobotContainer {
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }
+  
