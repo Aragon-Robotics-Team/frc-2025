@@ -9,12 +9,18 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.commands.ArcadeArm;
+import frc.robot.commands.SwerveJoystick;
+import frc.robot.subsystems.SwerveDrive;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.ArmToPos;
 import frc.robot.commands.ElevatorToPosition;
@@ -26,6 +32,8 @@ import frc.robot.commands.ElevatorPosition;
 import frc.robot.commands.ElevatorRatioTest;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.commands.SpinArmOuttakeMotor;
+import frc.robot.commands.IntakeIn;
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -52,6 +60,9 @@ public class RobotContainer {
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   // private SendableChooser<Command> m_autoChooser;
 
+  private Intake m_intake = new Intake();
+  private IntakeIn m_intakeIn = new IntakeIn(m_intake);
+  private JoystickButton m_intakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeButtonID); //change number later
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
@@ -109,7 +120,9 @@ public class RobotContainer {
     //m_elevatorRatioTestButton.whileTrue(m_elevatorRatioTestone);
     //m_elevatorRatioTestButtonTwo.whileTrue(m_elevatorRatioTesttwo);
     //m_elevatorRatioTestButtonThree.whileTrue(m_elevatorRatioTestthree);
-    
+
+   
+    m_intakeButton.whileTrue(m_intakeIn);
   }
 
   /**
@@ -132,3 +145,4 @@ public class RobotContainer {
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }
+  
