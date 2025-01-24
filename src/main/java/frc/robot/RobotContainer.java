@@ -21,7 +21,13 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.ArcadeArm;
 
 import frc.robot.commands.Spin;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Motor;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.ArcadeArm;
+
 
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -49,6 +55,8 @@ public class RobotContainer {
   private final Motor m_motor = new Motor();
   private final Joystick m_joystick = new Joystick(0);
   private final Spin m_spin = new Spin(m_joystick, m_motor);
+  private final Arm m_arm = new Arm();
+  private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm);
   
   private Elevator m_elevator = new Elevator();
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
@@ -84,7 +92,8 @@ public class RobotContainer {
     return m_autoChooser.getSelected();
   }
 
-  private void getTeleopCommand() {
+  public Command getTeleopCommand() {
+    m_arm.setDefaultCommand(m_arcadeArm);
     m_swerve.setDefaultCommand(m_swerveJoystick);
     m_arm.setDefaultCommand(m_arcadeArm);
     m_elevator.setDefaultCommand(m_arcadeElevator);
