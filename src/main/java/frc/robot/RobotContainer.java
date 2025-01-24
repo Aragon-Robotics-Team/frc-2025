@@ -50,6 +50,8 @@ import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeWithIndexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.SpinArmOuttakeMotor;
+import frc.robot.commands.IntakeIn;
+import frc.robot.subsystems.Intake;
 
 
 /**
@@ -120,6 +122,7 @@ public class RobotContainer {
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
 
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
+  private Elevator m_elevator = new Elevator();
 
 
 
