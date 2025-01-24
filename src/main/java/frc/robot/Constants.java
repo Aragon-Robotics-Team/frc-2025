@@ -35,6 +35,7 @@ public final class Constants {
    }
    
     public static final class IntakeConstants {
+<<<<<<< HEAD
         public static final int kIntakeMotorID = 22;
         public static final int kIndexerMotorID = 17;
 
@@ -43,6 +44,11 @@ public final class Constants {
         public static final int kIndexerInButtonID = 5;
         public static final int kIndexerOutButtonID = 6;
         public static final int kIntakeWithIndexerButtonID = 7;
+=======
+        public static final int kIntakeMotorID = 0;
+        public static final double speed = .5;
+        public static final int kIntakeButtonID = 1;
+>>>>>>> d3d31c3 (Intake ig)
     }
     } 
  
