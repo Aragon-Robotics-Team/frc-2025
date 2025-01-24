@@ -12,6 +12,7 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PivotConstants;
 
@@ -34,6 +35,7 @@ public class Pivot extends SubsystemBase {
 
     //m_pivotSim.setInputVoltage(speed * 12);
   }
+
 
   /*public double getSimPivotPosition() {
     return m_pivotSim.getAngularPositionRotations();

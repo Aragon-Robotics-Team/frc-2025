@@ -45,6 +45,9 @@ public class ArcadePivot extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(m_currentPosition - m_goal < 0.01 && m_currentPosition - m_goal > -0.01) {
+      return true;
+    }
     return false;
   }
 }
