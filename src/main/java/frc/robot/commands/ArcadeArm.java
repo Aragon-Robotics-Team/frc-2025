@@ -12,7 +12,10 @@ import frc.robot.subsystems.Arm;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ArcadeArm extends Command {
-  
+  private static final class Config{
+    public static final int kArmYAxis = 1;
+    public static final double kArmMultiplier = Math.PI/26;
+  }
   /** Creates a new ArcadeArm. */
 
 private Arm m_arm;
@@ -23,8 +26,8 @@ private Joystick m_operatorJoystick;
     m_operatorJoystick = operatorjoystick;
   
     // Use addRequirements() here to declare subsystem dependencies.
-  addRequirements(m_arm);
-    }
+    addRequirements(m_arm);
+  }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
@@ -34,9 +37,9 @@ private Joystick m_operatorJoystick;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = m_operatorJoystick.getRawAxis(Constants.ArmConstants.kArmYAxis) * Constants.ArmConstants.kArmMultiplier;    
+    double speed = m_operatorJoystick.getRawAxis(Constants.ArmConstants.kArmYAxis) * Constants.ArmConstants.kArmMultiplier;
     SmartDashboard.putNumber("Arm speed", speed);
-    m_arm.setSpeed(speed);
+    m_arm.setSpeed(m_joystick.getRawAxis(Config.kArmYAxis) * Config.kArmMultiplier);
     /*
     if (speed>0){
       if (m_arm.getTopLimitSwitch()){
@@ -57,7 +60,7 @@ private Joystick m_operatorJoystick;
     }
       */
     }
-    
+  }
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
