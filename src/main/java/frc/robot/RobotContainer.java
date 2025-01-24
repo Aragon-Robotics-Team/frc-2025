@@ -4,9 +4,10 @@
 
 package frc.robot;
 
-
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ArcadeElevator;
+import frc.robot.subsystems.Elevator;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -15,12 +16,15 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private static final class Config {
+    public static final int kJoystickPort = 1;
+    
+  }
   // The robot's subsystems and commands are defined here...
+  private Joystick m_joystick = new Joystick(Config.kJoystickPort);
+  private Elevator m_elevator = new Elevator();
+  private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_joystick, m_elevator);
   
-
-
-
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // Configure the trigger bindings
@@ -37,7 +41,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+   
   }
 
   /**
@@ -47,6 +51,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
+    return null;
+  }
+  public Command getTeleopCommand() {
+    m_arcadeElevator.schedule();
     return null;
   }
 }
