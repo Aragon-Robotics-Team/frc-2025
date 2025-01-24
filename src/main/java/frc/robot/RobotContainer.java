@@ -9,11 +9,17 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArcadeArm;
+import frc.robot.commands.SwerveJoystick;
+import frc.robot.subsystems.SwerveDrive;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.ArmToPos;
 import frc.robot.commands.SwerveJoystick;
@@ -22,6 +28,8 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.ElevatorPosition;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.commands.IntakeIn;
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -42,11 +50,15 @@ public class RobotContainer {
 
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
   private SendableChooser<Command> m_autoChooser;
+  private Intake m_intake = new Intake();
+  private IntakeIn m_intakeIn = new IntakeIn(m_intake);
+  private JoystickButton m_intakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeButtonID); //change number later
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
+  private Elevator m_elevator = new Elevator();
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -70,6 +82,8 @@ public class RobotContainer {
   private void configureBindings() {
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
     m_armToPosButton.whileTrue(m_armToPos);
+   
+    m_intakeButton.whileTrue(m_intakeIn);
   }
 
   /**
@@ -90,3 +104,4 @@ public class RobotContainer {
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }
+  
