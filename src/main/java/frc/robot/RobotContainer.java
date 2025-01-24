@@ -13,9 +13,12 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.commands.ArcadePivot;
+import frc.robot.subsystems.Pivot;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -30,6 +33,14 @@ public class RobotContainer {
   private final Joystick m_secondJoystick = new Joystick(1);
   private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private SendableChooser<Command> m_autoChooser;
+  private Pivot m_pivot = new Pivot();
+  private double m_speed = 0; //change later
+  private ArcadePivot m_pivotToA = new ArcadePivot(m_pivot, m_speed, 0);
+  private ArcadePivot m_pivotToB = new ArcadePivot(m_pivot, m_speed, 0);
+  private ArcadePivot m_pivotToC = new ArcadePivot(m_pivot, m_speed, 0);
+  private JoystickButton m_pivotButtonToA = new JoystickButton(m_secondJoystick, 0);
+  private JoystickButton m_pivotButtonToB = new JoystickButton(m_secondJoystick, 0);
+  private JoystickButton m_pivotButtonToC = new JoystickButton(m_secondJoystick, 0);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -50,7 +61,9 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    m_pivotButtonToA.onTrue(m_pivotToA);
+    m_pivotButtonToB.onTrue(m_pivotToB);
+    m_pivotButtonToC.onTrue(m_pivotToC);
   }
 
   /**

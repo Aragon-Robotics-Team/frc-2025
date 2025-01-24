@@ -12,10 +12,13 @@ public class ArcadePivot extends Command {
   private Pivot m_pivot;
   private double m_speed = 0; //change later
   private double m_goal;
+  private double m_currentPosition;
+  private double m_initialPosition;
 
   /** Creates a new ArcadePivot. */
-  public ArcadePivot(Pivot pivot, double goal) {
+  public ArcadePivot(Pivot pivot, double speed, double goal) {
     m_pivot = pivot;
+    m_speed = speed;
     m_goal = goal;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_pivot);
@@ -25,11 +28,15 @@ public class ArcadePivot extends Command {
   @Override
   public void initialize() {
     m_pivot.setPivotSpeed(0);
+    m_initialPosition = m_pivot.getPivotPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    m_pivot.setPivotSpeed(m_speed);
+    m_currentPosition = m_pivot.getPivotPosition() - m_initialPosition;
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -40,6 +47,9 @@ public class ArcadePivot extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(m_currentPosition - m_goal < 0.01 && m_currentPosition - m_goal > -0.01) {
+      return true;
+    }
     return false;
   }
 }
