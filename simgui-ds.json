@@ -5,10 +5,17 @@
     }
   },
 <<<<<<< HEAD
+<<<<<<< HEAD
   "Keyboard 0 Settings": {
 =======
   "Keyboard 2 Settings": {
 >>>>>>> 1515e92 (pivot doesn't work but should :()
+=======
+  "Keyboard 2 Settings": {
+=======
+  "Keyboard 0 Settings": {
+>>>>>>> 869b999 (Intake ig)
+>>>>>>> 2bf5d81 (Intake ig)
     "window": {
       "visible": true
     }
