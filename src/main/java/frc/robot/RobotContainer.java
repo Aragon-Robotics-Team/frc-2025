@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-
 import edu.wpi.first.wpilibj.Joystick;
 
 import com.pathplanner.lib.auto.AutoBuilder;
@@ -16,6 +15,10 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.subsystems.SwerveDrive;
 
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.ArcadeElevator;
+import frc.robot.subsystems.Elevator;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -23,6 +26,10 @@ import frc.robot.subsystems.SwerveDrive;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+  private static final class Config {
+    public static final int kJoystickPort = 1;
+    
+  }
   // The robot's subsystems and commands are defined here...
   public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
@@ -30,6 +37,8 @@ public class RobotContainer {
   private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private SendableChooser<Command> m_autoChooser;
 
+  private Elevator m_elevator = new Elevator();
+  private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
@@ -49,7 +58,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+   
   }
 
   /**
@@ -64,7 +73,6 @@ public class RobotContainer {
 
   private void getTeleopCommand() {
     m_swerve.setDefaultCommand(m_swerveJoystick);
-  }
-
-  
+    m_arcadeElevator.schedule();
+  } 
 }
