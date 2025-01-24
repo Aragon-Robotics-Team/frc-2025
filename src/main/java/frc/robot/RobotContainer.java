@@ -14,11 +14,11 @@ import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.ArcadeElevator;
-import frc.robot.commands.ArcadePivot;
 import frc.robot.commands.ArmToPos;
 import frc.robot.commands.ElevatorPosition;
 import frc.robot.commands.ElevatorRatioTest;
 import frc.robot.commands.ElevatorToPosition;
+import frc.robot.commands.PivotToPosition;
 import frc.robot.commands.RunIndexer;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeWithIndexer;
@@ -54,12 +54,12 @@ public class RobotContainer {
 
   private Pivot m_pivot = new Pivot();
   private double m_speed = 0; //change later
-  private ArcadePivot m_pivotToA = new ArcadePivot(m_pivot, m_speed, 0);
-  private ArcadePivot m_pivotToB = new ArcadePivot(m_pivot, m_speed, 0);
-  private ArcadePivot m_pivotToC = new ArcadePivot(m_pivot, m_speed, 0);
+  private PivotToPosition m_pivotToA = new PivotToPosition(m_pivot, m_speed, 0);
+  private PivotToPosition m_pivotToB = new PivotToPosition(m_pivot, m_speed, 1);
+  private PivotToPosition m_pivotToC = new PivotToPosition(m_pivot, m_speed, 2);
   private JoystickButton m_pivotButtonToA = new JoystickButton(m_secondJoystick, 0);
-  private JoystickButton m_pivotButtonToB = new JoystickButton(m_secondJoystick, 0);
-  private JoystickButton m_pivotButtonToC = new JoystickButton(m_secondJoystick, 0);
+  private JoystickButton m_pivotButtonToB = new JoystickButton(m_secondJoystick, 1);
+  private JoystickButton m_pivotButtonToC = new JoystickButton(m_secondJoystick, 2);
 
   private Intake m_intake = new Intake();
   private RunIntake m_intakeIn = new RunIntake(m_intake, 0.3); // positive speed == intake in
