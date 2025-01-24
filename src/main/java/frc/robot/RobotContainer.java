@@ -31,7 +31,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.ElevatorPosition;
 import frc.robot.subsystems.SwerveDrive;
-import frc.robot.commands.ArcadePivot;
+import frc.robot.commands.PivotToPosition;
 import frc.robot.subsystems.Pivot;
 
 /**
@@ -70,12 +70,12 @@ public class RobotContainer {
   private SendableChooser<Command> m_autoChooser;
   private Pivot m_pivot = new Pivot();
   private double m_speed = 0; //change later
-  private ArcadePivot m_pivotToA = new ArcadePivot(m_pivot, m_speed, 0);
-  private ArcadePivot m_pivotToB = new ArcadePivot(m_pivot, m_speed, 0);
-  private ArcadePivot m_pivotToC = new ArcadePivot(m_pivot, m_speed, 0);
+  private PivotToPosition m_pivotToA = new PivotToPosition(m_pivot, m_speed, 0);
+  private PivotToPosition m_pivotToB = new PivotToPosition(m_pivot, m_speed, 1);
+  private PivotToPosition m_pivotToC = new PivotToPosition(m_pivot, m_speed, 2);
   private JoystickButton m_pivotButtonToA = new JoystickButton(m_secondJoystick, 0);
-  private JoystickButton m_pivotButtonToB = new JoystickButton(m_secondJoystick, 0);
-  private JoystickButton m_pivotButtonToC = new JoystickButton(m_secondJoystick, 0);
+  private JoystickButton m_pivotButtonToB = new JoystickButton(m_secondJoystick, 1);
+  private JoystickButton m_pivotButtonToC = new JoystickButton(m_secondJoystick, 2);
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
