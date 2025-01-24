@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Pivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ArcadePivot extends Command {
+public class PivotToPosition extends Command {
   private Pivot m_pivot;
   private double m_speed = 0; //change later
   private double m_goal;
@@ -16,7 +16,7 @@ public class ArcadePivot extends Command {
   private double m_initialPosition;
 
   /** Creates a new ArcadePivot. */
-  public ArcadePivot(Pivot pivot, double speed, double goal) {
+  public PivotToPosition(Pivot pivot, double speed, double goal) {
     m_pivot = pivot;
     m_speed = speed;
     m_goal = goal;
