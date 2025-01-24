@@ -4,12 +4,24 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
 public class Arm extends SubsystemBase {
   /** Creates a new Arm. */
+  private static final class Config{
+    private static final int deviceId = 5;
+}
+  private SparkMax m_arm = new SparkMax(Config.deviceId, MotorType.kBrushless);
+
   public Arm() {}
+
+  public void setSpeed(double speed){
+m_arm.set(speed);
+  }
 
   @Override
   public void periodic() {
