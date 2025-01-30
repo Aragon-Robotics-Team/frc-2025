@@ -6,7 +6,8 @@ package frc.robot.subsystems;
 
 //import com.fasterxml.jackson.databind.util.Named;
 
-import com.reduxrobotics.sensors.canandgyro.*;
+import com.reduxrobotics.sensors.canandgyro.Canandgyro;
+import com.reduxrobotics.canand.CanandEventLoop;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -14,6 +15,7 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.Utils;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.config.ModuleConfig;
 //import com.pathplanner.lib.config.ModuleConfig;
 import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
@@ -21,11 +23,13 @@ import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
@@ -36,7 +40,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.DriveConstants;
-import frc.robot.constants.OIConstants;
+import frc.robot.constants.IOConstants;
 
 public class SwerveDrive extends SubsystemBase 
 {
@@ -55,7 +59,7 @@ public class SwerveDrive extends SubsystemBase
     DriveConstants.kFrontRightTurnId,
     DriveConstants.kFrontRightTurnEncoderPort, 
     DriveConstants.kFrontRightTurnEncoderOffset, 
-    DriveConstants.kFrontRightDriveReversed, 
+    DriveConstants.kFrontRightDriveReversed,
     DriveConstants.kFrontRightTurningReversed, 
     "FrontRight"
   );
@@ -83,12 +87,14 @@ public class SwerveDrive extends SubsystemBase
   int kModuleCount = 4;
   SwerveModule[] m_modules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
   public String[] m_moduleNames = {"frontLeft", "frontRight", "backLeft", "backRight"};
-  int kUpdateFrequency = 100;
+  int kUpdateFrequency = 50;
   protected final ReentrantReadWriteLock m_stateLock = new ReentrantReadWriteLock();
-  protected OdometryThread m_odometryThread;
+  //protected OdometryThread m_odometryThread;
 
   protected SwerveModulePosition[] m_modulePositions;
   protected SwerveModuleState[] m_moduleStates;
+
+  private final Canandgyro m_imu = new Canandgyro(IOConstants.kIMUCanID);
 
   private final SwerveDriveOdometry m_odo = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getAngle(), new SwerveModulePosition[] {
     m_frontLeft.getPosition(),
@@ -98,7 +104,7 @@ public class SwerveDrive extends SubsystemBase
   });
 
 
-  private final Canandgyro m_imu = new Canandgyro(OIConstants.kIMUCanID);
+  
 
 
   private final Field2d m_field = new Field2d();
@@ -165,12 +171,16 @@ public class SwerveDrive extends SubsystemBase
   }
 
   public Rotation2d getAngle() {
-    return Rotation2d.fromDegrees(Math.IEEEremainder(-m_imu.getYaw(), 360));
+    double angle = m_imu.getYaw();
+    angle *= 360;
+    
+
+    return Rotation2d.fromDegrees(angle);
   }
 
   public double getAngleDegrees()
   {
-    return Math.IEEEremainder(-m_imu.getYaw(), 360);
+    return Math.IEEEremainder(-m_imu.getYaw() * 360, 360);
   }
 
   public ChassisSpeeds getChassisSpeeds() { 
@@ -180,24 +190,6 @@ public class SwerveDrive extends SubsystemBase
       m_backLeft.getState(), 
       m_backRight.getState()
     );
-  }
-
-
-  
-  public interface I
-  {
-    public double get(SwerveModule module);
-
-  }
-  public double[] getFromAllSwerveModules(I property)
-  {
-    double[] properties = new double[m_modules.length];
-    for(int i = 0; i < properties.length; i++)
-    {
-      properties[i] = property.get(m_modules[i]);
-    }
-    return properties;
-
   }
 
   public SwerveModulePosition[] getModulePositions()
@@ -237,21 +229,24 @@ public class SwerveDrive extends SubsystemBase
 
   public SwerveDrive() 
   {
+    CanandEventLoop.getInstance();
+    // Leaving one here so I can remember how to do this later;
     // NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
-    // NamedCommands.registerCommand("Stow", stowed);
-    // NamedCommands.registerCommand("AutoShoot", autoShoot);
-    // NamedCommands.registerCommand("AutoIntake", autoIntake);
-    // NamedCommands.registerCommand("GroundIntake", groundIntake);
-    // NamedCommands.registerCommand("Outtake", outtake);
-    // NamedCommands.registerCommand("Subwoofer", subwoofer);
-    // NamedCommands.registerCommand("RightUnderStage", rightUnderStage);
 
-    m_odometryThread = new OdometryThread();
-    m_odometryThread.start();
+    // m_odometryThread = new OdometryThread();
+    // m_odometryThread.start();
 
     try 
     {
-      RobotConfig config = RobotConfig.fromGUISettings();
+      Translation2d[] t = {new Translation2d(0.368 - 0.0667, 0.368 - 0.0667),
+        new Translation2d(0.368  - 0.0667, -0.368 + 0.0667),
+        new Translation2d(-0.368 + 0.0667,  0.368 - 0.0667),
+        new Translation2d(-0.368 + 0.0667, -0.368 + 0.0667)};
+      //RobotConfig config = RobotConfig.fromGUISettings();
+      DCMotor motor = new DCMotor(kModuleCount, kModuleCount, m_yStartPose, m_xStartPose, kUpdateFrequency, kModuleCount);
+      ModuleConfig config3 = new ModuleConfig(1, 1, 1, motor, 1, 2);
+      RobotConfig config2 = new RobotConfig(50, 1, config3, t);
+      
       AutoBuilder.configure
       (
         this::getPoseMeters,
@@ -259,7 +254,7 @@ public class SwerveDrive extends SubsystemBase
         this::getChassisSpeeds, 
         this::driveRobotRelative, 
         new PPHolonomicDriveController(DriveConstants.kTranslationConstants, DriveConstants.kRotationConstants), 
-        config,
+        config2,
         () -> 
         {
           // Boolean supplier that controls when the path will be mirrored for the red alliance
@@ -274,6 +269,8 @@ public class SwerveDrive extends SubsystemBase
         },
       this
       );
+      System.out.println("KD;kjfasd");
+
 
       SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
       double m_angle = SmartDashboard.getNumber("Driving/Adjust angle", 0);
@@ -307,114 +304,98 @@ public class SwerveDrive extends SubsystemBase
     m_backRight.stop();
   }
 
-  public class OdometryThread
-  {
-    protected static final int kThreadPriority = 3;
-    protected final Thread m_thread; 
-    protected volatile boolean m_running = false;
+  // public class OdometryThread
+  // {
+  //   protected static final int kThreadPriority = 3;
+  //   protected final Thread m_thread; 
+  //   protected volatile boolean m_running = false;
     
-    protected final BaseStatusSignal[] m_allSignals;
+  //   protected final BaseStatusSignal[] m_allSignals;
 
-    protected double lastTime;
-    protected double currentTime;
+  //   protected int lastThreadPriority = kThreadPriority;
+  //   protected volatile int threadPriorityToSet = kThreadPriority;
 
-    protected int lastThreadPriority = kThreadPriority;
-    protected volatile int threadPriorityToSet = kThreadPriority;
+  //   public OdometryThread()
+  //   {
+  //     m_thread = new Thread(this::run);
+  //     m_thread.setDaemon(true);
 
-    public OdometryThread()
-    {
-      m_thread = new Thread(this::run);
-      m_thread.setDaemon(true);
-
-      //drivePos, driveVel, 
-      m_allSignals = new BaseStatusSignal[(kModuleCount * 2)];
+  //     //drivePos, driveVel, 
+  //     m_allSignals = new BaseStatusSignal[(kModuleCount * SwerveModule.m_numberOfStatusSignals)];
 
       
-      for (int i = 0; i < kModuleCount; ++i) 
-      {
-          m_allSignals[(i * 4) + 0] = m_modules[i].getDrivePos();
-          m_allSignals[(i * 4) + 1] = m_modules[i].getDriveVel();
-      }
-    }
+  //     for (int i = 0; i < kModuleCount; ++i) 
+  //     {
+  //         m_allSignals[(i * SwerveModule.m_numberOfStatusSignals) + 0] = m_modules[i].getDrivePosStatusSignal();
+  //         m_allSignals[(i * SwerveModule.m_numberOfStatusSignals) + 1] = m_modules[i].getDriveVelStatusSignal();
+  //     }
+  //   }
     
-    public void start() 
-    {
-      m_running = true;
-      m_thread.start();
-    }
+  //   public void start() 
+  //   {
+  //     m_running = true;
+  //     m_thread.start();
+  //   }
 
-    public void stop(long millis)
-    {
-      m_running = false;
-      try
-      {
-        m_thread.join(millis);
-      }
-      catch (final InterruptedException e)
-      {
-        Thread.currentThread().interrupt();
-      }
-    }
+  //   public void stop(long millis)
+  //   {
+  //     m_running = false;
+  //     try
+  //     {
+  //       m_thread.join(millis);
+  //     }
+  //     catch (final InterruptedException e)
+  //     {
+  //       Thread.currentThread().interrupt();
+  //     }
+  //   }
 
-    public void run()
-    {
-      BaseStatusSignal.setUpdateFrequencyForAll(kUpdateFrequency, m_allSignals);
-      Threads.setCurrentThreadPriority(true, kThreadPriority);
+  //   public void run()
+  //   {
+  //     BaseStatusSignal.setUpdateFrequencyForAll(kUpdateFrequency, m_allSignals);
+  //     Threads.setCurrentThreadPriority(true, kThreadPriority);
 
-      while(m_running)
-      {
-        try{
-          Thread.sleep(1/kUpdateFrequency);
-        }
-        catch(Exception e)
-        {
-          ;
-        }
-        try
-        {
-          m_stateLock.writeLock().lock();
-          lastTime = currentTime;
-          currentTime = Utils.getCurrentTimeSeconds();
+  //     while(m_running)
+  //     {
+  //       try{
+  //         Thread.sleep(1/kUpdateFrequency);
+  //       }
+  //       catch(Exception e)
+  //       {
+  //         ;
+  //       }
+  //       try
+  //       {
+  //         m_stateLock.writeLock().lock();
 
-          m_modulePositions = getModulePositions();
-          m_moduleStates = getModuleStates();
+  //         // m_modulePositions = getModulePositions();
+  //         // m_moduleStates = getModuleStates();
           
-          m_odo.update(getAngle(), m_modulePositions);
+  //         // m_odo.update(getAngle(), m_modulePositions);
 
-        }
-        finally
-        {
-          m_stateLock.writeLock().unlock();
-        }
-      }
-    }
-  }
+  //       }
+  //       finally
+  //       {
+  //         m_stateLock.writeLock().unlock();
+  //       }
+  //     }
+  //   }
+  // }
 
   
 
   @Override
   public void periodic() 
   {
+    m_modulePositions = getModulePositions();
+    m_moduleStates = getModuleStates();
+          
+    m_odo.update(getAngle(), m_modulePositions);
+    System.out.println(getAngle());
 
-    // m_odo.update(getAngle(),
-    //   new SwerveModulePosition[] {
-    //     m_frontLeft.getPosition(), m_frontRight.getPosition(),
-    //     m_backLeft.getPosition(), m_backRight.getPosition()
-    //   });
-
-    //SmartDashboard.putNumber("Angle", getAngle().getDegrees());
-    
-    //m_totalCurrent = m_frontLeft.getDriveCurrent() + m_frontLeft.getTurnCurrent() + m_frontRight.getDriveCurrent() + m_frontRight.getTurnCurrent() + m_backLeft.getDriveCurrent() + m_backLeft.getTurnCurrent() + m_backRight.getDriveCurrent() + m_backRight.getTurnCurrent();
-    //SmartDashboard.putNumber("Total Current", m_totalCurrent);
 
     m_field.setRobotPose(m_odo.getPoseMeters());
     SmartDashboard.putData("Swerve/Odo/Field", m_field);
-    
-    // m_xStartPose = SmartDashboard.getNumber("Swerve/Odo/X", 2);
-    // m_yStartPose = SmartDashboard.getNumber("Swerve/Odo/Y", 2);
-    // SmartDashboard.putNumber("Swerve/Odo/X", m_xStartPose);
-    // SmartDashboard.putNumber("Swerve/Odo/Y", m_yStartPose);
-
 
     SmartDashboard.putNumber("X", getPoseMeters().getX());
     SmartDashboard.putNumber("Y", getPoseMeters().getY());

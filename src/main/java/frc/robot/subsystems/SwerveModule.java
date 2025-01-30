@@ -116,7 +116,7 @@ public class SwerveModule extends SubsystemBase {
     state.optimize(getState().angle); //NEW check if working
     SmartDashboard.putNumber("Swerve/Speed/Commanded/Module_" + m_moduleId, state.speedMetersPerSecond);
     SmartDashboard.putNumber("Swerve/Commanded/Angle_" + m_moduleId, state.angle.getRadians());
-    SmartDashboard.putNumber("Swerve/Angle/Commanded/Module_" + m_moduleId, state.angle.getRadians());
+    SmartDashboard.putNumber("steer" + m_moduleId, getRotation().getRadians());
 
     double ff = state.speedMetersPerSecond / DriveConstants.kMaxTranslationalMetersPerSecond;
     double pid = m_drivingPIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
@@ -134,15 +134,25 @@ public class SwerveModule extends SubsystemBase {
     m_turnMotor.set(0.0);
   }
 
-  public StatusSignal<Angle> getDrivePos()
-  {
+
+
+
+  // every time you add a status signal, add a method to get said status signal;
+  public StatusSignal<Angle> getDrivePosStatusSignal() {
     return m_drivePos;
   }
-
-  public StatusSignal<AngularVelocity> getDriveVel()
-  {
+  public StatusSignal<AngularVelocity> getDriveVelStatusSignal() {
     return m_driveVel;
   }
+
+  // update the number every time you add a status signal; 
+  public static int m_numberOfStatusSignals = 2;
+
+
+
+
+
+
 
   public double getDriveCurrent() {
     return m_driveMotor.getStatorCurrent().getValueAsDouble();
