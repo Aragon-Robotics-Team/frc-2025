@@ -5,13 +5,13 @@
 package frc.robot.constants;
 
 /** Add your docs here. */
-public final class OIConstants {
+public final class IOConstants {
     public static final double kDeadband = 0.05;
 
     public static final int kDriveJoystickId = 0;
     public static int kJoystickXAxis = 1;
-    public static int kJoystickYxis = 0;
+    public static int kJoystickYAxis = 0;
     public static int kJoystickRotAxis = 4;
 
-    public static int kIMUCanID; //NEED TO FIND
+    public static int kIMUCanID = 0; //NEED TO FIND
 }

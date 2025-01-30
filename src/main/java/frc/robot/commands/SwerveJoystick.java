@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.DriveConstants;
-import frc.robot.constants.OIConstants;
+import frc.robot.constants.IOConstants;
 import frc.robot.subsystems.SwerveDrive;
 
 public class SwerveJoystick extends Command {
@@ -42,14 +42,15 @@ public class SwerveJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = m_joystick.getRawAxis(1);
-    double ySpeed = m_joystick.getRawAxis(0);
-    double turningSpeed = m_joystick.getRawAxis(4);
+    double xSpeed = m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
+    double ySpeed = m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
+    double turningSpeed = m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
 
     //Makes the speed response x squared in relation to the joystick input.
     //That way, the first little bit of joystick input gives more control.  
-    xSpeed *= Math.signum(xSpeed) * xSpeed;
-    ySpeed *= Math.signum(ySpeed) * ySpeed;
+    xSpeed = Math.signum(xSpeed) * xSpeed * xSpeed;
+    ySpeed = Math.signum(ySpeed) * ySpeed * ySpeed;
+    turningSpeed = Math.signum(turningSpeed) * turningSpeed * turningSpeed;
     
 
     SmartDashboard.putNumber("Joystick/xSpeedRaw", xSpeed);
@@ -57,21 +58,22 @@ public class SwerveJoystick extends Command {
     SmartDashboard.putNumber("Joystick/turningSpeedRaw", turningSpeed);
 
     //apply deadband
-    xSpeed = Math.abs(xSpeed) > OIConstants.kDeadband ? xSpeed : 0.0;
-    ySpeed = Math.abs(ySpeed) > OIConstants.kDeadband ? ySpeed : 0.0;
-    turningSpeed = Math.abs(turningSpeed) > OIConstants.kDeadband ? turningSpeed : 0.0;
+    xSpeed = Math.abs(xSpeed) > IOConstants.kDeadband ? xSpeed : 0.0;
+    ySpeed = Math.abs(ySpeed) > IOConstants.kDeadband ? ySpeed : 0.0;
+    turningSpeed = Math.abs(turningSpeed) > IOConstants.kDeadband ? turningSpeed : 0.0;
 
     //use SlewRateLimiter with DriveConstants
     xSpeed = m_xSlewRateLimiter.calculate(xSpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
     ySpeed = m_ySlewRateLimiter.calculate(ySpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
-    turningSpeed = m_turningSlewRateLimiter.calculate(turningSpeed) * DriveConstants.kMaxTurningRadiansPerSecond;
+    turningSpeed = turningSpeed * DriveConstants.kMaxTurningRadiansPerSecond;
     SmartDashboard.putNumber("Joystick/xSpeedCommanded", xSpeed);
     SmartDashboard.putNumber("Joystick/ySpeedCommanded", ySpeed);
     SmartDashboard.putNumber("Joystick/turningSpeedCommanded", turningSpeed);
 
-    SwerveModuleState [] desiredSwerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed,ySpeed,turningSpeed, m_swerveDrive.getAngle()));
-    Logger.recordOutput(getName(), desiredSwerveModuleStates);
-    m_swerveDrive.setModuleStates(desiredSwerveModuleStates);
+    //SwerveModuleState [] desiredSwerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed,ySpeed,turningSpeed, m_swerveDrive.getAngle()));
+    //Logger.recordOutput(getName(), desiredSwerveModuleStates);
+    //m_swerveDrive.setModuleStates(desiredSwerveModuleStates);
+    m_swerveDrive.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed,ySpeed,turningSpeed, m_swerveDrive.getAngle()));
     
   }
 
