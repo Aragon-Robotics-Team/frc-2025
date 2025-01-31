@@ -21,5 +21,10 @@ public final class Main {
    */
   public static void main(String... args) {
     RobotBase.startRobot(Robot::new);
+
+    if (RobotBase.isReal()){
+      // end the program; there is simulation stuff in here that should never go on real code
+      System.exit(0);
+    }
   }
 }

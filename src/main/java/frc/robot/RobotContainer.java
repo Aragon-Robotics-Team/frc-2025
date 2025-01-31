@@ -5,16 +5,15 @@
 package frc.robot;
 
 
-import edu.wpi.first.wpilibj.Joystick;
-
-import com.pathplanner.lib.auto.AutoBuilder;
-
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.SwerveJoystick;
-import frc.robot.subsystems.SwerveDrive;
+import frc.robot.Constants.JoystickConstants;
+import frc.robot.commands.ArcadePivot;
+import frc.robot.commands.PIDToAngle;
+import frc.robot.subsystems.Pivot;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -24,18 +23,19 @@ import frc.robot.subsystems.SwerveDrive;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final SwerveDrive m_swerve = new SwerveDrive();
 
-  private final Joystick m_driverJoystick = new Joystick(0);
-  private final Joystick m_secondJoystick = new Joystick(1);
-  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  private SendableChooser<Command> m_autoChooser;
+
+  private final Pivot m_pivot = new Pivot();
+  private final XboxController m_joystick = new XboxController(JoystickConstants.kPort);
+
+  private final ArcadePivot c_arcadePivot = new ArcadePivot(m_pivot, m_joystick);
+
+  private final PIDToAngle m_pivotPID = new PIDToAngle(m_pivot, 300); // let's see how we get to 10 rotations
+  private final JoystickButton m_PIDButton = new JoystickButton(m_joystick, 1); // button 0
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-    m_autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -50,7 +50,8 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    m_PIDButton.onTrue(m_pivotPID);
+
   }
 
   /**
@@ -60,13 +61,10 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_autoChooser.getSelected();
+    return m_pivotPID;
   }
 
-  public Command getTeleopCommand() {
-    m_swerve.setDefaultCommand(m_swerveJoystick);
-    return null;
+  public void bindDefaultCommands(){
+    m_pivot.setDefaultCommand(c_arcadePivot);
   }
-
-  
 }
