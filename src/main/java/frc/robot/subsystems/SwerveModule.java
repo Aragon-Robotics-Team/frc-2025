@@ -5,7 +5,7 @@
 package frc.robot.subsystems;
 import frc.robot.constants.*;
 
-
+import org.littletonrobotics.junction.Logger;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -114,9 +114,9 @@ public class SwerveModule extends SubsystemBase {
     }
 
     state.optimize(getState().angle); //NEW check if working
-    SmartDashboard.putNumber("Swerve/Speed/Commanded/Module_" + m_moduleId, state.speedMetersPerSecond);
-    SmartDashboard.putNumber("Swerve/Commanded/Angle_" + m_moduleId, state.angle.getRadians());
-    SmartDashboard.putNumber("steer" + m_moduleId, getRotation().getRadians());
+    // SmartDashboard.putNumber("Swerve/Speed/Commanded/Module_" + m_moduleId, state.speedMetersPerSecond);
+    // SmartDashboard.putNumber("Swerve/Commanded/Angle_" + m_moduleId, state.angle.getRadians());
+    // SmartDashboard.putNumber("steer" + m_moduleId, getRotation().getRadians());
 
     double ff = state.speedMetersPerSecond / DriveConstants.kMaxTranslationalMetersPerSecond;
     double pid = m_drivingPIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
@@ -124,8 +124,11 @@ public class SwerveModule extends SubsystemBase {
     m_driveMotor.set(ff + pid);
     m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians()));
 
+    Logger.recordOutput(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());
+    SmartDashboard.putNumber(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());
+    
 
-    SmartDashboard.putString("Swerve_" + m_moduleId + "_state", state.toString());
+    //SmartDashboard.putString("Swerve_" + m_moduleId + "_state", state.toString());
   }
 
 
@@ -164,8 +167,8 @@ public class SwerveModule extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("turn" + m_moduleId, getTurningPosition());
-    SmartDashboard.putNumber("Swerve/Speed/Measured/Module_" + m_moduleId, getDriveVelocity());
-    SmartDashboard.putNumber("Swerve/Distance/Module_" + m_moduleId, getDrivePosition());
+    // SmartDashboard.putNumber("turn" + m_moduleId, getTurningPosition());
+    // SmartDashboard.putNumber("Swerve/Speed/Measured/Module_" + m_moduleId, getDriveVelocity());
+    // SmartDashboard.putNumber("Swerve/Distance/Module_" + m_moduleId, getDrivePosition());
   }
 } 
