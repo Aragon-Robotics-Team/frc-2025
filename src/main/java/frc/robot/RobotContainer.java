@@ -4,7 +4,7 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.subsystems.Elevator;
@@ -16,12 +16,9 @@ import frc.robot.subsystems.Elevator;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private static final class Config {
-    public static final int kJoystickPort = 1;
-    
-  }
+ 
   // The robot's subsystems and commands are defined here...
-  private Joystick m_joystick = new Joystick(Config.kJoystickPort);
+  private XboxController m_joystick = new XboxController(Constants.JoystickConstants.kJoystickPort);
   private Elevator m_elevator = new Elevator();
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_joystick, m_elevator);
   
