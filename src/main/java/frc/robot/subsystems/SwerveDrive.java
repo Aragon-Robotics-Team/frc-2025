@@ -10,6 +10,7 @@ import com.reduxrobotics.sensors.canandgyro.Canandgyro;
 import com.reduxrobotics.canand.CanandEventLoop;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.Utils;
@@ -173,10 +174,10 @@ public class SwerveDrive extends SubsystemBase
   public Rotation2d getAngle() {
     double angle = m_imu.getYaw();
     angle *= 360;
-    
-
     return Rotation2d.fromDegrees(angle);
   }
+
+  
 
   public double getAngleDegrees()
   {
@@ -293,6 +294,8 @@ public class SwerveDrive extends SubsystemBase
     {
       System.out.println("RobotConfig GUI Settings error");
     }
+
+    SmartDashboard.putData("ResetHeading", new InstantCommand(this::resetHeadingCommand));
   }
   
   
@@ -389,15 +392,17 @@ public class SwerveDrive extends SubsystemBase
   {
     m_modulePositions = getModulePositions();
     m_moduleStates = getModuleStates();
-          
     m_odo.update(getAngle(), m_modulePositions);
-    System.out.println(getAngle());
 
 
     m_field.setRobotPose(m_odo.getPoseMeters());
-    SmartDashboard.putData("Swerve/Odo/Field", m_field);
+    // SmartDashboard.putData("Swerve/Odo/Field", m_field);
 
-    SmartDashboard.putNumber("X", getPoseMeters().getX());
-    SmartDashboard.putNumber("Y", getPoseMeters().getY());
+    // SmartDashboard.putNumber("X", getPoseMeters().getX());
+    // SmartDashboard.putNumber("Y", getPoseMeters().getY());
+
+    Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
+    SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
+    SmartDashboard.putNumber("Angle", getAngle().getDegrees());
   }
 }

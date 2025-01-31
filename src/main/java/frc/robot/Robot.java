@@ -4,7 +4,11 @@
 
 package frc.robot;
 
+import java.io.File;
+
+import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 import com.ctre.phoenix6.swerve.SwerveModule;
 
@@ -18,7 +22,7 @@ import frc.robot.subsystems.SwerveDrive;
  * the TimedRobot documentation. If you change the name of this class or the package after creating
  * this project, you must also update the Main.java file in the project.
  */
-public class Robot extends TimedRobot {
+public class Robot extends LoggedRobot {
 
   private Command m_autonomousCommand;
   private Command m_teleopCommand;
@@ -41,6 +45,18 @@ public class Robot extends TimedRobot {
   }
 
   
+  @Override
+  public void robotInit() {
+    var directory = new File("/home/lvuser/logs");
+
+    if (!directory.exists())
+    {
+      directory.mkdir();
+    }
+
+    Logger.addDataReceiver(new WPILOGWriter("/home/lvuser/logs")); 
+    Logger.start();
+  }
   
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
