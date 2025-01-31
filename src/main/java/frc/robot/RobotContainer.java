@@ -26,10 +26,7 @@ import frc.robot.subsystems.Elevator;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  private static final class Config {
-    public static final int kJoystickPort = 1;
-    
-  }
+ 
   // The robot's subsystems and commands are defined here...
   public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);

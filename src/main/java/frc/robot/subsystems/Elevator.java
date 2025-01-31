@@ -4,26 +4,32 @@
 
 package frc.robot.subsystems;
 
+
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants;
 
 public class Elevator extends SubsystemBase {
-  private static final class Config{
-    private static final int deviceId = 5;
-  }
   /** Creates a new Elevator.
    */
+  private DigitalInput bottomLimitSwitch = new DigitalInput(Constants.ElevatorConstants.limitSwitchDio);
+  private SparkMax m_elevator = new SparkMax(Constants.ElevatorConstants.deviceId, MotorType.kBrushless);
+  private SparkMax m_elevator2Max = new SparkMax(Constants.ElevatorConstants.deviceId2, MotorType.kBrushless);
 
-  private SparkMax m_elevator = new SparkMax(Config.deviceId, MotorType.kBrushless);
   public Elevator() {}
   
   public void setSpeed(double speed) {
     m_elevator.set(speed);
+    m_elevator2Max.set(speed);
   }
   public double getElevatorPosition() {
     return m_elevator.getEncoder().getPosition();
+  }
+  public boolean getLimitSwitch(){
+    return bottomLimitSwitch.get();
   }
   // public void SetNeutralMode(IdleMode neutralMode) {
 
