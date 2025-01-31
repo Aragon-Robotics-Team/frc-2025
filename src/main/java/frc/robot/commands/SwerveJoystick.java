@@ -20,13 +20,12 @@ public class SwerveJoystick extends Command {
   /** Creates a new SwerveJoystick. */
 
   private final Joystick m_joystick;
-  private final SlewRateLimiter m_turningSlewRateLimiter;
   private final SlewRateLimiter m_xSlewRateLimiter;
   private final SlewRateLimiter m_ySlewRateLimiter;
   private final SwerveDrive m_swerveDrive;
 
   public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick) {
-    m_turningSlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxAngularAccelBotRotsPerSecondSquared);
+    
     m_xSlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
     m_ySlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
     m_joystick = joystick;
@@ -48,14 +47,14 @@ public class SwerveJoystick extends Command {
 
     //Makes the speed response x squared in relation to the joystick input.
     //That way, the first little bit of joystick input gives more control.  
-    xSpeed = Math.signum(xSpeed) * xSpeed * xSpeed;
-    ySpeed = Math.signum(ySpeed) * ySpeed * ySpeed;
-    turningSpeed = Math.signum(turningSpeed) * turningSpeed * turningSpeed;
+    xSpeed = Math.signum(xSpeed) * (Math.pow(2, Math.abs(xSpeed)) -1) * -1;
+    ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -1;
+    turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -1;
     
 
-    SmartDashboard.putNumber("Joystick/xSpeedRaw", xSpeed);
-    SmartDashboard.putNumber("Joystick/ySpeedRaw", ySpeed);
-    SmartDashboard.putNumber("Joystick/turningSpeedRaw", turningSpeed);
+    // SmartDashboard.putNumber("Joystick/xSpeedRaw", xSpeed);
+    // SmartDashboard.putNumber("Joystick/ySpeedRaw", ySpeed);
+    // SmartDashboard.putNumber("Joystick/turningSpeedRaw", turningSpeed);
 
     //apply deadband
     xSpeed = Math.abs(xSpeed) > IOConstants.kDeadband ? xSpeed : 0.0;
@@ -66,15 +65,12 @@ public class SwerveJoystick extends Command {
     xSpeed = m_xSlewRateLimiter.calculate(xSpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
     ySpeed = m_ySlewRateLimiter.calculate(ySpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
     turningSpeed = turningSpeed * DriveConstants.kMaxTurningRadiansPerSecond;
-    SmartDashboard.putNumber("Joystick/xSpeedCommanded", xSpeed);
-    SmartDashboard.putNumber("Joystick/ySpeedCommanded", ySpeed);
-    SmartDashboard.putNumber("Joystick/turningSpeedCommanded", turningSpeed);
-
-    //SwerveModuleState [] desiredSwerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed,ySpeed,turningSpeed, m_swerveDrive.getAngle()));
+    // SmartDashboard.putNumber("Joystick/xSpeedCommanded", xSpeed);
+    // SmartDashboard.putNumber("Joystick/ySpeedCommanded", ySpeed);
+    // SmartDashboard.putNumber("Joystick/turningSpeedCommanded", turningSpeed);
     //Logger.recordOutput(getName(), desiredSwerveModuleStates);
-    //m_swerveDrive.setModuleStates(desiredSwerveModuleStates);
+
     m_swerveDrive.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed,ySpeed,turningSpeed, m_swerveDrive.getAngle()));
-    
   }
 
   // Called once the command ends or is interrupted.
