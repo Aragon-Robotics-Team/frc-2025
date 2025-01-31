@@ -4,12 +4,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.subsystems.Intake;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeIn extends Command {
-  private double speed = 0; //change later
+ //change later
   private Intake m_intakeMotor;
   /** Creates a new SpinForIntake. */
   public IntakeIn(Intake intake) {
@@ -26,8 +28,10 @@ public class IntakeIn extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intakeMotor.setIntakeSpeed(speed);
+    m_intakeMotor.setIntakeSpeed(IntakeConstants.speed);
+    SmartDashboard.putNumber("Intake Speed",IntakeConstants.speed);
   }
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {

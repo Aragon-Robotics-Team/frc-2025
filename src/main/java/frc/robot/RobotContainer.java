@@ -39,7 +39,7 @@ public class RobotContainer {
   private Intake m_intakeMotor = new Intake();
   private IntakeIn m_intakeIn = new IntakeIn(m_intakeMotor);
   private XboxController m_joystick = new XboxController(0);
-  private JoystickButton m_intakeButton = new JoystickButton(m_joystick, 8); //change number later
+  private JoystickButton m_intakeButton = new JoystickButton(m_joystick, 1); //change number later
 
   private Elevator m_elevator = new Elevator();
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
