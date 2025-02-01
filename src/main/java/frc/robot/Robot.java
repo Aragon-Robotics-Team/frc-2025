@@ -10,12 +10,9 @@ import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
-import com.ctre.phoenix6.swerve.SwerveModule;
 
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.subsystems.SwerveDrive;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -28,7 +25,6 @@ public class Robot extends LoggedRobot {
   private Command m_teleopCommand;
 
   private final RobotContainer m_robotContainer;
-  private final SwerveDrive m_swerve;
 
 
 
@@ -41,7 +37,6 @@ public class Robot extends LoggedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    m_swerve = m_robotContainer.m_swerve;
   }
 
   
@@ -106,11 +101,6 @@ public class Robot extends LoggedRobot {
       m_autonomousCommand.cancel();
     }
 
-    m_teleopCommand = m_robotContainer.getTeleopCommand();
-    if (m_teleopCommand != null)
-    {
-      m_teleopCommand.schedule();
-    }
   }
 
   /** This function is called periodically during operator control. */
