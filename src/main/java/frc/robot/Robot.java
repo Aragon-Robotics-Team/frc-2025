@@ -25,7 +25,10 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
   private Command m_teleopCommand;
 
-  private RobotContainer m_robotContainer;
+  private final RobotContainer m_robotContainer;
+
+
+
 
   /**
    * This function is run when the robot is first started up and should be used for any

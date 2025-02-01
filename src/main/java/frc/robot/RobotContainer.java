@@ -79,9 +79,10 @@ public class RobotContainer {
     return m_autoChooser.getSelected();
   }
 
-  public Command getTeleopCommand() {
-    m_arm.setDefaultCommand(m_arcadeArm);
+  private void getTeleopCommand() {
     m_swerve.setDefaultCommand(m_swerveJoystick);
+    m_arm.setDefaultCommand(m_arcadeArm);
     m_elevator.setDefaultCommand(m_arcadeElevator);
+
   }
 }
