@@ -7,7 +7,6 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-import com.ctre.phoenix6.swerve.SwerveModule;
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -48,9 +47,9 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-
-    //m_autoChooser = AutoBuilder.buildAutoChooser();
-    //SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
+    getTeleopCommand();
+    m_autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -81,10 +80,8 @@ public class RobotContainer {
     return null; //temporary
   }
 
-  public Command getTeleopCommand() {
-    //m_swerve.setDefaultCommand(m_swerveJoystick);
-    m_pivot.setDefaultCommand(m_arcadePivot);
-    return null;
+  private void getTeleopCommand() {
+    m_swerve.setDefaultCommand(m_swerveJoystick);
   }
 
   

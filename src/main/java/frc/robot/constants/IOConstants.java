@@ -12,6 +12,4 @@ public final class IOConstants {
     public static int kJoystickXAxis = 1;
     public static int kJoystickYAxis = 0;
     public static int kJoystickRotAxis = 4;
-
-    public static int kIMUCanID = 0; //NEED TO FIND
 }

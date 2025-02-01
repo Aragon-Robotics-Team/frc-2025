@@ -95,7 +95,7 @@ public class SwerveDrive extends SubsystemBase
   protected SwerveModulePosition[] m_modulePositions;
   protected SwerveModuleState[] m_moduleStates;
 
-  private final Canandgyro m_imu = new Canandgyro(IOConstants.kIMUCanID);
+  private final Canandgyro m_imu = new Canandgyro(DriveConstants.kIMUCanID);
 
   private final SwerveDriveOdometry m_odo = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getAngle(), new SwerveModulePosition[] {
     m_frontLeft.getPosition(),
