@@ -45,7 +45,7 @@ public class SwerveJoystick extends Command {
     double ySpeed = m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
     double turningSpeed = m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
 
-    //Makes the speed response x squared in relation to the joystick input.
+    //Makes the speed response exponential in relation to the joystick input.
     //That way, the first little bit of joystick input gives more control.  
     xSpeed = Math.signum(xSpeed) * (Math.pow(2, Math.abs(xSpeed)) -1) * -1;
     ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -1;
