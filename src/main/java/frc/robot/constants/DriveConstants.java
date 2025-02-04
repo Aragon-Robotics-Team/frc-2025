@@ -72,7 +72,7 @@ public final class DriveConstants {
 
     public static final double kTurnEncoderPositionToRadians = Math.PI * 2; //since turn encoder is right on the output shaft, we only need to convert rotations into radians
 
-
-
-
+    public static final double kTurnToAngleP = 0.1;
+    public static final double kTurnToAngleI = 0.0;
+    public static final double kTurnToAngleD = 0.0;
 }

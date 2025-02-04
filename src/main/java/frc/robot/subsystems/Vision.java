@@ -2,11 +2,6 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-
-// gonna leave this commented out since vision is NOT used on the robot yet
-
-/*
-
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
@@ -38,7 +33,7 @@ public class Vision extends SubsystemBase {
   private PhotonCamera m_cam = new PhotonCamera("Arducam_OV9281_USB_Camera"); //TODO: Change to actual camera name
   private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //TODO: Change this later!
   
-  private List<PhotonPipelineResult> m_result;
+  private PhotonPipelineResult m_result;
   private boolean m_hasTargets;
   private List<PhotonTrackedTarget> m_targets;
   private PhotonTrackedTarget m_bestTarget;
@@ -48,23 +43,9 @@ public class Vision extends SubsystemBase {
   private double m_area;
   private double m_skew;
 
-  private double m_targetPitch;
-  private double m_targetYaw;
-  private boolean m_targetInView;
-  private int m_targetID = 0;
-
-  private boolean m_tag6InView;
-  private boolean m_tag7InView;
-  private boolean m_tag8InView;
-  private boolean m_tag9InView;
-  private boolean m_tag10InView;
-  private boolean m_tag11InView;
-  private boolean m_tag17InView;
-  private boolean m_tag18InView;
-  private boolean m_tag19InView;
-  private boolean m_tag20InView;
-  private boolean m_tag21InView;
-  private boolean m_tag22InView;
+  private double m_speakerPitch;
+  private double m_speakerYaw;
+  private boolean m_speakerTagInView;
 
   private Transform3d m_camToTarget;
   private List<TargetCorner> m_corners;
@@ -74,9 +55,7 @@ public class Vision extends SubsystemBase {
   private AprilTagFieldLayout m_aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
   private Pose3d m_robotPose;
   private PhotonPoseEstimator m_poseEstimator;
-
-  // Creates a new Vision. 
-
+  /** Creates a new Vision. */
   public Vision() {
     
   }
@@ -88,6 +67,8 @@ public class Vision extends SubsystemBase {
   public double getYaw(){
     return m_yaw;
   }
+
+ 
 
   public double getPitch(){
     return m_pitch;
@@ -117,24 +98,16 @@ public class Vision extends SubsystemBase {
     return m_poseAmbiguity;
   }
 
-  public double getTargetYaw(){
-    return m_targetYaw;
+  public double getSpeakerYaw(){
+    return m_speakerYaw;
   }
 
-  public double getTargetPitch(){
-    return m_targetPitch;
+  public double getSpeakerPitch(){
+    return m_speakerPitch;
   }
 
-  public boolean getTargetInView(){
-    return m_targetInView;
-  }
-
-  public void setTargetID(int targetID){
-    m_targetID = targetID;
-  }
-
-  public int getTargetID(){
-    return m_targetID;
+  public boolean getSpeakerInView(){
+    return m_speakerTagInView;
   }
 
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(){
@@ -148,18 +121,30 @@ public class Vision extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    m_result = m_cam.getAllUnreadResults();
-    if (!m_result.isEmpty()) {
-      m_targets = m_result.get(0).getTargets().get();
+    m_result = m_cam.getLatestResult();
+    m_hasTargets = m_result.hasTargets();
+    if (m_hasTargets){
+      m_targets = m_result.getTargets();
       m_bestTarget = m_result.getBestTarget();
 
-      for(PhotonTrackedTarget target : m_result){
-        if (m_targetID != 0 && target.getFiducialId() == m_targetID){
-          m_targetInView = true;
-          m_targetYaw = target.getYaw();
-          m_targetPitch = target.getPitch();
+      List<PhotonTrackedTarget> m_speakerCenterTarget = new ArrayList<PhotonTrackedTarget>();
+                
+      for (int i = 0; i < m_targets.size(); i++) {
+        if (m_targets.get(i).getFiducialId() == 4){
+          m_speakerTagInView = true;
+          m_speakerCenterTarget.add(m_targets.get(i));
         }
       }
+
+      if (m_speakerCenterTarget.size() >= 1) {
+        m_speakerYaw = m_speakerCenterTarget.get(0).getYaw();
+        m_speakerPitch = m_speakerCenterTarget.get(0).getPitch();
+      } else {
+        m_speakerTagInView = false;
+      }
+
+      m_speakerCenterTarget.clear();
+      //System.out.println("running");
     }
 
     if(m_bestTarget != null){
@@ -178,6 +163,3 @@ public class Vision extends SubsystemBase {
    
   }
 }
-
-*/
-

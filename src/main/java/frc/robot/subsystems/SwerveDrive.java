@@ -113,13 +113,7 @@ public class SwerveDrive extends SubsystemBase
     m_backRight.getPosition()
   });
 
-
-  
-
-
   private final Field2d m_field = new Field2d();
-
-
 
   private double m_xStartPose;
   private double m_yStartPose;
@@ -185,7 +179,6 @@ public class SwerveDrive extends SubsystemBase
     angle *= 360;
     return Rotation2d.fromDegrees(angle);
   }
-
   
 
   public double getAngleDegrees()
