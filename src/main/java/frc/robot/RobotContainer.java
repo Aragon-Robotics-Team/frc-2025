@@ -12,8 +12,12 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SwerveJoystick;
+import frc.robot.commands.TurnToTagAngle;
 import frc.robot.subsystems.SwerveDrive;
 
 /**
@@ -28,6 +32,10 @@ public class RobotContainer {
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
   private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+
+  private final TurnToTagAngle m_turnToTagAngle = new TurnToTagAngle(m_swerve, 8);
+  private final JoystickButton m_turnToTag6Button = new JoystickButton(m_driverJoystick, 1);
+
   private SendableChooser<Command> m_autoChooser;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -37,6 +45,7 @@ public class RobotContainer {
     SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
     // Configure the trigger bindings
     configureBindings();
+    SmartDashboard.putData("Swerve/Odo/Reset_Heading", new InstantCommand(() -> m_swerve.resetHeading()));
   }
 
   /**
@@ -49,7 +58,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    
+    m_turnToTag6Button.whileTrue(m_turnToTagAngle);
   }
 
   /**

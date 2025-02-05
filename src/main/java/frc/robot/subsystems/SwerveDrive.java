@@ -175,7 +175,9 @@ public class SwerveDrive extends SubsystemBase
   
 
   public double getAngleDegrees() {
-    return Math.IEEEremainder(-m_imu.getYaw() * 360, 360);
+    double angle = m_imu.getYaw();
+    angle *= 360;
+    return angle;
   }
 
   public void setTurningSpeed(double speed) {
@@ -272,13 +274,9 @@ public class SwerveDrive extends SubsystemBase
         },
       this
       );
-      System.out.println("KD;kjfasd");
 
+      SmartDashboard.putData("ResetHeading", new InstantCommand(() -> resetHeading())); //working
 
-      SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
-      double m_angle = SmartDashboard.getNumber("Driving/Adjust angle", 0);
-      SmartDashboard.putNumber("Driving/Adjust angle", m_angle);
-      adjustAngle(m_angle);
 
       new Thread(() -> {
           try 
@@ -297,7 +295,7 @@ public class SwerveDrive extends SubsystemBase
       System.out.println("RobotConfig GUI Settings error");
     }
 
-    SmartDashboard.putData("ResetHeading", new InstantCommand(this::resetHeadingCommand));
+    
   }
   
   
@@ -406,5 +404,6 @@ public class SwerveDrive extends SubsystemBase
     Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Angle", getAngle().getDegrees());
+    System.out.println(getAngle());
   }
 }
