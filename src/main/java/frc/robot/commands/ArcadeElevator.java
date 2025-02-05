@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -14,10 +15,10 @@ import frc.robot.subsystems.Elevator;
 public class ArcadeElevator extends Command {
     
   
-    private XboxController m_joystick;
+    private Joystick m_joystick;
     private Elevator m_elevator;
   /** Creates a new ArcadeElevator. */
-  public ArcadeElevator(XboxController m_joystick2, Elevator elevator) {
+  public ArcadeElevator(Joystick m_joystick2, Elevator elevator) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_joystick = m_joystick2;
     m_elevator = elevator;
