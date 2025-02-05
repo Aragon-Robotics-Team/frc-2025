@@ -14,9 +14,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.subsystems.SwerveDrive;
-import frc.robot.commands.Spin;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Motor;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -40,14 +38,12 @@ public class RobotContainer {
   public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private SendableChooser<Command> m_autoChooser;
   
-  private final Motor m_motor = new Motor();
   private final Joystick m_joystick = new Joystick(0);
-  private final Spin m_spin = new Spin(m_joystick, m_motor);
   private final Arm m_arm = new Arm();
-  private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm);
+  private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_joystick);
   
 
   private Elevator m_elevator = new Elevator();

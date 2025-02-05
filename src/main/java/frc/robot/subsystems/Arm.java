@@ -3,24 +3,29 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.subsystems;
-
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
-
+import edu.wpi.first.wpilibj.DigitalInput;
+import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.Constants;
 
 
 public class Arm extends SubsystemBase {
-  /** Creates a new Arm. */
-  private static final class Config{
-    private static final int deviceId = 5;
-}
-  private SparkMax m_arm = new SparkMax(Config.deviceId, MotorType.kBrushless);
+  private TalonFX m_arm = new TalonFX(Constants.ArmConstants.ArmTalonDeviceId);
+  private DigitalInput toplimitSwitch = new DigitalInput(Constants.ArmConstants.topLimitSwitchChannel);
+  private DigitalInput bottomlimitSwitch = new DigitalInput(Constants.ArmConstants.bottomLimitSwitchChannel);
 
   public Arm() {}
 
   public void setSpeed(double speed){
 m_arm.set(speed);
+  }
+
+  public Boolean getTopLimitSwitch(){
+    return toplimitSwitch.get();
+  }
+
+  public Boolean getBottomLimitSwitch(){
+    return bottomlimitSwitch.get();
   }
 
   @Override
