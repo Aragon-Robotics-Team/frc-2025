@@ -12,10 +12,7 @@ import frc.robot.subsystems.Arm;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ArcadeArm extends Command {
-  private static final class Config{
-    public static final int kArmYAxis = 1;
-    public static final double kArmMultiplier = Math.PI/26;
-  }
+  
   /** Creates a new ArcadeArm. */
 
 private Arm m_arm;
@@ -39,7 +36,7 @@ private Joystick m_operatorJoystick;
   public void execute() {
     double speed = m_operatorJoystick.getRawAxis(Constants.ArmConstants.kArmYAxis) * Constants.ArmConstants.kArmMultiplier;
     SmartDashboard.putNumber("Arm speed", speed);
-    m_arm.setSpeed(m_joystick.getRawAxis(Config.kArmYAxis) * Config.kArmMultiplier);
+    m_arm.setSpeed(m_operatorJoystick.getRawAxis(Config.kArmYAxis) * Config.kArmMultiplier);
     /*
     if (speed>0){
       if (m_arm.getTopLimitSwitch()){
@@ -60,7 +57,7 @@ private Joystick m_operatorJoystick;
     }
       */
     }
-  }
+    
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {

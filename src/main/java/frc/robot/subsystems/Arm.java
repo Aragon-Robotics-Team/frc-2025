@@ -15,15 +15,10 @@ public class Arm extends SubsystemBase {
   private DigitalInput toplimitSwitch = new DigitalInput(Constants.ArmConstants.topLimitSwitchChannel);
   private DigitalInput bottomlimitSwitch = new DigitalInput(Constants.ArmConstants.bottomLimitSwitchChannel);
   private DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.ArmConstants.encoderChannel);
-  private double initialPosition;
   
-  public Arm() {}
 
   public double EncoderPosition(){
     return encoder.get();
-  }
-
-  public void setSpeed(double speed){
 m_arm.set(speed);
   }
 
