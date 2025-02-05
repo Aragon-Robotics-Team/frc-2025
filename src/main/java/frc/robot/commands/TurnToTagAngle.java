@@ -7,7 +7,9 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.DriveConstants;
+import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.Vision;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class TurnToTagAngle extends Command {
@@ -38,40 +40,40 @@ public class TurnToTagAngle extends Command {
     m_currentAngle = m_drive.getAngleDegrees();
     switch (m_targetID){
       case 6:
-        m_targetAngle = 300;
+        m_targetAngle = VisionConstants.kTag6Angle;
         break;
       case 7:
-        m_targetAngle = 0;
+        m_targetAngle = VisionConstants.kTag7Angle;
         break;
       case 8:
-        m_targetAngle = 60;
+        m_targetAngle = VisionConstants.kTag8Angle;
         break;
       case 9: 
-        m_targetAngle = 120;
+        m_targetAngle = VisionConstants.kTag9Angle;
         break;
       case 10:
-        m_targetAngle = 180;
+        m_targetAngle = VisionConstants.kTag10Angle;
         break;
       case 11:
-        m_targetAngle = 240;
+        m_targetAngle = VisionConstants.kTag11Angle;
         break;
       case 17:
-        m_targetAngle = 240;
+        m_targetAngle = VisionConstants.kTag17Angle;
         break;
       case 18:
-        m_targetAngle = 180;
+        m_targetAngle = VisionConstants.kTag18Angle;
         break;
       case 19:
-        m_targetAngle = 120;
+        m_targetAngle = VisionConstants.kTag19Angle;
         break;
       case 20:
-        m_targetAngle = 60;
+        m_targetAngle = VisionConstants.kTag20Angle;
         break;
       case 21:
-        m_targetAngle = 0;
+        m_targetAngle = VisionConstants.kTag21Angle;
         break;
       case 22:
-        m_targetAngle = 300;
+        m_targetAngle = VisionConstants.kTag22Angle;
         break;
     }
     m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
