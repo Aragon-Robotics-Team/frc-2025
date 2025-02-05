@@ -1,4 +1,4 @@
-// Copyright (c) FIRST and other WPILib contributors.
+// Copyright (c) FIRST and other WPILib contributors.                
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
@@ -19,7 +19,7 @@ public class Elevator extends SubsystemBase {
   private SparkMax m_elevator = new SparkMax(Constants.ElevatorConstants.deviceId, MotorType.kBrushless);
   private SparkMax m_elevator2Max = new SparkMax(Constants.ElevatorConstants.deviceId2, MotorType.kBrushless);
 
-  public Elevator() {}
+  //public Elevator() {} elevator constructor is here 
   
   public void setSpeed(double speed) {
     m_elevator.set(speed);
@@ -39,4 +39,5 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
+  public void addRequirements(){}
 }

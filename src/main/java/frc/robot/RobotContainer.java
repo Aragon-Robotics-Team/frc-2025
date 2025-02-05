@@ -70,6 +70,6 @@ public class RobotContainer {
 
   private void getTeleopCommand() {
     m_swerve.setDefaultCommand(m_swerveJoystick);
-    m_arcadeElevator.schedule();
-  } 
+    m_elevator.setDefaultCommand(m_arcadeElevator);
+  }
 }
