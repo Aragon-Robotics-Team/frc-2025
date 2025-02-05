@@ -109,6 +109,8 @@ public class SwerveDrive extends SubsystemBase
   private double m_xStartPose;
   private double m_yStartPose;
 
+  private double m_turningSpeed;
+
   public void resetHeading() {
     m_imu.setYaw(0.0);
   }
@@ -174,6 +176,14 @@ public class SwerveDrive extends SubsystemBase
 
   public double getAngleDegrees() {
     return Math.IEEEremainder(-m_imu.getYaw() * 360, 360);
+  }
+
+  public void setTurningSpeed(double speed) {
+    m_turningSpeed = speed;
+  }
+
+  public double getTurningSpeed() {
+    return m_turningSpeed;
   }
 
   public ChassisSpeeds getChassisSpeeds() { 
