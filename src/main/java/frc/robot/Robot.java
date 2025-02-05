@@ -25,7 +25,8 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
   private Command m_teleopCommand;
 
-  private RobotContainer m_robotContainer;
+  private final RobotContainer m_robotContainer;
+  //private final SwerveDrive m_swerve;
 
 
 
@@ -39,6 +40,7 @@ public class Robot extends LoggedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
+    //m_swerve = m_robotContainer.m_swerve;
 
     var directory = new File("/home/lvuser/logs");
 
