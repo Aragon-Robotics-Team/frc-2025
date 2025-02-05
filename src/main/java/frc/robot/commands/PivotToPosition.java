@@ -4,13 +4,14 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Pivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class PivotToPosition extends Command {
   private Pivot m_pivot;
-  private double m_speed = 0; //change later
+  private double m_speed;
   private double m_goal;
   private double m_currentPosition;
   private double m_initialPosition;
@@ -35,7 +36,9 @@ public class PivotToPosition extends Command {
   @Override
   public void execute() {
     m_pivot.setPivotSpeed(m_speed);
+    SmartDashboard.putNumber("Pivot Speed", m_speed);
     m_currentPosition = m_pivot.getPivotPosition() - m_initialPosition;
+    SmartDashboard.putNumber("Rotations:", m_currentPosition);
   }
 
   // Called once the command ends or is interrupted.

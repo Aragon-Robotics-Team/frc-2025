@@ -28,25 +28,25 @@ import frc.robot.subsystems.Pivot;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public final SwerveDrive m_swerve = new SwerveDrive();
+  //public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  private SendableChooser<Command> m_autoChooser;
+  //private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  //private SendableChooser<Command> m_autoChooser;
   private Pivot m_pivot = new Pivot();
-  private double m_speed = 0; //change later
+  private double m_speed = 0.7; //change later
   private PivotToPosition m_pivotToA = new PivotToPosition(m_pivot, m_speed, 0);
   private PivotToPosition m_pivotToB = new PivotToPosition(m_pivot, m_speed, 1);
   private PivotToPosition m_pivotToC = new PivotToPosition(m_pivot, m_speed, 2);
-  private JoystickButton m_pivotButtonToA = new JoystickButton(m_secondJoystick, 0);
+  private JoystickButton m_pivotButtonToA = new JoystickButton(m_secondJoystick, 3);
   private JoystickButton m_pivotButtonToB = new JoystickButton(m_secondJoystick, 1);
   private JoystickButton m_pivotButtonToC = new JoystickButton(m_secondJoystick, 2);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
-    m_autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
+    //m_autoChooser = AutoBuilder.buildAutoChooser();
+    //SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -73,11 +73,12 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_autoChooser.getSelected();
+    //return m_autoChooser.getSelected();
+    return null; //temporary
   }
 
   public Command getTeleopCommand() {
-    m_swerve.setDefaultCommand(m_swerveJoystick);
+    //m_swerve.setDefaultCommand(m_swerveJoystick);
     return null;
   }
 
