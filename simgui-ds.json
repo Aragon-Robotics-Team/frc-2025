@@ -4,7 +4,11 @@
       "visible": false
     }
   },
+<<<<<<< HEAD
   "Keyboard 0 Settings": {
+=======
+  "Keyboard 2 Settings": {
+>>>>>>> 1515e92 (pivot doesn't work but should :()
     "window": {
       "visible": true
     }
@@ -100,9 +104,14 @@
     }
   ],
   "robotJoysticks": [
-    {},
     {
       "guid": "Keyboard0"
+    },
+    {
+      "guid": "Keyboard1"
+    },
+    {
+      "guid": "Keyboard2"
     }
   ]
 }
