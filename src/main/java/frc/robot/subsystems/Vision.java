@@ -45,7 +45,18 @@ public class Vision extends SubsystemBase {
 
   private double m_speakerPitch;
   private double m_speakerYaw;
-  private boolean m_speakerTagInView;
+  private boolean m_tag6InView;
+  private boolean m_tag7InView;
+  private boolean m_tag8InView;
+  private boolean m_tag9InView;
+  private boolean m_tag10InView;
+  private boolean m_tag11InView;
+  private boolean m_tag17InView;
+  private boolean m_tag18InView;
+  private boolean m_tag19InView;
+  private boolean m_tag20InView;
+  private boolean m_tag21InView;
+  private boolean m_tag22InView;
 
   private Transform3d m_camToTarget;
   private List<TargetCorner> m_corners;
@@ -67,8 +78,6 @@ public class Vision extends SubsystemBase {
   public double getYaw(){
     return m_yaw;
   }
-
- 
 
   public double getPitch(){
     return m_pitch;
@@ -107,7 +116,7 @@ public class Vision extends SubsystemBase {
   }
 
   public boolean getSpeakerInView(){
-    return m_speakerTagInView;
+    return m_tag6InView;
   }
 
   public Optional<EstimatedRobotPose> getEstimatedGlobalPose(){
@@ -127,23 +136,70 @@ public class Vision extends SubsystemBase {
       m_targets = m_result.getTargets();
       m_bestTarget = m_result.getBestTarget();
 
-      List<PhotonTrackedTarget> m_speakerCenterTarget = new ArrayList<PhotonTrackedTarget>();
-                
+      List<PhotonTrackedTarget> m_tag6Targets = new ArrayList<PhotonTrackedTarget>();
+      List<PhotonTrackedTarget> m_tag7Targets = new ArrayList<PhotonTrackedTarget>();
+      List<PhotonTrackedTarget> m_tag8Targets = new ArrayList<PhotonTrackedTarget>();
+      List<PhotonTrackedTarget> m_tag9Targets = new ArrayList<PhotonTrackedTarget>();
+      List<PhotonTrackedTarget> m_tag10Targets = new ArrayList<PhotonTrackedTarget>();
+      List<PhotonTrackedTarget> m_tag11Targets = new ArrayList<PhotonTrackedTarget>();
+      List<PhotonTrackedTarget> m_tag17Targets = new ArrayList<PhotonTrackedTarget>();
+      List<PhotonTrackedTarget> m_tag18Targets = new ArrayList<PhotonTrackedTarget>();
+      List<PhotonTrackedTarget> m_tag19Targets = new ArrayList<PhotonTrackedTarget>();
+      List<PhotonTrackedTarget> m_tag20Targets = new ArrayList<PhotonTrackedTarget>();
+      List<PhotonTrackedTarget> m_tag21Targets = new ArrayList<PhotonTrackedTarget>();
+      List<PhotonTrackedTarget> m_tag22Targets = new ArrayList<PhotonTrackedTarget>();
+
       for (int i = 0; i < m_targets.size(); i++) {
-        if (m_targets.get(i).getFiducialId() == 4){
-          m_speakerTagInView = true;
-          m_speakerCenterTarget.add(m_targets.get(i));
-        }
+        if (m_targets.get(i).getFiducialId() == 6){
+          m_tag6InView = true;
+          m_tag6Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 6){
+          m_tag6InView = true;
+          m_tag6Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 7){
+          m_tag7InView = true;
+          m_tag7Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 8){
+          m_tag8InView = true;
+          m_tag8Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 9){
+          m_tag9InView = true;
+          m_tag9Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 10){
+          m_tag10InView = true;
+          m_tag10Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 11){
+          m_tag11InView = true;
+          m_tag11Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 17){
+          m_tag17InView = true;
+          m_tag17Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 18){
+          m_tag18InView = true;
+          m_tag18Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 19){
+          m_tag19InView = true;
+          m_tag19Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 20){
+          m_tag20InView = true;
+          m_tag20Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 21){
+          m_tag21InView = true;
+          m_tag21Targets.add(m_targets.get(i));
+        } else if (m_targets.get(i).getFiducialId() == 22){
+          m_tag22InView = true;
+          m_tag22Targets.add(m_targets.get(i));
+        } 
       }
 
-      if (m_speakerCenterTarget.size() >= 1) {
-        m_speakerYaw = m_speakerCenterTarget.get(0).getYaw();
-        m_speakerPitch = m_speakerCenterTarget.get(0).getPitch();
+      if (m_tag6Targets.size() >= 1) {
+        m_speakerYaw = m_tag6Targets.get(0).getYaw();
+        m_speakerPitch = m_tag6Targets.get(0).getPitch();
       } else {
-        m_speakerTagInView = false;
+        m_tag6InView = false;
       }
 
-      m_speakerCenterTarget.clear();
+      m_tag6Targets.clear();
       //System.out.println("running");
     }
 
