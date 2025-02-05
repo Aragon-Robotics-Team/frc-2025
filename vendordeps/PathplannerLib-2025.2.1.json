@@ -1,5 +1,6 @@
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<<< HEAD:vendordeps/PathplannerLib-2025.2.1.json
     "fileName": "PathplannerLib-2025.2.1.json",
     "name": "PathplannerLib",
@@ -20,6 +21,17 @@
     "version": "2025.2.1",
 >>>>>>>> a0b3122 (Changed getTeleOpCommand() to just set default commands and nothing else.):vendordeps/PathplannerLib-2025.2.1.json
 >>>>>>> 19bf56e (Changed getTeleOpCommand() to just set default commands and nothing else.)
+=======
+<<<<<<<< HEAD:vendordeps/PathplannerLib-2025.2.1.json
+    "fileName": "PathplannerLib-2025.2.1.json",
+    "name": "PathplannerLib",
+    "version": "2025.2.1",
+========
+    "fileName": "PathplannerLib-2025.2.2.json",
+    "name": "PathplannerLib",
+    "version": "2025.2.2",
+>>>>>>>> e5a1b0a (Arm code complete with limit switch commented out):vendordeps/PathplannerLib-2025.2.2.json
+>>>>>>> 38fa896 (Arm code complete with limit switch commented out)
     "uuid": "1b42324f-17c6-4875-8e77-1c312bc8c786",
     "frcYear": "2025",
     "mavenUrls": [
@@ -31,6 +43,7 @@
             "groupId": "com.pathplanner.lib",
             "artifactId": "PathplannerLib-java",
 <<<<<<< HEAD
+<<<<<<< HEAD
 <<<<<<<< HEAD:vendordeps/PathplannerLib-2025.2.1.json
             "version": "2025.2.1"
 ========
@@ -43,6 +56,13 @@
             "version": "2025.2.1"
 >>>>>>>> a0b3122 (Changed getTeleOpCommand() to just set default commands and nothing else.):vendordeps/PathplannerLib-2025.2.1.json
 >>>>>>> 19bf56e (Changed getTeleOpCommand() to just set default commands and nothing else.)
+=======
+<<<<<<<< HEAD:vendordeps/PathplannerLib-2025.2.1.json
+            "version": "2025.2.1"
+========
+            "version": "2025.2.2"
+>>>>>>>> e5a1b0a (Arm code complete with limit switch commented out):vendordeps/PathplannerLib-2025.2.2.json
+>>>>>>> 38fa896 (Arm code complete with limit switch commented out)
         }
     ],
     "jniDependencies": [],
@@ -50,6 +70,7 @@
         {
             "groupId": "com.pathplanner.lib",
             "artifactId": "PathplannerLib-cpp",
+<<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<<< HEAD:vendordeps/PathplannerLib-2025.2.1.json
             "version": "2025.2.1",
@@ -63,6 +84,13 @@
             "version": "2025.2.1",
 >>>>>>>> a0b3122 (Changed getTeleOpCommand() to just set default commands and nothing else.):vendordeps/PathplannerLib-2025.2.1.json
 >>>>>>> 19bf56e (Changed getTeleOpCommand() to just set default commands and nothing else.)
+=======
+<<<<<<<< HEAD:vendordeps/PathplannerLib-2025.2.1.json
+            "version": "2025.2.1",
+========
+            "version": "2025.2.2",
+>>>>>>>> e5a1b0a (Arm code complete with limit switch commented out):vendordeps/PathplannerLib-2025.2.2.json
+>>>>>>> 38fa896 (Arm code complete with limit switch commented out)
             "libName": "PathplannerLib",
             "headerClassifier": "headers",
             "sharedLibrary": false,
