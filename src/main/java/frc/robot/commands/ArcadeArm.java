@@ -15,8 +15,8 @@ public class ArcadeArm extends Command {
   
   /** Creates a new ArcadeArm. */
 
-private final Arm m_arm;
-private final Joystick m_joystick;
+private Arm m_arm;
+private Joystick m_joystick;
 
   public ArcadeArm(Arm arm, Joystick joystick) {
     m_arm = arm;
