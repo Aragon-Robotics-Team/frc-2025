@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.VisionConstants;
@@ -24,7 +25,7 @@ public class TurnToTagAngle extends Command {
   /** Creates a new TurnToTagAngle. */
   public TurnToTagAngle(SwerveDrive drive, int targetID) {
     m_drive = drive;
-    m_targetID = m_targetID;
+    m_targetID = targetID;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -76,8 +77,11 @@ public class TurnToTagAngle extends Command {
         m_targetAngle = VisionConstants.kTag22Angle;
         break;
     }
+
     m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
     m_drive.setTurningSpeed(m_turningSpeed);
+    m_drive.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(0,0, m_turningSpeed, m_drive.getAngle()));
+    //System.out.println(m_drive.getAngle());
   }
 
   // Called once the command ends or is interrupted.

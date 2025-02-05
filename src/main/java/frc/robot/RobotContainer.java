@@ -32,6 +32,7 @@ import frc.robot.Constants.PivotConstants;
 import frc.robot.constants.ArmConstants;
 import frc.robot.constants.IOConstants;
 
+import frc.robot.commands.TurnToTagAngle;
 import frc.robot.subsystems.SwerveDrive;
 
 // arm imports
@@ -325,6 +326,7 @@ public class RobotContainer {
     // Configure the trigger bindings
     bindSubsystemCommands();
     configureBindings();
+    SmartDashboard.putData("Swerve/Odo/Reset_Heading", new InstantCommand(() -> m_swerve.resetHeading()));
   }
 
   /**

@@ -289,6 +289,8 @@ public class SwerveDrive extends SubsystemBase
       System.out.println("configured auto");
 
 
+      SmartDashboard.putData("ResetHeading", new InstantCommand(() -> resetHeading())); //working
+
 
       //SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
       double m_angle = SmartDashboard.getNumber("Driving/Adjust angle", 0);
@@ -314,6 +316,8 @@ public class SwerveDrive extends SubsystemBase
       } catch (Exception e) {
         
       }
+
+
 
   }
   
@@ -420,7 +424,10 @@ public class SwerveDrive extends SubsystemBase
 
     // SmartDashboard.putNumber("X", getPoseMeters().getX());
     // SmartDashboard.putNumber("Y", getPoseMeters().getY());
-    
-    // SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
+
+    Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
+    SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
+    SmartDashboard.putNumber("Angle", getAngle().getDegrees());
+
   }
 }
