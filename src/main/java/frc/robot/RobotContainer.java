@@ -71,6 +71,7 @@ public class RobotContainer {
   public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
+<<<<<<< HEAD
 
 
   public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
@@ -83,6 +84,12 @@ public class RobotContainer {
 
   private final JoystickButton m_elevatorArmManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kElevatorArmManualOverrideButtonID); // 7
   private final JoystickButton m_pivotRollerManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kPivotArmManualOverrideButtonID); // 8 (i think)
+=======
+  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  private SendableChooser<Command> m_autoChooser;
+  private final TurnToTagAngle m_turnToTagAngle = new TurnToTagAngle(m_swerve, 6);
+  private final JoystickButton m_turnToTag6Button = new JoystickButton(m_driverJoystick, 1);
+>>>>>>> 3cac83b (Need to change vision angles and update robot container)
 
 
 
