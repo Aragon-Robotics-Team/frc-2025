@@ -4,17 +4,25 @@
 
 package frc.robot.commands;
 
+import java.util.Optional;
+
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.IOConstants;
+import frc.robot.constants.VisionConstants;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.Vision;
 
 public class SwerveJoystick extends Command {
   /** Creates a new SwerveJoystick. */
@@ -24,20 +32,47 @@ public class SwerveJoystick extends Command {
   private final SlewRateLimiter m_ySlewRateLimiter;
   private final SwerveDrive m_swerveDrive;
   public int m_driveMode = 0;
+  private final Vision m_vision;
 
-  public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick) {
+  private double m_xSpeed, m_ySpeed, m_turningSpeed, m_xySpeed;
+
+  private final JoystickButton m_turnTo1stTag, m_turnTo2ndTag, m_turnTo3rdTag, m_turnTo4thTag, m_turnTo5thTag, m_turnTo6thTag, m_centerToTag;
+  private PIDController m_pid = new PIDController(DriveConstants.kTurnToAngleP, DriveConstants.kTurnToAngleI, DriveConstants.kTurnToAngleD);
+  private double m_targetAngle;
+  private double m_currentPitch;
+  private double m_currentAngle;
+  private int m_targetID;
+  private final Optional<Alliance> m_alliance = DriverStation.getAlliance(); 
+  
+ 
+
+  public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick, Vision vision, JoystickButton turnTo1stTag, JoystickButton turnTo2ndTag, JoystickButton turnTo3rdTag, JoystickButton turnTo4thTag, JoystickButton turnTo5thTag, JoystickButton turnTo6thTag, JoystickButton centerToTag, int targetID) {
     
     m_xSlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
     m_ySlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
     m_joystick = joystick;
     m_swerveDrive = swerveDrive;
+    m_vision = vision;
+
+    m_turnTo1stTag = turnTo1stTag;
+    m_turnTo2ndTag = turnTo2ndTag;
+    m_turnTo3rdTag = turnTo3rdTag;
+    m_turnTo4thTag = turnTo4thTag;
+    m_turnTo5thTag = turnTo5thTag;
+    m_turnTo6thTag = turnTo6thTag;
+    m_centerToTag = centerToTag;
+
+    m_targetID = targetID;
+
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(swerveDrive);
+    addRequirements(swerveDrive, vision);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {System.out.println("SwerveJoystick Initialized");}
+  public void initialize() {
+    System.out.println("SwerveJoystick Initialized");
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -80,20 +115,94 @@ public class SwerveJoystick extends Command {
     // SmartDashboard.putNumber("Joystick/turningSpeedRaw", turningSpeed);
 
     //apply deadband
-    xSpeed = Math.abs(xSpeed) > IOConstants.kDeadband ? xSpeed : 0.0;
-    ySpeed = Math.abs(ySpeed) > IOConstants.kDeadband ? ySpeed : 0.0;
-    turningSpeed = Math.abs(turningSpeed) > IOConstants.kDeadband ? turningSpeed : 0.0;
+    m_xSpeed = Math.abs(m_xSpeed) > IOConstants.kDeadband ? m_xSpeed : 0.0;
+    m_ySpeed = Math.abs(m_ySpeed) > IOConstants.kDeadband ? m_ySpeed : 0.0;
+    m_turningSpeed = Math.abs(m_turningSpeed) > IOConstants.kDeadband ? m_turningSpeed : 0.0;
 
     //use SlewRateLimiter with DriveConstants
-    xSpeed = m_xSlewRateLimiter.calculate(xSpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
-    ySpeed = m_ySlewRateLimiter.calculate(ySpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
-    turningSpeed = turningSpeed * DriveConstants.kMaxTurningRadiansPerSecond;
+    m_xSpeed = m_xSlewRateLimiter.calculate(m_xSpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
+    m_ySpeed = m_ySlewRateLimiter.calculate(m_ySpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
+    m_turningSpeed = m_turningSpeed * DriveConstants.kMaxTurningRadiansPerSecond;
     SmartDashboard.putNumber("Joystick/xSpeedCommanded", xSpeed);
     SmartDashboard.putNumber("Joystick/ySpeedCommanded", ySpeed);
     SmartDashboard.putNumber("Joystick/turningSpeedCommanded", turningSpeed);
     //Logger.recordOutput(getName(), desiredSwerveModuleStates);
 
-    m_swerveDrive.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed,ySpeed,turningSpeed, m_swerveDrive.getAngle()));
+    m_currentAngle = m_swerveDrive.getAngleDegrees();
+    if (m_turnTo1stTag.getAsBoolean()){
+      if (m_alliance.isPresent()) {
+        if (m_alliance.get() == Alliance.Red) {
+          m_targetAngle = VisionConstants.kTag10Angle;
+          m_vision.setTargetID(10);
+        } else if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle = VisionConstants.kTag21Angle;
+          m_vision.setTargetID(21);
+        }
+        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+      }
+    } else if (m_turnTo2ndTag.getAsBoolean()) {
+      if (m_alliance.isPresent()) {
+        if (m_alliance.get() == Alliance.Red) {
+          m_targetAngle = VisionConstants.kTag9Angle;
+          m_vision.setTargetID(9);
+        } else if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle = VisionConstants.kTag22Angle;
+          m_vision.setTargetID(22);
+        }
+        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+      }
+    } else if (m_turnTo3rdTag.getAsBoolean()) {
+      if (m_alliance.isPresent()) {
+        if (m_alliance.get() == Alliance.Red) {
+          m_targetAngle = VisionConstants.kTag8Angle;
+          m_vision.setTargetID(8);
+        } else if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle = VisionConstants.kTag17Angle;
+          m_vision.setTargetID(17);
+        }
+        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+      }
+    } else if (m_turnTo4thTag.getAsBoolean()) {
+      if (m_alliance.isPresent()) {
+        if (m_alliance.get() == Alliance.Red) {
+          m_targetAngle = VisionConstants.kTag18Angle;          
+          m_vision.setTargetID(18);
+        } else if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle = VisionConstants.kTag7Angle;          
+          m_vision.setTargetID(7);
+        }
+        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+      }
+    } else if (m_turnTo5thTag.getAsBoolean()) {
+      if (m_alliance.isPresent()) {
+        if (m_alliance.get() == Alliance.Red) {
+          m_targetAngle = VisionConstants.kTag19Angle;
+          m_vision.setTargetID(9);
+        } else if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle = VisionConstants.kTag6Angle;
+          m_vision.setTargetID(6);
+        }
+        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+      }
+    } else if (m_turnTo6thTag.getAsBoolean()) {
+      if (m_alliance.isPresent()) {
+        if (m_alliance.get() == Alliance.Red) {
+          m_targetAngle = VisionConstants.kTag20Angle;
+          m_vision.setTargetID(20);
+        } else if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle = VisionConstants.kTag11Angle;
+          m_vision.setTargetID(11);
+        }
+        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+      }
+    } else if (m_centerToTag.getAsBoolean()) {
+      m_currentPitch = m_vision.getTargetPitch();
+      m_xySpeed = m_pid.calculate(m_currentPitch, 0);
+      m_xSpeed = m_xySpeed*Math.sin(Math.toRadians(VisionConstants.kTagAngles[m_targetID - 6]));
+      m_ySpeed = m_xySpeed*Math.cos(Math.toRadians(VisionConstants.kTagAngles[m_targetID - 6]));
+    } 
+
+    m_swerveDrive.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(m_xSpeed, m_ySpeed, m_turningSpeed, m_swerveDrive.getAngle()));
   }
 
   // Called once the command ends or is interrupted.

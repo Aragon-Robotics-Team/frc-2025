@@ -7,9 +7,9 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class VisionTurnToTagAngle extends Command {
+public class VisionCenterToTag extends Command {
   /** Creates a new VisionTurnToTagAngle. */
-  public VisionTurnToTagAngle() {
+  public VisionCenterToTag() {
     // Use addRequirements() here to declare subsystem dependencies.
   }
 

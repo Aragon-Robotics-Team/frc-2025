@@ -27,6 +27,7 @@ public class TurnToTagAngle extends Command {
     m_drive = drive;
     m_targetID = targetID;
     // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
