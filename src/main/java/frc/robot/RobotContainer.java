@@ -19,6 +19,13 @@ import frc.robot.Constants.PivotConstants;
 import frc.robot.commands.ArcadePivot;
 import frc.robot.commands.PivotToPosition;
 import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Arm;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.ArcadeArm;
+
+
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ArcadeElevator;
@@ -48,6 +55,13 @@ public class RobotContainer {
   private JoystickButton m_pivotButtonToC = new JoystickButton(m_secondJoystick, PivotConstants.kButtonNumToC);
 
   private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_secondJoystick);
+  // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  private SendableChooser<Command> m_autoChooser;
+  
+  private final Joystick m_joystick = new Joystick(0);
+  private final Arm m_arm = new Arm();
+  private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_joystick);
+  
 
   private Elevator m_elevator = new Elevator();
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
