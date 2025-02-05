@@ -275,13 +275,9 @@ public class SwerveDrive extends SubsystemBase
         },
       this
       );
-      System.out.println("KD;kjfasd");
 
+      SmartDashboard.putData("ResetHeading", new InstantCommand(() -> resetHeading())); //working
 
-      SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
-      double m_angle = SmartDashboard.getNumber("Driving/Adjust angle", 0);
-      SmartDashboard.putNumber("Driving/Adjust angle", m_angle);
-      adjustAngle(m_angle);
 
       new Thread(() -> {
           try 
@@ -299,6 +295,11 @@ public class SwerveDrive extends SubsystemBase
     {
       System.out.println("RobotConfig GUI Settings error");
     }
+<<<<<<< HEAD
+=======
+
+    
+>>>>>>> bc6a97b (Turn to angle works. Reset heading works.)
   }
   
   
@@ -406,7 +407,11 @@ public class SwerveDrive extends SubsystemBase
     Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Angle", getAngle().getDegrees());
+<<<<<<< HEAD
     
     // SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
+=======
+    System.out.println(getAngle());
+>>>>>>> bc6a97b (Turn to angle works. Reset heading works.)
   }
 }
