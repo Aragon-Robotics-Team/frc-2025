@@ -16,7 +16,8 @@ public final class DriveConstants {
     // These are used in SwerveJoystick
     // If you want to reduce the speed of the robot, do not change this values. Instead, add a multiplier to the speeds in SwerveJoystick
     public static final double kMaxTranslationalMetersPerSecond = 5;
-    public static final double kMaxTurningRadiansPerSecond = 1.35 * Math.PI;
+    // public static final double kMaxTurningRadiansPerSecond = 1.35 * Math.PI;
+    public static final double kMaxTurningRadiansPerSecond = 0.6 * Math.PI;
     public static final double kTranslationalDeadbandMetersPerSecond = 0.01;
 
     public static final PIDConstants kTranslationConstants = new PIDConstants(0.75, 0, 0); //PID constants for whole robot chassis speeds

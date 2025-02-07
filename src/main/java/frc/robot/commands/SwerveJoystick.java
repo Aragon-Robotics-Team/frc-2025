@@ -46,7 +46,7 @@ public class SwerveJoystick extends Command {
   
  
 
-  public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick, Vision vision, JoystickButton turnTo1stTag, JoystickButton turnTo2ndTag, JoystickButton turnTo3rdTag, JoystickButton turnTo4thTag, JoystickButton turnTo5thTag, JoystickButton turnTo6thTag, JoystickButton centerToTag, int targetID) {
+  public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick, Vision vision, JoystickButton turnTo1stTag, JoystickButton turnTo2ndTag, JoystickButton turnTo3rdTag, JoystickButton turnTo4thTag, JoystickButton turnTo5thTag, JoystickButton turnTo6thTag, JoystickButton centerToTag) {
     
     m_xSlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
     m_ySlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
@@ -61,8 +61,6 @@ public class SwerveJoystick extends Command {
     m_turnTo5thTag = turnTo5thTag;
     m_turnTo6thTag = turnTo6thTag;
     m_centerToTag = centerToTag;
-
-    m_targetID = targetID;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(swerveDrive, vision);
@@ -98,16 +96,19 @@ public class SwerveJoystick extends Command {
     //   ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -0.1;
     //   turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -0.1;
     // }
-
-
-      // xSpeed = Math.signum(xSpeed) * (Math.pow(2, Math.abs(xSpeed)) -1) * -1;
-      // ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -1;
-      // turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -1;
-
-      xSpeed = Math.signum(xSpeed) * Math.pow(Math.abs(xSpeed), 1.75);
-      ySpeed = Math.signum(ySpeed) * Math.pow(Math.abs(ySpeed), 1.75);
+  
+      //xSpeed = Math.pow(xSpeed, 5);
+      // ySpeed = Math.pow(ySpeed, 5);
       // turningSpeed = Math.pow(turningSpeed, 5);
     
+    System.out.println("Before appliance " + m_turningSpeed);
+    //Makes the speed response exponential in relation to the joystick input.
+    //That way, the first little bit of joystick input gives more control.  
+    m_xSpeed = Math.signum(m_xSpeed) * (Math.pow(2, Math.abs(m_xSpeed)) -1) * -1;
+    m_ySpeed = Math.signum(m_ySpeed) * (Math.pow(2, Math.abs(m_ySpeed)) -1) * -1;
+    m_turningSpeed = Math.signum(m_turningSpeed) * (Math.pow(2, Math.abs(m_turningSpeed)) -1) * -1;
+    System.out.println("After appliance " + m_turningSpeed);
+
     
 
     // SmartDashboard.putNumber("Joystick/xSpeedRaw", xSpeed);
@@ -123,9 +124,9 @@ public class SwerveJoystick extends Command {
     m_xSpeed = m_xSlewRateLimiter.calculate(m_xSpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
     m_ySpeed = m_ySlewRateLimiter.calculate(m_ySpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
     m_turningSpeed = m_turningSpeed * DriveConstants.kMaxTurningRadiansPerSecond;
-    SmartDashboard.putNumber("Joystick/xSpeedCommanded", xSpeed);
-    SmartDashboard.putNumber("Joystick/ySpeedCommanded", ySpeed);
-    SmartDashboard.putNumber("Joystick/turningSpeedCommanded", turningSpeed);
+    SmartDashboard.putNumber("Joystick/xSpeedCommanded", m_xSpeed);
+    SmartDashboard.putNumber("Joystick/ySpeedCommanded", m_ySpeed);
+    SmartDashboard.putNumber("Joystick/turningSpeedCommanded", m_turningSpeed);
     //Logger.recordOutput(getName(), desiredSwerveModuleStates);
 
     m_currentAngle = m_swerveDrive.getAngleDegrees();
@@ -133,10 +134,10 @@ public class SwerveJoystick extends Command {
       if (m_alliance.isPresent()) {
         if (m_alliance.get() == Alliance.Red) {
           m_targetAngle = VisionConstants.kTag10Angle;
-          m_vision.setTargetID(10);
+          m_targetID = 10;
         } else if (m_alliance.get() == Alliance.Blue) {
           m_targetAngle = VisionConstants.kTag21Angle;
-          m_vision.setTargetID(21);
+          m_targetID = 21;
         }
         m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
       }
@@ -144,10 +145,10 @@ public class SwerveJoystick extends Command {
       if (m_alliance.isPresent()) {
         if (m_alliance.get() == Alliance.Red) {
           m_targetAngle = VisionConstants.kTag9Angle;
-          m_vision.setTargetID(9);
+          m_targetID = 9;
         } else if (m_alliance.get() == Alliance.Blue) {
           m_targetAngle = VisionConstants.kTag22Angle;
-          m_vision.setTargetID(22);
+          m_targetID = 22;
         }
         m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
       }
@@ -155,44 +156,46 @@ public class SwerveJoystick extends Command {
       if (m_alliance.isPresent()) {
         if (m_alliance.get() == Alliance.Red) {
           m_targetAngle = VisionConstants.kTag8Angle;
-          m_vision.setTargetID(8);
+          m_targetID = 8;
         } else if (m_alliance.get() == Alliance.Blue) {
           m_targetAngle = VisionConstants.kTag17Angle;
-          m_vision.setTargetID(17);
+          m_targetID = 17;
         }
         m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
       }
     } else if (m_turnTo4thTag.getAsBoolean()) {
       if (m_alliance.isPresent()) {
         if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag18Angle;          
-          m_vision.setTargetID(18);
-        } else if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag7Angle;          
-          m_vision.setTargetID(7);
-        }
+          m_targetAngle = VisionConstants.kTag7Angle;  
+          m_targetID = 7;
+        } else 
+        if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle = VisionConstants.kTag18Angle;  
+          m_targetID = 18;
+        } 
         m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
       }
     } else if (m_turnTo5thTag.getAsBoolean()) {
       if (m_alliance.isPresent()) {
         if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag19Angle;
-          m_vision.setTargetID(9);
-        } else if (m_alliance.get() == Alliance.Blue) {
           m_targetAngle = VisionConstants.kTag6Angle;
-          m_vision.setTargetID(6);
-        }
+          m_targetID = 6;
+        } else 
+        if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle = VisionConstants.kTag19Angle;
+          m_targetID = 19;
+        } 
         m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
       }
     } else if (m_turnTo6thTag.getAsBoolean()) {
       if (m_alliance.isPresent()) {
         if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag20Angle;
-          m_vision.setTargetID(20);
-        } else if (m_alliance.get() == Alliance.Blue) {
           m_targetAngle = VisionConstants.kTag11Angle;
-          m_vision.setTargetID(11);
-        }
+          m_targetID = 11;
+        } else if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle = VisionConstants.kTag20Angle;
+          m_targetID = 20;
+        } 
         m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
       }
     } else if (m_centerToTag.getAsBoolean()) {
@@ -202,12 +205,24 @@ public class SwerveJoystick extends Command {
       m_ySpeed = m_xySpeed*Math.cos(Math.toRadians(VisionConstants.kTagAngles[m_targetID - 6]));
     } 
 
+    m_vision.setTargetID(m_targetID);
+
+    SmartDashboard.putNumber("X speed", m_xSpeed);
+    SmartDashboard.putNumber("Y speed", m_ySpeed);
+    SmartDashboard.putNumber("Turning speed", m_turningSpeed);
+    System.out.println("Turning to " + m_targetID + "Degrees: " + m_targetAngle);
+    System.out.println("Turning speed (-1 to 1): " + m_turningSpeed);
+
     m_swerveDrive.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(m_xSpeed, m_ySpeed, m_turningSpeed, m_swerveDrive.getAngle()));
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_xSpeed = 0;
+    m_ySpeed = 0;
+    m_turningSpeed = 0;
+  }
 
   // Returns true when the command should end.
   @Override
