@@ -24,11 +24,12 @@ public final class DriveConstants {
 
     public static int kIMUCanID = 0; //CAN
     
-    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
+    public static final Translation2d[] kModulePositions = {
         new Translation2d(+0.295, +0.292),
         new Translation2d(+0.295, -0.292),
         new Translation2d(-0.295, +0.292),
-        new Translation2d(-0.295, -0.292));
+        new Translation2d(-0.295, -0.292)};
+    public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(kModulePositions);
 
     public static final int kFrontLeftDriveId = 1; //CAN
     public static final int kFrontLeftTurnId = 11; //CAN
@@ -66,7 +67,8 @@ public final class DriveConstants {
     // VERY IMPORTANT NUMBERS BELOW YOU GOTTA CHANGE THEM;
 
     public static final double kDriveGearRatio = 6.122;
-    public static final double kWheelCircumference = Math.PI * Units.inchesToMeters(4);
+    public static final double kWheelRadius = Units.inchesToMeters(2);
+    public static final double kWheelCircumference = 2* Math.PI * kWheelRadius;
     public static final double kDriveSensorToMechanismRatio = kDriveGearRatio/kWheelCircumference; //how much distance is traveled for one rotation on the drive TalonFX
 
     public static final double kTurnEncoderPositionToRadians = Math.PI * 2; //since turn encoder is right on the output shaft, we only need to convert rotations into radians

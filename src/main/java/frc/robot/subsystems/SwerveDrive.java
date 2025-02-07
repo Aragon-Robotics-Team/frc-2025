@@ -239,14 +239,11 @@ public class SwerveDrive extends SubsystemBase
 
     try 
     {
-      Translation2d[] t = {new Translation2d(0.368 - 0.0667, 0.368 - 0.0667),
-        new Translation2d(0.368  - 0.0667, -0.368 + 0.0667),
-        new Translation2d(-0.368 + 0.0667,  0.368 - 0.0667),
-        new Translation2d(-0.368 + 0.0667, -0.368 + 0.0667)};
+      // HAVE TO FIND THE MOMENT OF INERTIA FROM THE CAD;
       //RobotConfig config = RobotConfig.fromGUISettings();
-      DCMotor motor = new DCMotor(kModuleCount, kModuleCount, m_yStartPose, m_xStartPose, kUpdateFrequency, kModuleCount);
-      ModuleConfig config3 = new ModuleConfig(1, 1, 1, motor, 1, 2);
-      RobotConfig config2 = new RobotConfig(50, 1, config3, t);
+      DCMotor m_driveMotor = new DCMotor(12, 7, 366, 2, 6000 * 2 * Math.PI, 1);
+      ModuleConfig m_moduleConfig = new ModuleConfig(DriveConstants.kWheelRadius, DriveConstants.kMaxTranslationalMetersPerSecond, 1.16, m_driveMotor, 100, 1);
+      RobotConfig m_robotConfig = new RobotConfig(48, 10, m_moduleConfig, DriveConstants.kModulePositions);
       
       AutoBuilder.configure
       (
@@ -255,7 +252,7 @@ public class SwerveDrive extends SubsystemBase
         this::getChassisSpeeds, 
         this::driveRobotRelative, 
         new PPHolonomicDriveController(DriveConstants.kTranslationConstants, DriveConstants.kRotationConstants), 
-        config2,
+        m_robotConfig,
         () -> 
         {
           // Boolean supplier that controls when the path will be mirrored for the red alliance
