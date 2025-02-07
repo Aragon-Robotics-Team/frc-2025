@@ -4,11 +4,7 @@
 
 package frc.robot;
 
-
-import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.wpilibj.Joystick;
-import frc.robot.commands.SwerveJoystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -19,43 +15,27 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
 import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.PivotConstants;
-import frc.robot.constants.ArmConstants;
-import frc.robot.constants.IOConstants;
-
+import frc.robot.commands.SwerveJoystick;
 import frc.robot.commands.TurnToTagAngle;
-import frc.robot.subsystems.SwerveDrive;
-
-// arm imports
-import frc.robot.subsystems.Arm;
 import frc.robot.commands.arm.ArcadeArm;
 import frc.robot.commands.arm.ArmToPos;
 import frc.robot.commands.arm.SpinEndEffectorMotor;
 import frc.robot.commands.auto.DriveForwardL4;
 import frc.robot.commands.auto.MoveForTime;
-import frc.robot.subsystems.EndEffector;
-
-// elevator imports
-import frc.robot.subsystems.Elevator;
 import frc.robot.commands.elevator.ArcadeElevator;
-import frc.robot.commands.elevator.ElevatorDealgae;
 import frc.robot.commands.elevator.ElevatorToPosition;
-
-// intake/indexer
-import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Intake;
 import frc.robot.commands.intake_indexer.RunIndexer;
-import frc.robot.commands.intake_indexer.RunIntake;
-// import frc.robot.commands.intake_indexer.RunIntake;
 import frc.robot.commands.intake_indexer.RunIntakeWithIndexer;
 import frc.robot.commands.intake_indexer.RunIntakeWithIndexerJoystick;
-
-// pivot imports
-import frc.robot.subsystems.Pivot;
-import frc.robot.commands.pivot.ArcadePivot;
-import frc.robot.commands.pivot.PIDForPivot;
+import frc.robot.constants.ArmConstants;
+import frc.robot.constants.IOConstants;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.EndEffector;
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.SwerveDrive;
 
 
 /**
@@ -71,7 +51,6 @@ public class RobotContainer {
   public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-<<<<<<< HEAD
 
 
   public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
@@ -84,12 +63,8 @@ public class RobotContainer {
 
   private final JoystickButton m_elevatorArmManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kElevatorArmManualOverrideButtonID); // 7
   private final JoystickButton m_pivotRollerManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kPivotArmManualOverrideButtonID); // 8 (i think)
-=======
-  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  private SendableChooser<Command> m_autoChooser;
   private final TurnToTagAngle m_turnToTagAngle = new TurnToTagAngle(m_swerve, 6);
   private final JoystickButton m_turnToTag6Button = new JoystickButton(m_driverJoystick, 1);
->>>>>>> 3cac83b (Need to change vision angles and update robot container)
 
 
 
