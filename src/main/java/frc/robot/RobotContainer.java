@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.commands.TurnToTagAngle;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.subsystems.Vision;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -29,11 +30,21 @@ public class RobotContainer {
   public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  private final Vision m_vision = new Vision();
+
+  private final JoystickButton m_1stTagButton = new JoystickButton(m_driverJoystick, 1);
+  private final JoystickButton m_2ndTagButton = new JoystickButton(m_driverJoystick, 2);
+  private final JoystickButton m_3rdTagButton = new JoystickButton(m_driverJoystick, 3);
+  private final JoystickButton m_4thTagButton = new JoystickButton(m_driverJoystick, 4);
+  private final JoystickButton m_5thTagButton = new JoystickButton(m_driverJoystick, 5);
+  private final JoystickButton m_6thTagButton = new JoystickButton(m_driverJoystick, 6);
+  private final JoystickButton m_centerToTagButton = new JoystickButton(m_driverJoystick, 7);
+
+  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick, m_vision, m_1stTagButton, m_2ndTagButton, m_3rdTagButton, m_4thTagButton, m_5thTagButton, m_6thTagButton, m_centerToTagButton);
 
   private SendableChooser<Command> m_autoChooser;
-  private final TurnToTagAngle m_turnToTagAngle = new TurnToTagAngle(m_swerve, 6);
-  private final JoystickButton m_turnToTag6Button = new JoystickButton(m_driverJoystick, 1);
+  // private final TurnToTagAngle m_turnToTagAngle = new TurnToTagAngle(m_swerve, 6);
+  // private final JoystickButton m_turnToTag6Button = new JoystickButton(m_driverJoystick, 1);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -55,7 +66,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_turnToTag6Button.whileTrue(m_turnToTagAngle);
+    // m_turnToTag6Button.whileTrue(m_turnToTagAngle);
   }
 
   /**
