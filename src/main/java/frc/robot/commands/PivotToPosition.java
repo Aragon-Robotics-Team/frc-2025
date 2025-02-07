@@ -39,6 +39,9 @@ public class PivotToPosition extends Command {
     SmartDashboard.putNumber("Pivot Speed", m_speed);
     m_currentPosition = m_pivot.getPivotPosition() - m_initialPosition;
     SmartDashboard.putNumber("Rotations:", m_currentPosition);
+    
+    //m_pivot.getPivotSim().setInputVoltage(12 * m_speed);
+    //m_pivot.getPivotSim().update(0.02);
   }
 
   // Called once the command ends or is interrupted.
@@ -50,7 +53,7 @@ public class PivotToPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_currentPosition - m_goal < 0.01 && m_currentPosition - m_goal > -0.01) {
+    if((m_currentPosition - m_goal < 0.01) && (m_currentPosition - m_goal > -0.01)) {
       return true;
     }
     return false;
