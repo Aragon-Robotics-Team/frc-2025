@@ -36,4 +36,17 @@ public final class Constants {
         public static final double kRotationTolerance = 0.05;
     }
 
+   public final class ElevatorConstants{
+    public static final int kElevatorYAxis = 0;
+    public static final double kElevatorMultiplier = Math.PI/26;
+    public static final int deviceId = 5;
+    public static final int deviceId2=0;
+    public static final int limitSwitchDio=0;
+
+   }  
+   public final class JoystickConstants{
+    public static final int kJoystickPort = 1;
+
+   }
+   
 }
