@@ -12,12 +12,12 @@ import frc.robot.subsystems.Arm;
 public class ArmToPosition extends Command {
   /** Creates a new ArmToPosition. */
   private Arm m_arm;
-  private Joystick m_joystick;
+  private Joystick m_driverjoystick;
   
-  public ArmToPosition(Arm arm, Joystick joystick) {
+  public ArmToPosition(Arm arm, Joystick driverjoystick) {
     // Use addRequirements() here to declare subsystem dependencies.
     m_arm = arm;
-    m_joystick = joystick;
+    m_driverjoystick = driverjoystick;
 
     addRequirements(m_arm);
   }

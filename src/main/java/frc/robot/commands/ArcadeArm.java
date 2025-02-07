@@ -16,11 +16,11 @@ public class ArcadeArm extends Command {
   /** Creates a new ArcadeArm. */
 
 private Arm m_arm;
-private Joystick m_joystick;
+private Joystick m_driverjoystick;
 
-  public ArcadeArm(Arm arm, Joystick joystick) {
+  public ArcadeArm(Arm arm, Joystick driverjoystick) {
     m_arm = arm;
-    m_joystick = joystick;
+    m_driverjoystick = driverjoystick;
   
     // Use addRequirements() here to declare subsystem dependencies.
   addRequirements(m_arm);
@@ -34,7 +34,7 @@ private Joystick m_joystick;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = m_joystick.getRawAxis(Constants.ArmConstants.kArmYAxis) * Constants.ArmConstants.kArmMultiplier;    
+    double speed = m_driverjoystick.getRawAxis(Constants.ArmConstants.kArmYAxis) * Constants.ArmConstants.kArmMultiplier;    
     SmartDashboard.putNumber("Arm speed", speed);
     m_arm.setSpeed(speed);
     /*
