@@ -15,8 +15,8 @@ package frc.robot.constants;
 public final class Constants {
   public static final class ArmConstants {
     public static final int ArmTalonDeviceId = 5;
-    public static final int topLimitSwitchChannel = 0;
-    public static final int bottomLimitSwitchChannel = 2;
+    public static final int topLimitSwitchChannel = 6;
+    public static final int bottomLimitSwitchChannel = 5;
     public static final int kArmYAxis = 1;
     public static final double kArmMultiplier = 1;
   }

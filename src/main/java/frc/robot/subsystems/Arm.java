@@ -4,17 +4,28 @@
 
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
+
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
+
 
 
 public class Arm extends SubsystemBase {
   private TalonFX m_arm = new TalonFX(Constants.ArmConstants.ArmTalonDeviceId);
   private DigitalInput toplimitSwitch = new DigitalInput(Constants.ArmConstants.topLimitSwitchChannel);
   private DigitalInput bottomlimitSwitch = new DigitalInput(Constants.ArmConstants.bottomLimitSwitchChannel);
+  private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
+  private double initialPosition;
+
+
 
   public Arm() {}
+
+  public double EncoderPosition(){
+    return encoder.get();
+  }
 
   public void setSpeed(double speed){
 m_arm.set(speed);
