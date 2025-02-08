@@ -34,6 +34,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
+  private final Joystick m_secondJoystick = new Joystick(1);
   private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private SendableChooser<Command> m_autoChooser;
   private Intake m_intakeMotor = new Intake();
@@ -42,6 +43,8 @@ public class RobotContainer {
   private JoystickButton m_intakeButton = new JoystickButton(m_joystick, 1); //change number later
 
   private Elevator m_elevator = new Elevator();
+
+  private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
