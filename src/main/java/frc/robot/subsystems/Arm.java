@@ -17,6 +17,8 @@ public class Arm extends SubsystemBase {
   private DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.ArmConstants.encoderChannel);
   
 
+  // we have removed the Arm constructor
+  
   public double EncoderPosition(){
     return encoder.get();
 m_arm.set(speed);
