@@ -58,9 +58,8 @@ public class RobotContainer {
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private SendableChooser<Command> m_autoChooser;
   
-  private final Joystick m_joystick = new Joystick(0);
   private final Arm m_arm = new Arm();
-  private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_joystick);
+  private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
   
   private Elevator m_elevator = new Elevator();
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
