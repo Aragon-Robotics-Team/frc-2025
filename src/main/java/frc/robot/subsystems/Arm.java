@@ -16,7 +16,7 @@ public class Arm extends SubsystemBase {
   private TalonFX m_arm = new TalonFX(Constants.ArmConstants.ArmTalonDeviceId);
   private DigitalInput toplimitSwitch = new DigitalInput(Constants.ArmConstants.topLimitSwitchChannel);
   private DigitalInput bottomlimitSwitch = new DigitalInput(Constants.ArmConstants.bottomLimitSwitchChannel);
-  private DutyCycleEncoder encoder = new DutyCycleEncoder(0);
+  private DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.ArmConstants.encoderChannel);
   private double initialPosition;
 
 

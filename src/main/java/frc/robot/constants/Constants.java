@@ -19,6 +19,7 @@ public final class Constants {
     public static final int bottomLimitSwitchChannel = 5;
     public static final int kArmYAxis = 1;
     public static final double kArmMultiplier = 1;
+    public static int encoderChannel = 0;
   }
 }
 // find in future!
