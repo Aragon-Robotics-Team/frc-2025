@@ -27,6 +27,7 @@ import frc.robot.commands.ElevatorRatioTest;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.commands.SpinArmOuttakeMotor;
 
+import frc.robot.commands.ArcadePivot;
 import frc.robot.commands.PivotToPosition;
 import frc.robot.subsystems.Pivot;
 
@@ -58,7 +59,7 @@ public class RobotContainer {
   private Pivot m_pivot = new Pivot();
   private double m_speed = 0.7; //change later
   private PivotToPosition m_pivotToA = new PivotToPosition(m_pivot, m_speed, 0);
-  private PivotToPosition m_pivotToB = new PivotToPosition(m_pivot, m_speed, 1);
+  private PivotToPosition m_pivotToB = new PivotToPosition(m_pivot, m_speed, 10);
   private PivotToPosition m_pivotToC = new PivotToPosition(m_pivot, m_speed, 2);
   private JoystickButton m_pivotButtonToA = new JoystickButton(m_secondJoystick, 3);
   private JoystickButton m_pivotButtonToB = new JoystickButton(m_secondJoystick, 1);
@@ -91,6 +92,7 @@ public class RobotContainer {
 
   private JoystickButton m_elevatorRatioTestButtonThree = new JoystickButton(m_secondJoystick, 2);
   private ElevatorRatioTest m_elevatorRatioTestthree = new ElevatorRatioTest(m_elevator, 0.45);
+  private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_secondJoystick);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -134,7 +136,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
     //return m_autoChooser.getSelected();
-    return null;
+    return null; //temporary
   }
 
   private void getTeleopCommand() {
