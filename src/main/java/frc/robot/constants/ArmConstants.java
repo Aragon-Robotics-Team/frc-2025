@@ -12,14 +12,15 @@ package frc.robot.constants;
  * <p>It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {
-  public static final class ArmConstants {
-    public static final int ArmTalonDeviceId = 5;
-    public static final int topLimitSwitchChannel = 6;
-    public static final int bottomLimitSwitchChannel = 5;
-    public static final int kArmYAxis = 1;
-    public static final double kArmMultiplier = 1;
-    public static int encoderChannel = 0;
-  }
+public final class ArmConstants {
+  public static final int ArmTalonDeviceId = 23; 
+  public static final int topLimitSwitchChannel = 6;
+  public static final int bottomLimitSwitchChannel = 7;
+  public static final int kArmYAxis = 1;
+  public static final double kArmMultiplier = 1;
+
+  public static int encoderChannel = 9; 
+  // DIO channel 0 has been taken by elevator
+  // DIO channels 1, 2, 3, 4 have been taken by the swerve
 }
 // find in future!
