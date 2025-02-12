@@ -36,7 +36,7 @@ private Joystick m_operatorJoystick;
   public void execute() {
     double speed = m_operatorJoystick.getRawAxis(ArmConstants.kArmYAxis) * ArmConstants.kArmMultiplier;
     SmartDashboard.putNumber("Arm speed", speed);
-    m_arm.setSpeed(m_operatorJoystick.getRawAxis(ArmConstants.kArmYAxis) * ArmConstants.kArmMultiplier);
+    m_arm.setSpeed(speed);
     /*
     if (speed>0){
       if (m_arm.getTopLimitSwitch()){

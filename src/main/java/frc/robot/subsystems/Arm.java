@@ -23,7 +23,7 @@ public class Arm extends SubsystemBase {
     m_arm.set(m_speed);
   }
 
-  public double EncoderPosition(){
+  public double getEncoderPosition(){
     return encoder.get();
   }
 
