@@ -20,9 +20,9 @@ public class ArcadeElevator extends Command {
   /** Creates a new ArcadeElevator. */
   public ArcadeElevator(Joystick m_joystick2, Elevator elevator) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_elevator);
     m_joystick = m_joystick2;
     m_elevator = elevator;
+  addRequirements(m_elevator);
   }
 
   // Called when the command is initially scheduled.

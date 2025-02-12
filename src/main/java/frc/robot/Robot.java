@@ -25,7 +25,7 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
   private Command m_teleopCommand;
 
-  private final RobotContainer m_robotContainer;
+  private RobotContainer m_robotContainer;
 
 
 

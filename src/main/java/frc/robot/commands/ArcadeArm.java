@@ -7,7 +7,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.constants.Constants;
+import frc.robot.constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -34,9 +34,9 @@ private Joystick m_operatorJoystick;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = m_operatorJoystick.getRawAxis(Constants.ArmConstants.kArmYAxis) * Constants.ArmConstants.kArmMultiplier;
+    double speed = m_operatorJoystick.getRawAxis(ArmConstants.kArmYAxis) * ArmConstants.kArmMultiplier;
     SmartDashboard.putNumber("Arm speed", speed);
-    m_arm.setSpeed(m_operatorJoystick.getRawAxis(Config.kArmYAxis) * Config.kArmMultiplier);
+    m_arm.setSpeed(m_operatorJoystick.getRawAxis(ArmConstants.kArmYAxis) * ArmConstants.kArmMultiplier);
     /*
     if (speed>0){
       if (m_arm.getTopLimitSwitch()){

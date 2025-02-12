@@ -8,20 +8,23 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.Constants;
+import frc.robot.constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
-  private TalonFX m_arm = new TalonFX(Constants.ArmConstants.ArmTalonDeviceId);
-  private DigitalInput toplimitSwitch = new DigitalInput(Constants.ArmConstants.topLimitSwitchChannel);
-  private DigitalInput bottomlimitSwitch = new DigitalInput(Constants.ArmConstants.bottomLimitSwitchChannel);
-  private DutyCycleEncoder encoder = new DutyCycleEncoder(Constants.ArmConstants.encoderChannel);
+  private TalonFX m_arm = new TalonFX(ArmConstants.ArmTalonDeviceId);
+  private DigitalInput toplimitSwitch = new DigitalInput(ArmConstants.topLimitSwitchChannel);
+  private DigitalInput bottomlimitSwitch = new DigitalInput(ArmConstants.bottomLimitSwitchChannel);
+  private DutyCycleEncoder encoder = new DutyCycleEncoder(ArmConstants.encoderChannel);
   
 
   // we have removed the Arm constructor
   
+  public void setSpeed(double m_speed){
+    m_arm.set(m_speed);
+  }
+
   public double EncoderPosition(){
     return encoder.get();
-m_arm.set(speed);
   }
 
   public Boolean getTopLimitSwitch(){
