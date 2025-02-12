@@ -43,7 +43,7 @@ public class ElevatorPosition extends Command {
   public void execute() {
     m_currentPosition = m_elevator.getElevatorPosition();
     m_currentPosition = m_currentPosition - m_initialPosition;
-    m_elevator.setSpeed(m_pid.calculate(m_error, m_pid.getSetpoint()));
+    m_elevator.setSpeed(m_pid.calculate(m_currentPosition, m_pid.getSetpoint()));
   }
 
   // Called once the command ends or is interrupted.
