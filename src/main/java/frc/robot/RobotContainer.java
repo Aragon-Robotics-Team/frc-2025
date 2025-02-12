@@ -4,27 +4,20 @@
 
 package frc.robot;
 
-import edu.wpi.first.wpilibj.Joystick;
-
 import com.pathplanner.lib.auto.AutoBuilder;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.SwerveJoystick;
-import frc.robot.subsystems.SwerveDrive;
-import frc.robot.subsystems.Arm;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArcadeArm;
-
-
-
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.ArcadeElevator;
+import frc.robot.commands.SwerveJoystick;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.SwerveDrive;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -38,9 +31,9 @@ public class RobotContainer {
   public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-  // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private SendableChooser<Command> m_autoChooser;
-  
+
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
   
@@ -78,7 +71,7 @@ public class RobotContainer {
     return m_autoChooser.getSelected();
   }
 
-  public Command getTeleopCommand() {
+  private void getTeleopCommand() {
     m_arm.setDefaultCommand(m_arcadeArm);
     m_swerve.setDefaultCommand(m_swerveJoystick);
     m_arm.setDefaultCommand(m_arcadeArm);
