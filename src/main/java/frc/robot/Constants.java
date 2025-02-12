@@ -16,6 +16,24 @@ public final class Constants {
     public static final class PivotConstants {
         public static final int kLeftPivotMotorID = 0; 
         public static final int kRightPivotMotorID = 1; //change
+
+        public static final int kNumMotors = 2;
+        public static final int kGearRatio = 108;
+
+        public static final int kEncoderChannelA = 0;
+        public static final int kEncoderChannelB = 1;
+
+        public static final double kPivotSpeed = 0.7;
+
+        public static final double kPivotPositionToA = 0;
+        public static final double kPivotPositionToB = 2;
+        public static final double kPivotPositionToC = 10;
+
+        public static final int kButtonNumToA = 1;
+        public static final int kButtonNumToB = 2;
+        public static final int kButtonNumToC = 3;
+
+        public static final double kRotationTolerance = 0.05;
     }
 
 }

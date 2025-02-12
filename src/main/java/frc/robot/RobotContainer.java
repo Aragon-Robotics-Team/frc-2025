@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.subsystems.SwerveDrive;
+import frc.robot.Constants.PivotConstants;
 import frc.robot.commands.ArcadePivot;
 import frc.robot.commands.PivotToPosition;
 import frc.robot.subsystems.Pivot;
@@ -35,13 +36,13 @@ public class RobotContainer {
   //private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   //private SendableChooser<Command> m_autoChooser;
   private Pivot m_pivot = new Pivot();
-  private double m_speed = 0.7; //change later
-  private PivotToPosition m_pivotToA = new PivotToPosition(m_pivot, m_speed, 0);
-  private PivotToPosition m_pivotToB = new PivotToPosition(m_pivot, m_speed, 10);
-  private PivotToPosition m_pivotToC = new PivotToPosition(m_pivot, m_speed, 2);
-  private JoystickButton m_pivotButtonToA = new JoystickButton(m_secondJoystick, 3);
-  private JoystickButton m_pivotButtonToB = new JoystickButton(m_secondJoystick, 1);
-  private JoystickButton m_pivotButtonToC = new JoystickButton(m_secondJoystick, 2);
+  private double m_speed = PivotConstants.kPivotSpeed; //change later
+  private PivotToPosition m_pivotToA = new PivotToPosition(m_pivot, m_speed, PivotConstants.kPivotPositionToA);
+  private PivotToPosition m_pivotToB = new PivotToPosition(m_pivot, m_speed, PivotConstants.kPivotPositionToB);
+  private PivotToPosition m_pivotToC = new PivotToPosition(m_pivot, m_speed, PivotConstants.kPivotPositionToC);
+  private JoystickButton m_pivotButtonToA = new JoystickButton(m_secondJoystick, PivotConstants.kButtonNumToA);
+  private JoystickButton m_pivotButtonToB = new JoystickButton(m_secondJoystick, PivotConstants.kButtonNumToB);
+  private JoystickButton m_pivotButtonToC = new JoystickButton(m_secondJoystick, PivotConstants.kButtonNumToC);
 
   private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_secondJoystick);
 
