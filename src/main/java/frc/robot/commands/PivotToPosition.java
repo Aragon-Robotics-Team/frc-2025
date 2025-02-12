@@ -28,11 +28,15 @@ public class PivotToPosition extends Command {
   @Override
   public void initialize() {
 <<<<<<< HEAD
+<<<<<<< HEAD
     m_pivot.setPivotSpeed(0);
 =======
     //m_pivot.setPivotSpeed(0);
     //m_initialPosition = m_pivot.getSimPivotPosition();
 >>>>>>> f369119 (pivot code with working simulation)
+=======
+    m_pivot.setPivotSpeed(0);
+>>>>>>> b9c56d3 (working simulation, with constants)
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -53,7 +57,7 @@ public class PivotToPosition extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // m_pivot.setPivotSpeed(0);
+    m_pivot.setPivotSpeed(0);
   }
 
   // Returns true when the command should end.

@@ -12,24 +12,18 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-<<<<<<< HEAD
 import edu.wpi.first.wpilibj.DigitalGlitchFilter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.DutyCycleSim;
-=======
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
->>>>>>> f369119 (pivot code with working simulation)
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PivotConstants;
 
 public class Pivot extends SubsystemBase {
-<<<<<<< HEAD
   private SparkMax m_pivotMotor = new SparkMax(PivotConstants.kPivotMotorID, MotorType.kBrushless);
   //private DCMotorSim m_pivotSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(PivotConstants.kNumMotors), 0.001, PivotConstants.kGearRatio), DCMotor.getNEO(PivotConstants.kNumMotors));//ask design for gear ratio
 
@@ -47,18 +41,6 @@ public class Pivot extends SubsystemBase {
   public Pivot() {
     brakeMode.idleMode(SparkBaseConfig.IdleMode.kBrake);
     m_pivotMotor.configure(brakeMode, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-=======
-  private SparkMax m_leftPivotMotor = new SparkMax(PivotConstants.kLeftPivotMotorID, MotorType.kBrushless);
-  private SparkMax m_rightPivotMotor = new SparkMax(PivotConstants.kRightPivotMotorID, MotorType.kBrushless);
-  private DCMotorSim m_pivotSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(2), 0.001, 10), DCMotor.getNEO(2));//ask design for gear ratio
-
-  private Encoder m_encoder = new Encoder(0, 1);
-  private EncoderSim m_encoderSim = new EncoderSim(m_encoder);
-  /** Creates a new Pivot. */
-  public Pivot() {
-    m_encoder.setDistancePerPulse(0.01);
-    m_encoderSim.setDistancePerPulse(0.01);
->>>>>>> f369119 (pivot code with working simulation)
   }
 
   public void setPivotSpeed(double speed) {
