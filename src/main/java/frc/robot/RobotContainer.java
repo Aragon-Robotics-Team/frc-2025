@@ -16,22 +16,24 @@ import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Elevator;
+import frc.robot.commands.ElevatorPosition;
 import frc.robot.subsystems.SwerveDrive;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * periodic methods (other than commandsthe scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
  
-  // The robot's subsystems and commands are defined here...
+  // The robot's subsystems and  are defined here...
   public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
+  public final Elevator m_elevator2 = new Elevator();
   private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator2,0.0);
   private SendableChooser<Command> m_autoChooser;
 
   private final Arm m_arm = new Arm();
@@ -76,6 +78,6 @@ public class RobotContainer {
     m_arm.setDefaultCommand(m_arcadeArm);
     m_swerve.setDefaultCommand(m_swerveJoystick);
     m_elevator.setDefaultCommand(m_arcadeElevator);
-
+    // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }
