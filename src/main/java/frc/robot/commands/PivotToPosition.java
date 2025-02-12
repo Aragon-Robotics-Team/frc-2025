@@ -50,8 +50,8 @@ public class PivotToPosition extends Command {
     SmartDashboard.putNumber("Rotations", m_pivot.getSimPivotPosition());
 >>>>>>> f369119 (pivot code with working simulation)
     
-    m_pivot.getPivotSim().setInputVoltage(12 * m_speed);
-    m_pivot.getPivotSim().update(0.02);
+    //m_pivot.getPivotSim().setInputVoltage(12 * m_speed);
+    //m_pivot.getPivotSim().update(0.02);
   }
 
   // Called once the command ends or is interrupted.
