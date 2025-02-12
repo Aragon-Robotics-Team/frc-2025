@@ -50,7 +50,7 @@ public class ElevatorPosition extends Command {
   @Override
   public void execute() {
     m_currentPosition = m_elevator.getElevatorPosition();
-    m_error = m_currentPosition - m_initialPosition;
+    m_currentPosition = m_currentPosition - m_initialPosition;
     m_elevator.setSpeed(m_pid.calculate(m_error, m_pid.getSetpoint()));
   }
 
