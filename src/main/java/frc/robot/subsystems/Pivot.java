@@ -18,9 +18,9 @@ import frc.robot.Constants.PivotConstants;
 public class Pivot extends SubsystemBase {
   private SparkMax m_leftPivotMotor = new SparkMax(PivotConstants.kLeftPivotMotorID, MotorType.kBrushless);
   private SparkMax m_rightPivotMotor = new SparkMax(PivotConstants.kRightPivotMotorID, MotorType.kBrushless);
-  private DCMotorSim m_pivotSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(2), 0.001, 10), DCMotor.getNEO(2));//ask design for gear ratio
+  private DCMotorSim m_pivotSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(DCMotor.getNEO(PivotConstants.kNumMotors), 0.001, PivotConstants.kGearRatio), DCMotor.getNEO(PivotConstants.kNumMotors));//ask design for gear ratio
 
-  private Encoder m_encoder = new Encoder(0, 1);
+  private Encoder m_encoder = new Encoder(PivotConstants.kEncoderChannelA, PivotConstants.kEncoderChannelB);
   private EncoderSim m_encoderSim = new EncoderSim(m_encoder);
   /** Creates a new Pivot. */
   public Pivot() {
