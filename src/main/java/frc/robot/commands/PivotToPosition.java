@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.PivotConstants;
 import frc.robot.subsystems.Pivot;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
@@ -13,8 +14,6 @@ public class PivotToPosition extends Command {
   private Pivot m_pivot;
   private double m_speed;
   private double m_goal;
-  private double m_currentPosition;
-  private double m_initialPosition;
 
   /** Creates a new ArcadePivot. */
   public PivotToPosition(Pivot pivot, double speed, double goal) {
@@ -28,8 +27,7 @@ public class PivotToPosition extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    //m_pivot.setPivotSpeed(0);
-    //m_initialPosition = m_pivot.getSimPivotPosition();
+    m_pivot.setPivotSpeed(0);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -46,13 +44,13 @@ public class PivotToPosition extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    // m_pivot.setPivotSpeed(0);
+    m_pivot.setPivotSpeed(0);
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((m_pivot.getSimPivotPosition() - m_goal > -0.3) && (m_pivot.getSimPivotPosition() - m_goal < 0.3)) {
+    if((m_pivot.getSimPivotPosition() - m_goal > -PivotConstants.kRotationTolerance) && (m_pivot.getSimPivotPosition() - m_goal < PivotConstants.kRotationTolerance)) {
       return true;
     }
     return false;
