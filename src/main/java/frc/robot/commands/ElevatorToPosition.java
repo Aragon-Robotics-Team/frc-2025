@@ -77,7 +77,7 @@ public class ElevatorToPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(Math.abs(m_goal.position - m_elevator.getElevatorPosition()) < ElevatorConstants.kPositionDeadband && Math.abs(m_elevator.getSpeed()) < ElevatorConstants.kVelocityDeadband){
+    if(Math.abs(m_goal.position - m_elevator.getElevatorPosition()) < 0.1 && Math.abs(m_elevator.getSpeed()) < 0.05){
       return true;
     }
     return false;
