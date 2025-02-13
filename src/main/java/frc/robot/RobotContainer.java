@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.ArmToPos;
+import frc.robot.commands.ElevatorToPosition;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.constants.ArmConstants;
 import frc.robot.subsystems.Arm;
@@ -49,6 +50,9 @@ public class RobotContainer {
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
+
+  private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, 1);
+  private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 20);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
@@ -70,6 +74,8 @@ public class RobotContainer {
   private void configureBindings() {
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
     m_armToPosButton.whileTrue(m_armToPos);
+
+    m_elevatorTestButton.onTrue(m_elevatorTest);
   }
 
   /**

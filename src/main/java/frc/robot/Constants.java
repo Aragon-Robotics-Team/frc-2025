@@ -22,7 +22,12 @@ public final class Constants {
 
 
     public static final double kElevatorTickConversionRate = 13.9285; // to move our elevator a foot upwards, it costs 13.9285 elevator ticks (and two trainees)
-    // max ticks -- ~60.25
+    //max ticks -- ~60.25
+    public static final double maxSpeed = 0.1;
+    public static final double maxAcceleration = 0.01;
+    public static final double kP = 0.1;
+    public static final double kI = 0;
+    public static final double kD = 0.0001;
 
    }  
    public final class JoystickConstants{
