@@ -128,9 +128,9 @@ public class RobotContainer {
   }
 
   private void getTeleopCommand() {
-    // m_arm.setDefaultCommand(m_arcadeArm);
-    // m_swerve.setDefaultCommand(m_swerveJoystick);
-    // m_elevator.setDefaultCommand(m_arcadeElevator);
+    m_arm.setDefaultCommand(m_arcadeArm);
+    //m_swerve.setDefaultCommand(m_swerveJoystick);
+    m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }
