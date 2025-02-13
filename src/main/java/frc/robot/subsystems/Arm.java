@@ -12,8 +12,8 @@ import frc.robot.constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
   private TalonFX m_arm = new TalonFX(ArmConstants.ArmTalonDeviceId);
-  private DigitalInput toplimitSwitch = new DigitalInput(ArmConstants.topLimitSwitchChannel);
-  private DigitalInput bottomlimitSwitch = new DigitalInput(ArmConstants.bottomLimitSwitchChannel);
+  //private DigitalInput toplimitSwitch = new DigitalInput(ArmConstants.topLimitSwitchChannel);
+  //private DigitalInput bottomlimitSwitch = new DigitalInput(ArmConstants.bottomLimitSwitchChannel);
   private DutyCycleEncoder encoder = new DutyCycleEncoder(ArmConstants.encoderChannel);
   
 
@@ -27,13 +27,13 @@ public class Arm extends SubsystemBase {
     return encoder.get();
   }
 
-  public Boolean getTopLimitSwitch(){
-    return toplimitSwitch.get();
-  }
+  //public Boolean getTopLimitSwitch(){
+  //  return toplimitSwitch.get();
+ // }
 
-  public Boolean getBottomLimitSwitch(){
-    return bottomlimitSwitch.get();
-  }
+  // public Boolean getBottomLimitSwitch(){
+  //   return bottomlimitSwitch.get();
+  // }
 
   @Override
   public void periodic() {

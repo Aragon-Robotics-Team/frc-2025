@@ -28,11 +28,11 @@ import frc.robot.subsystems.SwerveDrive;
 public class RobotContainer {
  
   // The robot's subsystems and commands are defined here...
-  public final SwerveDrive m_swerve = new SwerveDrive();
-  private final Joystick m_driverJoystick = new Joystick(0);
+  // public final SwerveDrive m_swerve = new SwerveDrive();
+  // private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  private SendableChooser<Command> m_autoChooser;
+  // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  // private SendableChooser<Command> m_autoChooser;
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
@@ -42,8 +42,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
-    m_autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
+    //m_autoChooser = AutoBuilder.buildAutoChooser();
+    //SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -68,12 +68,13 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_autoChooser.getSelected();
+    return null;
+    //return m_autoChooser.getSelected();
   }
 
   private void getTeleopCommand() {
     m_arm.setDefaultCommand(m_arcadeArm);
-    m_swerve.setDefaultCommand(m_swerveJoystick);
+    // m_swerve.setDefaultCommand(m_swerveJoystick);
     m_elevator.setDefaultCommand(m_arcadeElevator);
 
   }

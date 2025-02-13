@@ -17,7 +17,7 @@ public final class ArmConstants {
   public static final int topLimitSwitchChannel = 6;
   public static final int bottomLimitSwitchChannel = 7;
   public static final int kArmYAxis = 1;
-  public static final double kArmMultiplier = 1;
+  public static final double kArmMultiplier = 0.2;
 
   public static int encoderChannel = 9; 
   // DIO channel 0 has been taken by elevator

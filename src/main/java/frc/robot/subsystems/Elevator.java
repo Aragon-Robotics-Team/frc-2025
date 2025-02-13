@@ -27,7 +27,7 @@ public class Elevator extends SubsystemBase {
   
   public void setSpeed(double speed) {
     m_elevator.set(speed);
-    m_elevator2Max.set(speed);
+    m_elevator2Max.set(-speed);
   }
   public double getElevatorPosition() {
     return m_elevator.getEncoder().getPosition();
