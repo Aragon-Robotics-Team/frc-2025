@@ -11,9 +11,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.ArcadeElevator;
+import frc.robot.commands.ElevatorToPosition;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
@@ -39,6 +41,9 @@ public class RobotContainer {
   
   private Elevator m_elevator = new Elevator();
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
+
+  private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, 1);
+  private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 20);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
@@ -58,7 +63,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-   
+    m_elevatorTestButton.onTrue(m_elevatorTest);
   }
 
   /**

@@ -20,6 +20,12 @@ public final class Constants {
     public static final int deviceId2=0;
     public static final int limitSwitchDio=0;
 
+    public static final double maxSpeed = 0.1;
+    public static final double maxAcceleration = 0.01;
+    public static final double kP = 0.1;
+    public static final double kI = 0;
+    public static final double kD = 0.0001;
+
    }  
    public final class JoystickConstants{
     public static final int kJoystickPort = 1;
