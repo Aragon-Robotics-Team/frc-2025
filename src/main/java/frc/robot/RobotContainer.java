@@ -21,6 +21,7 @@ import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.ArmToPos;
 import frc.robot.commands.ElevatorPosition;
+import frc.robot.commands.ElevatorToPosition;
 import frc.robot.commands.RunIndexer;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeWithIndexer;
@@ -86,6 +87,9 @@ public class RobotContainer {
   private final JoystickButton m_intakeArmOuttakeButton = new JoystickButton(m_secondJoystick, 0);
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
+
+  private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, 1);
+  private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 20);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();

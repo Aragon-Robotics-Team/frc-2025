@@ -26,9 +26,13 @@ import frc.robot.Constants;
 public class Elevator extends SubsystemBase {
   /** Creates a new Elevator.
    */
+
+  //I changed the names of the motors because they are confusing.
+  //In general, m_elevator should refer to the Elevator subsystem being used in other files (Commands, RobotContainer, etc.)
+
   private DigitalInput bottomLimitSwitch = new DigitalInput(Constants.ElevatorConstants.limitSwitchDio);
-  private SparkMax m_elevator = new SparkMax(Constants.ElevatorConstants.deviceId, MotorType.kBrushless);
-  private SparkMax m_elevator2Max = new SparkMax(Constants.ElevatorConstants.deviceId2, MotorType.kBrushless);
+  private SparkMax m_neo1 = new SparkMax(Constants.ElevatorConstants.deviceId, MotorType.kBrushless);
+  private SparkMax m_neo2 = new SparkMax(Constants.ElevatorConstants.deviceId2, MotorType.kBrushless);
 
   private SparkMaxConfig brakeMode = new SparkMaxConfig();
 
@@ -36,25 +40,27 @@ public class Elevator extends SubsystemBase {
   public Elevator(){
     // change this to be brake mode
     brakeMode.idleMode(SparkBaseConfig.IdleMode.kBrake);
-    m_elevator.configure(brakeMode, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-    m_elevator2Max.configure(brakeMode, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    m_neo1.configure(brakeMode, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+    m_neo2.configure(brakeMode, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
   }
   
   public void setSpeed(double speed) {
-    m_elevator.set(speed);
-    m_elevator2Max.set(-speed);
+    m_neo1.set(speed);
+    m_neo2.set(-speed);
     SmartDashboard.putNumber("setSpeed", speed);
-    
+  }
+  public double getSpeed(){
+    return m_neo1.getEncoder().getVelocity();
   }
   public double getElevatorPosition() {
-    return m_elevator.getEncoder().getPosition();
+    return m_neo1.getEncoder().getPosition();
   }
   public boolean getLimitSwitch(){
     return bottomLimitSwitch.get();
   }
 
   public void setElevatorPosition(double position) {
-    m_elevator.getEncoder().setPosition(position);
+    m_neo1.getEncoder().setPosition(position);
   }
   // public void SetNeutralMode(IdleMode neutralMode) {
 
@@ -64,7 +70,7 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Encoder ticks", getElevatorPosition());
-    SmartDashboard.putNumber("elevator speed", m_elevator.getEncoder().getVelocity());
+    SmartDashboard.putNumber("elevator speed", getSpeed());
   }
   public void addRequirements(){}
 }
