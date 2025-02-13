@@ -37,6 +37,7 @@ public class ArcadePivot extends Command {
     // make the mech2d object thing
     m_pivotSim = new Mechanism2d(1,1);
     // place the pivot root halfway
+    
     m_root = m_pivotSim.getRoot("pivot anchor", 0.5, 0);
 
 

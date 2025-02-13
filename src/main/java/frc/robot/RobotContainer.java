@@ -13,6 +13,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.JoystickConstants;
 import frc.robot.commands.ArcadePivot;
 import frc.robot.commands.PIDToAngle;
+import frc.robot.commands.PivotTrapezoidal;
+import frc.robot.commands.TrapezoidalwithLibrary;
 import frc.robot.subsystems.Pivot;
 
 /**
@@ -31,6 +33,8 @@ public class RobotContainer {
   private final ArcadePivot c_arcadePivot = new ArcadePivot(m_pivot, m_joystick);
 
   private final PIDToAngle m_pivotPID = new PIDToAngle(m_pivot, 300); // let's see how we get to 10 rotations
+  private final TrapezoidalwithLibrary m_TrapezoidalwithLibrary = new TrapezoidalwithLibrary(m_pivot, 100, 1, 0.5);
+  private final PivotTrapezoidal m_PivotTrapezoidal = new PivotTrapezoidal(m_pivot, 100, 10, 0.5);
   private final JoystickButton m_PIDButton = new JoystickButton(m_joystick, 1); // button 0
 
 
@@ -61,7 +65,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_pivotPID;
+    return m_TrapezoidalwithLibrary;
   }
 
   public void bindDefaultCommands(){

@@ -46,6 +46,14 @@ public class Pivot extends SubsystemBase {
 
     m_PivotSim.setInputVoltage(speed*12); // since speed "maxes out" at 12V here, 0.3 would be 12*0.3 = 3.6V of input in this case (might be flawed but oh well)
   }
+
+  public double getSpeed(){
+    return m_PivotSim.getAngularVelocityRPM()/600;
+  }
+
+  public double getVoltage(){
+    return m_PivotSim.getInputVoltage();
+  }
   
 
   public double getRotations(){
