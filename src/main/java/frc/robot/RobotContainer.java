@@ -171,7 +171,7 @@ public class RobotContainer {
     // comment it all out so that intake doesn't accidently trigger arm
     // m_arm.setDefaultCommand(m_arcadeArm);
     //m_swerve.setDefaultCommand(m_swerveJoystick);
-    // m_elevator.setDefaultCommand(m_arcadeElevator);
+    m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }

@@ -21,12 +21,12 @@ public final class Constants {
    public final class ElevatorConstants{
     public static final int kElevatorYAxis = 0;
     public static final int kElevatorTestButtonID = 5;
-    public static final double kElevatorMultiplier = 0.1;
     public static final double kTicksPerFoot = 13.9285;
 
     //Change later while testing robot
     public static final double kTicksPerSecondPerSpeed = 84.30841;
 
+    public static final double kElevatorMultiplier = 0.2;
     public static final int deviceId = 19;
     public static final int deviceId2 = 24;
     public static final int limitSwitchDio=0;
