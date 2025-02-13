@@ -15,10 +15,14 @@ package frc.robot;
 public final class Constants {
    public final class ElevatorConstants{
     public static final int kElevatorYAxis = 0;
-    public static final double kElevatorMultiplier = Math.PI/26;
-    public static final int deviceId = 5;
-    public static final int deviceId2=0;
+    public static final double kElevatorMultiplier = 0.1;
+    public static final int deviceId = 19;
+    public static final int deviceId2=24;
     public static final int limitSwitchDio=0;
+
+
+    public static final double kElevatorTickConversionRate = 13.9285; // to move our elevator a foot upwards, it costs 13.9285 elevator ticks (and two trainees)
+    // max ticks -- ~60.25
 
    }  
    public final class JoystickConstants{
