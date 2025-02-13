@@ -29,6 +29,9 @@ import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.commands.SpinArmOuttakeMotor;
+import frc.robot.commands.IntakeIn;
+import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -116,7 +119,6 @@ public class RobotContainer {
     m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
     m_armToPosButton.whileTrue(m_armToPos);
     m_elevatorPositionButton.whileTrue(m_elevatorPosition);
-	  // m_elevatorPositionButton.whileTrue(m_elevatorPosition);
   }
 
   /**
