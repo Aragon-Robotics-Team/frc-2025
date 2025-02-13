@@ -8,6 +8,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Elevator;
 
@@ -50,8 +51,15 @@ public class ElevatorPosition extends Command {
   @Override
   public void execute() {
     m_currentPosition = m_elevator.getElevatorPosition();
-    m_currentPosition = m_currentPosition - m_initialPosition;
-    m_elevator.setSpeed(m_pid.calculate(m_error, m_pid.getSetpoint()));
+    //m_currentPosition = m_currentPosition - m_initialPosition;
+    double setSpeed = m_pid.calculate(m_currentPosition, m_pid.getSetpoint());
+    // if (setSpeed > 0.5)
+    // {
+    //   setSpeed = 0.5;
+    // }
+    Logger.recordOutput("currentPosition", m_currentPosition);
+    Logger.recordOutput("Setpoint", m_pid.getSetpoint());
+    m_elevator.setSpeed(setSpeed);
   }
 
   // Called once the command ends or is interrupted.

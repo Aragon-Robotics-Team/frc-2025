@@ -13,6 +13,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.ArmToPos;
+import frc.robot.commands.SwerveJoystick;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Elevator;
 import frc.robot.commands.ElevatorPosition;
 import frc.robot.commands.SpinArmOuttakeMotor;
 import frc.robot.constants.ArmConstants;
@@ -98,9 +101,9 @@ public class RobotContainer {
   }
 
   private void getTeleopCommand() {
-    // m_arm.setDefaultCommand(m_arcadeArm);
-    // m_swerve.setDefaultCommand(m_swerveJoystick);
-    // m_elevator.setDefaultCommand(m_arcadeElevator);
+    m_arm.setDefaultCommand(m_arcadeArm);
+    //m_swerve.setDefaultCommand(m_swerveJoystick);
+    m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }
