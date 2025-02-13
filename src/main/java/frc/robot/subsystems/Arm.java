@@ -5,8 +5,11 @@
 package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
+
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ArmConstants;
 
@@ -18,6 +21,9 @@ public class Arm extends SubsystemBase {
   
 
   // we have removed the Arm constructor
+  public Arm(){
+    m_arm.setNeutralMode(NeutralModeValue.Brake);
+  }
   
   public void setSpeed(double m_speed){
     m_arm.set(m_speed);
@@ -37,6 +43,7 @@ public class Arm extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Arm encoder ticks", getEncoderPosition());
     // This method will be called once per scheduler run
   }
 }
