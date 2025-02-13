@@ -7,7 +7,9 @@ package frc.robot.commands;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
+
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Elevator;
@@ -25,11 +27,13 @@ public class ElevatorToPosition extends Command {
   public ElevatorToPosition(Elevator elevator, double goal) {
     m_elevator = elevator;
 
+
     //goal is inputted as inches on the elevator. The line below converts it to ticks.
 
     m_goal = new TrapezoidProfile.State(goal*ElevatorConstants.kTicksPerFoot/12, 0);
 
     m_profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(ElevatorConstants.kMaxSpeed*ElevatorConstants.kTicksPerSecondPerSpeed, ElevatorConstants.kMaxAcceleration));
+
 
     m_timer = new Timer();
     m_pid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
@@ -44,12 +48,14 @@ public class ElevatorToPosition extends Command {
     m_start = new TrapezoidProfile.State(m_elevator.getElevatorPosition(), m_elevator.getSpeed());
     m_timer.restart();
     SmartDashboard.putNumber("Time", m_timer.get());
+
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     TrapezoidProfile.State idealState = m_profile.calculate(m_timer.get(), m_start, m_goal);
+
     double speed = m_pid.calculate(m_elevator.getElevatorPosition(), idealState.position);
     //speed is currently in ticks/s, so the divison converts it back to "motor" speed.
     m_elevator.setSpeed(speed);
@@ -73,6 +79,7 @@ public class ElevatorToPosition extends Command {
   public void end(boolean interrupted) {
     SmartDashboard.putNumber("Time", m_timer.get());
   }
+
 
   // Returns true when the command should end.
   @Override

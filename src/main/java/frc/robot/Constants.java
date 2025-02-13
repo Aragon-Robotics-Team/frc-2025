@@ -30,6 +30,7 @@ public final class Constants {
     // This is the max speed tolerated by trapezoidal. The unit is the speed that is put into setSpeed() (goes from -1 to 1)
     public static final double kMaxSpeed = 0.8;
 
+
     // This is the max acceleration tolerated by trapezoidal. Units are in ticks/s^2
     public static final double kMaxAcceleration = 150;
 
@@ -40,6 +41,8 @@ public final class Constants {
 
     public static final double kPositionDeadband  = 0.1;
     public static final double kVelocityDeadband = 0.05;
+
+
 
    }  
    public final class JoystickConstants{

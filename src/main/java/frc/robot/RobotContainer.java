@@ -67,6 +67,7 @@ public class RobotContainer {
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
 
+
   //Input of 15 means that the elevator will ideally move up by 15 inches. This was just chosen as a test.
 
   private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, ElevatorConstants.kElevatorTestButtonID);
@@ -80,6 +81,7 @@ public class RobotContainer {
 
   private JoystickButton m_elevatorRatioTestButtonThree = new JoystickButton(m_secondJoystick, 2);
   private ElevatorRatioTest m_elevatorRatioTestthree = new ElevatorRatioTest(m_elevator, 0.45);
+
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -101,7 +103,6 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
     
     // make sure this doesn't accidently run
@@ -114,6 +115,7 @@ public class RobotContainer {
     
 
     m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
+
 
 
   }
