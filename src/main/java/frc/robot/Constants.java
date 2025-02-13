@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public final class Constants {
 
+<<<<<<< HEAD
    public final class ElevatorConstants {
     public static final int kElevatorTestButtonID = 5;
     public static final double kElevatorMultiplier = 0.1;
@@ -121,4 +122,15 @@ public final class Constants {
         public static final int kManualIntakeTriggerAxis = 5;
     }
 } 
+=======
+    public static final double maxSpeed = 0.1;
+    public static final double maxAcceleration = 0.01;
+    public static final double kP = 0.1;
+    public static final double kI = 0;
+    public static final double kD = 0.0001;
+
+   }  
+   public final class JoystickConstants{
+    public static final int kJoystickPort = 1;
+>>>>>>> 49f1c04 (Added Elevator PID Command)
 

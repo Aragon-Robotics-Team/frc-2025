@@ -55,7 +55,6 @@ public class Elevator extends SubsystemBase {
     SmartDashboard.putNumber("setSpeed", speed);
   }
 
-
   public double getSpeed(){
     //getVelocity returns RPM, so /60 converts it to RPS.
     return m_neo1.getEncoder().getVelocity()/60;

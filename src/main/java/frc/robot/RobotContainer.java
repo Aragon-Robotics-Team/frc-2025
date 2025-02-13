@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -25,6 +26,15 @@ import frc.robot.Constants.PivotConstants;
 import frc.robot.constants.ArmConstants;
 import frc.robot.constants.IOConstants;
 
+=======
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.ArcadeArm;
+import frc.robot.commands.ArcadeElevator;
+import frc.robot.commands.ElevatorToPosition;
+import frc.robot.commands.SwerveJoystick;
+import frc.robot.subsystems.Arm;
+import frc.robot.subsystems.Elevator;
+>>>>>>> 49f1c04 (Added Elevator PID Command)
 import frc.robot.subsystems.SwerveDrive;
 
 // arm imports
@@ -157,6 +167,7 @@ public class RobotContainer {
 
   public Elevator m_elevator = new Elevator();
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
+<<<<<<< HEAD
   private ArcadeElevator m_arcadeElevator1 = new ArcadeElevator(m_secondJoystick, m_elevator);
 
   // Input of 15 means that the elevator will ideally move up by 15 inches. This was just chosen as a test.
@@ -241,6 +252,11 @@ public class RobotContainer {
   // end intake/indexer
   private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, 0, -0.6, 0);
   private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
+=======
+
+  private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, 1);
+  private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 20);
+>>>>>>> 49f1c04 (Added Elevator PID Command)
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     bindSubsystemCommands();
@@ -263,6 +279,7 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
+<<<<<<< HEAD
 
    private void configureBindings() {
     // see discord channel for button bindings
@@ -448,6 +465,10 @@ public class RobotContainer {
     );
     
     
+=======
+  private void configureBindings() {
+    m_elevatorTestButton.onTrue(m_elevatorTest);
+>>>>>>> 49f1c04 (Added Elevator PID Command)
   }
 
 
