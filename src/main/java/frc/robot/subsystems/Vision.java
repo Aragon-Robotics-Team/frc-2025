@@ -2,7 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
+
+// gonna leave this commented out since vision is NOT used on the robot yet
+
 /*
+
 package frc.robot.subsystems;
 
 import java.util.ArrayList;
@@ -70,7 +74,9 @@ public class Vision extends SubsystemBase {
   private AprilTagFieldLayout m_aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
   private Pose3d m_robotPose;
   private PhotonPoseEstimator m_poseEstimator;
+
   // Creates a new Vision. 
+
   public Vision() {
     
   }
@@ -145,6 +151,8 @@ public class Vision extends SubsystemBase {
     m_result = m_cam.getAllUnreadResults();
     if (!m_result.isEmpty()) {
       m_targets = m_result.get(0).getTargets().get();
+
+
       m_bestTarget = m_result.getBestTarget();
 
       for(PhotonTrackedTarget target : m_result){
@@ -172,4 +180,6 @@ public class Vision extends SubsystemBase {
    
   }
 }
+
 */
+
