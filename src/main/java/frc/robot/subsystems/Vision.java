@@ -143,7 +143,11 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
     m_result = m_cam.getAllUnreadResults();
     if (!m_result.isEmpty()) {
+<<<<<<< HEAD
       m_targets = m_result.get(0).getTargets().get();
+=======
+      m_targets = m_result.get(0).getTargets().get()
+>>>>>>> aefb047 (new changes by Alex)
       m_bestTarget = m_result.getBestTarget();
 
       for(PhotonTrackedTarget target : m_result){
@@ -171,4 +175,5 @@ public class Vision extends SubsystemBase {
    
   }
 }
+<<<<<<< HEAD
 */
