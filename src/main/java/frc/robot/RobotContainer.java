@@ -42,8 +42,8 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
-    m_autoChooser = AutoBuilder.buildAutoChooser();
-    SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
+    // m_autoChooser = AutoBuilder.buildAutoChooser();
+    // SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
     // Configure the trigger bindings
     configureBindings();
   }
@@ -68,7 +68,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    return m_autoChooser.getSelected();
+    //return m_autoChooser.getSelected();
+    return null;
   }
 
   private void getTeleopCommand() {
