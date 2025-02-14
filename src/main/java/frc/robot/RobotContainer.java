@@ -33,6 +33,7 @@ import frc.robot.subsystems.SwerveDrive;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeWithIndexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.commands.SpinArmOuttakeMotor;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -46,6 +47,7 @@ public class RobotContainer {
   //public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
+
   private Elevator m_elevator = new Elevator();
 
   //private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
@@ -78,6 +80,9 @@ public class RobotContainer {
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
 
+  private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
+  private final SpinArmOuttakeMotor m_spinArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm);
+
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -98,6 +103,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
     // m_armToPosButton.whileTrue(m_armToPos);
    
@@ -106,6 +112,8 @@ public class RobotContainer {
     m_indexerInButton.whileTrue(m_intakeIn);
     m_indexerOutButton.whileTrue(m_intakeOut);
     m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
+    m_armToPosButton.whileTrue(m_armToPos);
+   m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
   }
 
   /**
