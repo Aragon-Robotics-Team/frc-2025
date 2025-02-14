@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
-  private SparkMax m_intakeMotor = new SparkMax(0, MotorType.kBrushless);
+  
 
   public Intake() {}
   public void setIntakeSpeed (double speed) {

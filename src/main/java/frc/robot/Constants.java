@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -29,6 +34,8 @@ public final class Constants {
     public static final class IntakeConstants {
         public static final int kIntakeMotorID = 0;
         public static final double speed = .14159265;
+        private JoystickButton m_intakeButton = new JoystickButton(m_joystick, 1); //change number later
+        private SparkMax m_intakeMotor = new SparkMax(0, MotorType.kBrushless);
     }
-}
+    } 
  
