@@ -12,16 +12,21 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
+
   private TalonFX m_arm = new TalonFX(ArmConstants.kArmTalonDeviceId);
   private DigitalInput m_topLimitSwitch = new DigitalInput(ArmConstants.kTopLimitSwitchChannel);
   private DigitalInput m_bottomLimitSwitch = new DigitalInput(ArmConstants.kBottomLimitSwitchChannel);
   private DutyCycleEncoder m_encoder = new DutyCycleEncoder(ArmConstants.kEncoderChannel);
-  
+  private SparkMax m_armOuttakeMotor = new SparkMax(ArmConstants.ArmOuttakeMotorDeviceId, MotorType.kBrushless);
+
   // we have removed the Arm constructor
   public Arm(){
     m_arm.setNeutralMode(NeutralModeValue.Brake);
@@ -40,6 +45,7 @@ public class Arm extends SubsystemBase {
   }
   public Boolean getTopLimitSwitch(){
     return !m_topLimitSwitch.get();
+
   public void spinArmOuttakeMotor(double m_speed){
     m_armOuttakeMotor.set(m_speed);
   }
