@@ -66,9 +66,11 @@ public class RobotContainer {
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
 
+  //Input of 15 means that the elevator will ideally move up by 15 inches. This was just chosen as a test.
+
   private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, JoystickConstants.kElevatorTestButtonID);
 
-  //Input of 15 means that the elevator will ideally move up by 15 inches. This was just chosen as a test.
+  
   private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 15);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
