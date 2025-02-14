@@ -5,6 +5,7 @@
 package frc.robot;
 
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 
 import com.ctre.phoenix6.swerve.SwerveModule;
@@ -19,6 +20,7 @@ import frc.robot.commands.SwerveJoystick;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.Constants.PivotConstants;
 import frc.robot.commands.ArcadePivot;
+import frc.robot.commands.PIDForPivot;
 import frc.robot.commands.PivotToPosition;
 import frc.robot.subsystems.Pivot;
 
@@ -46,6 +48,10 @@ public class RobotContainer {
 
   private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_secondJoystick);
 
+  private PIDForPivot m_pivotPIDToA = new PIDForPivot(m_pivot, PivotConstants.kPivotPositionToA);
+  private PIDForPivot m_pivotPIDToB = new PIDForPivot(m_pivot, PivotConstants.kPivotPositionToB);
+  private PIDForPivot m_pivotPIDToC = new PIDForPivot(m_pivot, PivotConstants.kPivotPositionToC);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
 
@@ -65,9 +71,13 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-    m_pivotButtonToA.onTrue(m_pivotToA);
-    m_pivotButtonToB.onTrue(m_pivotToB);
-    m_pivotButtonToC.onTrue(m_pivotToC);
+    //m_pivotButtonToA.onTrue(m_pivotToA);
+    //m_pivotButtonToB.onTrue(m_pivotToB);
+    //m_pivotButtonToC.onTrue(m_pivotToC);
+
+    m_pivotButtonToA.onTrue(m_pivotPIDToA);
+    m_pivotButtonToB.onTrue(m_pivotPIDToB);
+    m_pivotButtonToC.onTrue(m_pivotPIDToC);
   }
 
   /**
