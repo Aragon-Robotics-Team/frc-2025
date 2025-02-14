@@ -49,6 +49,7 @@ import frc.robot.commands.RunIndexer;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeWithIndexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.commands.SpinArmOuttakeMotor;
 
 
 /**
@@ -63,7 +64,10 @@ public class RobotContainer {
   //public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
+
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+
+
 
   private Elevator m_elevator = new Elevator();
 
@@ -158,6 +162,7 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
     
     // make sure this doesn't accidently run
@@ -180,6 +185,7 @@ public class RobotContainer {
     m_indexerInButton.whileTrue(m_intakeIn);
     m_indexerOutButton.whileTrue(m_intakeOut);
     m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
+
   }
 
   /**

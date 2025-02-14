@@ -11,7 +11,6 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.ctre.phoenix6.signals.NeutralModeValue;
 
 
 
@@ -42,6 +41,8 @@ public class Arm extends SubsystemBase {
   public double getEncoderPosition(){
     return m_encoder.get();
   }
+
+
   public Boolean getTopLimitSwitch(){
     return !m_topLimitSwitch.get();
   }
@@ -49,7 +50,6 @@ public class Arm extends SubsystemBase {
   public void spinArmOuttakeMotor(double m_speed){
     m_armOuttakeMotor.set(m_speed);
   }
-
 
 
   public Boolean getBottomLimitSwitch(){
