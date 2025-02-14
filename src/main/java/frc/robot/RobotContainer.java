@@ -30,7 +30,6 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.SpinArmOuttakeMotor;
-import frc.robot.commands.IntakeIn;
 import frc.robot.subsystems.Intake;
 
 /**
