@@ -28,13 +28,8 @@ import frc.robot.commands.SpinArmOuttakeMotor;
 import frc.robot.constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
-<<<<<<< HEAD
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
-=======
-import frc.robot.commands.ElevatorPosition;
-import frc.robot.subsystems.SwerveDrive;
->>>>>>> b255e35 (added the arm outtake motor)
 import frc.robot.commands.SpinArmOuttakeMotor;
 
 /**
@@ -49,11 +44,7 @@ public class RobotContainer {
   //public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-<<<<<<< HEAD
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-=======
-
->>>>>>> b255e35 (added the arm outtake motor)
   private Elevator m_elevator = new Elevator();
 
   private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator,42);
@@ -90,14 +81,9 @@ public class RobotContainer {
   
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
 
-<<<<<<< HEAD
   private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
   private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);
   private final JoystickButton m_intakeArmOuttakeButton = new JoystickButton(m_secondJoystick, 0);
-=======
-  private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
-  private final SpinArmOuttakeMotor m_spinArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm);
->>>>>>> b255e35 (added the arm outtake motor)
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
