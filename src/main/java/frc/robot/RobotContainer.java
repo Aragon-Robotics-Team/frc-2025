@@ -45,6 +45,10 @@ public class RobotContainer {
 
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
   private SendableChooser<Command> m_autoChooser;
+  private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
+  // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  // private SendableChooser<Command> m_autoChooser;
+
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
@@ -76,9 +80,9 @@ public class RobotContainer {
   private void configureBindings() {
 
 
-    // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
-    m_armToPosButton.whileTrue(m_armToPos);
-   m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);m_elevatorPositionButton.whileTrue(m_elevatorPosition);
+  m_armToPosButton.whileTrue(m_armToPos);
+  m_elevatorPositionButton.whileTrue(m_elevatorPosition);
+  m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
 
   }
 
