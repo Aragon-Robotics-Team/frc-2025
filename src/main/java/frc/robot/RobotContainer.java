@@ -77,6 +77,9 @@ public class RobotContainer {
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
   
   private SendableChooser<Command> m_autoChooser;
+  // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  // private SendableChooser<Command> m_autoChooser;
+
 
   private final JoystickButton m_armIntakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeIntakeButtonID);
   private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeOuttakeButtonID);
@@ -188,8 +191,6 @@ public class RobotContainer {
     m_indexerInButton.whileTrue(m_intakeIn);
     m_indexerOutButton.whileTrue(m_intakeOut);
     m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
-
-    m_armToPosButton.whileTrue(m_armToPos);
   }
 
   /**
