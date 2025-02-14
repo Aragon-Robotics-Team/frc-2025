@@ -20,6 +20,7 @@ import frc.robot.commands.ArmToPos;
 import frc.robot.commands.ElevatorPosition;
 import frc.robot.commands.ElevatorRatioTest;
 import frc.robot.commands.ElevatorToPosition;
+import frc.robot.commands.PIDForPivot;
 import frc.robot.commands.PivotToPosition;
 import frc.robot.commands.RunIndexer;
 import frc.robot.commands.RunIntake;
@@ -110,6 +111,10 @@ public class RobotContainer {
   private ElevatorRatioTest m_elevatorRatioTestthree = new ElevatorRatioTest(m_elevator, 0.45);
   private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_secondJoystick);
 
+  private PIDForPivot m_pivotPIDToA = new PIDForPivot(m_pivot, PivotConstants.kPivotPositionToA);
+  private PIDForPivot m_pivotPIDToB = new PIDForPivot(m_pivot, PivotConstants.kPivotPositionToB);
+  private PIDForPivot m_pivotPIDToC = new PIDForPivot(m_pivot, PivotConstants.kPivotPositionToC);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
@@ -146,9 +151,13 @@ public class RobotContainer {
     //m_elevatorRatioTestButtonTwo.whileTrue(m_elevatorRatioTesttwo);
     //m_elevatorRatioTestButtonThree.whileTrue(m_elevatorRatioTestthree);
 
-    m_pivotButtonToA.onTrue(m_pivotToA);
-    m_pivotButtonToB.onTrue(m_pivotToB);
-    m_pivotButtonToC.onTrue(m_pivotToC);
+    // m_pivotButtonToA.onTrue(m_pivotToA);
+    // m_pivotButtonToB.onTrue(m_pivotToB);
+    // m_pivotButtonToC.onTrue(m_pivotToC);
+
+    m_pivotButtonToA.onTrue(m_pivotPIDToA);
+    m_pivotButtonToB.onTrue(m_pivotPIDToB);
+    m_pivotButtonToC.onTrue(m_pivotPIDToC);
   }
 
   /**
