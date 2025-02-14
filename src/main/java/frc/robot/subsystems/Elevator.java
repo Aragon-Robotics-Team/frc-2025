@@ -43,6 +43,10 @@ public class Elevator extends SubsystemBase {
     m_elevator.set(speed);
     m_elevator2Max.set(-speed);
     SmartDashboard.putNumber("setSpeed", speed);
+<<<<<<< HEAD
+=======
+    
+>>>>>>> 1747e4a (Avi/elevator position (#8))
   }
 
   public double getElevatorPosition() {
