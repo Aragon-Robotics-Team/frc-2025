@@ -13,13 +13,13 @@ package frc.robot.constants;
  * constants are needed, to reduce verbosity.
  */
 public final class ArmConstants {
-  public static final int ArmTalonDeviceId = 23; 
-  public static final int topLimitSwitchChannel = 6;
-  public static final int bottomLimitSwitchChannel = 7;
+  public static final int kArmTalonDeviceId = 23; 
+  public static final int kTopLimitSwitchChannel = 6;
+  public static final int kBottomLimitSwitchChannel = 7;
   public static final int kArmYAxis = 1;
   public static final double kArmMultiplier = 0.1;
 
-  public static int encoderChannel = 9; 
+  public static int kEncoderChannel = 9; 
   // DIO channel 0 has been taken by elevator
   // DIO channels 1, 2, 3, 4 have been taken by the swerve
 }
