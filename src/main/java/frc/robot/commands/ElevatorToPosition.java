@@ -30,6 +30,7 @@ public class ElevatorToPosition extends Command {
     m_goal = new TrapezoidProfile.State(goal*ElevatorConstants.kTicksPerFoot/12, 0);
 
     m_profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(ElevatorConstants.kMaxSpeed*ElevatorConstants.kTicksPerSecondPerSpeed, ElevatorConstants.kMaxAcceleration));
+
     m_timer = new Timer();
     m_pid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
     
