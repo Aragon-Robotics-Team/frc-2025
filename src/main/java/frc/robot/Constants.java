@@ -98,4 +98,3 @@ public final class Constants {
         public static final double kPivotDerivativeTolerance = 0.001;
     }
     } 
-}
