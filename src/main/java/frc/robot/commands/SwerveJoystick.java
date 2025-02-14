@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.InternalButton;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.IOConstants;
@@ -39,7 +40,7 @@ public class SwerveJoystick extends Command {
   private final JoystickButton m_turnTo1stTag, m_turnTo2ndTag, m_turnTo3rdTag, m_turnTo4thTag, m_turnTo5thTag, m_turnTo6thTag, m_centerToTag;
   private PIDController m_pid = new PIDController(DriveConstants.kTurnToAngleP, DriveConstants.kTurnToAngleI, DriveConstants.kTurnToAngleD);
   private double m_targetAngle;
-  private double m_currentPitch;
+  private double m_currentYaw;
   private double m_currentAngle;
   private int m_targetID;
   private final Optional<Alliance> m_alliance = DriverStation.getAlliance(); 
@@ -47,7 +48,6 @@ public class SwerveJoystick extends Command {
  
 
   public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick, Vision vision, JoystickButton turnTo1stTag, JoystickButton turnTo2ndTag, JoystickButton turnTo3rdTag, JoystickButton turnTo4thTag, JoystickButton turnTo5thTag, JoystickButton turnTo6thTag, JoystickButton centerToTag) {
-    
     m_xSlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
     m_ySlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
     m_joystick = joystick;
@@ -107,10 +107,7 @@ public class SwerveJoystick extends Command {
     m_xSpeed = Math.signum(m_xSpeed) * (Math.pow(2, Math.abs(m_xSpeed)) -1) * -1;
     m_ySpeed = Math.signum(m_ySpeed) * (Math.pow(2, Math.abs(m_ySpeed)) -1) * -1;
     m_turningSpeed = Math.signum(m_turningSpeed) * (Math.pow(2, Math.abs(m_turningSpeed)) -1) * -1;
-    System.out.println("After appliance " + m_turningSpeed);
-
     
-
     // SmartDashboard.putNumber("Joystick/xSpeedRaw", xSpeed);
     // SmartDashboard.putNumber("Joystick/ySpeedRaw", ySpeed);
     // SmartDashboard.putNumber("Joystick/turningSpeedRaw", turningSpeed);
@@ -130,82 +127,93 @@ public class SwerveJoystick extends Command {
     //Logger.recordOutput(getName(), desiredSwerveModuleStates);
 
     m_currentAngle = m_swerveDrive.getAngleDegrees();
+    SmartDashboard.putNumber("Current angle", m_currentAngle);
     if (m_turnTo1stTag.getAsBoolean()){
-      if (m_alliance.isPresent()) {
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag10Angle;
-          m_targetID = 10;
-        } else if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag21Angle;
-          m_targetID = 21;
-        }
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_turnTo2ndTag.getAsBoolean()) {
-      if (m_alliance.isPresent()) {
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag9Angle;
-          m_targetID = 9;
-        } else if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag22Angle;
-          m_targetID = 22;
-        }
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_turnTo3rdTag.getAsBoolean()) {
-      if (m_alliance.isPresent()) {
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag8Angle;
-          m_targetID = 8;
-        } else if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag17Angle;
-          m_targetID = 17;
-        }
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_turnTo4thTag.getAsBoolean()) {
-      if (m_alliance.isPresent()) {
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag7Angle;  
-          m_targetID = 7;
-        } else 
-        if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag18Angle;  
-          m_targetID = 18;
-        } 
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_turnTo5thTag.getAsBoolean()) {
-      if (m_alliance.isPresent()) {
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag6Angle;
-          m_targetID = 6;
-        } else 
-        if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag19Angle;
-          m_targetID = 19;
-        } 
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_turnTo6thTag.getAsBoolean()) {
-      if (m_alliance.isPresent()) {
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag11Angle;
-          m_targetID = 11;
-        } else if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag20Angle;
-          m_targetID = 20;
-        } 
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_centerToTag.getAsBoolean()) {
-      m_currentPitch = m_vision.getTargetPitch();
-      m_xySpeed = m_pid.calculate(m_currentPitch, 0);
-      m_xSpeed = m_xySpeed*Math.sin(Math.toRadians(VisionConstants.kTagAngles[m_targetID - 6]));
-      m_ySpeed = m_xySpeed*Math.cos(Math.toRadians(VisionConstants.kTagAngles[m_targetID - 6]));
-    } 
+      m_targetAngle = VisionConstants.kTag10Angle;
+      m_targetID = 10;
+      m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+    }
+    // if (m_turnTo1stTag.getAsBoolean()){
+    //   if (m_alliance.isPresent()) {
+    //     System.out.println("True");
+    //     if (m_alliance.get() == Alliance.Red) {
+    //       m_targetAngle = VisionConstants.kTag10Angle;
+    //       m_targetID = 10;
+    //     } else if (m_alliance.get() == Alliance.Blue) {
+    //       m_targetAngle = VisionConstants.kTag21Angle;
+    //       m_targetID = 21;
+    //     }
+    //     m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+    //   }
+    // } else if (m_turnTo2ndTag.getAsBoolean()) {
+    //   if (m_alliance.isPresent()) {
+    //     if (m_alliance.get() == Alliance.Red) {
+    //       m_targetAngle = VisionConstants.kTag9Angle;
+    //       m_targetID = 9;
+    //     } else if (m_alliance.get() == Alliance.Blue) {
+    //       m_targetAngle = VisionConstants.kTag22Angle;
+    //       m_targetID = 22;
+    //     }
+    //     m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+    //   }
+    // } else if (m_turnTo3rdTag.getAsBoolean()) {
+    //   if (m_alliance.isPresent()) {
+    //     if (m_alliance.get() == Alliance.Red) {
+    //       m_targetAngle = VisionConstants.kTag8Angle;
+    //       m_targetID = 8;
+    //     } else if (m_alliance.get() == Alliance.Blue) {
+    //       m_targetAngle = VisionConstants.kTag17Angle;
+    //       m_targetID = 17;
+    //     }
+    //     m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+    //   }
+    // } else if (m_turnTo4thTag.getAsBoolean()) {
+    //   if (m_alliance.isPresent()) {
+    //     if (m_alliance.get() == Alliance.Red) {
+    //       m_targetAngle = VisionConstants.kTag7Angle;  
+    //       m_targetID = 7;
+    //     } else 
+    //     if (m_alliance.get() == Alliance.Blue) {
+    //       m_targetAngle = VisionConstants.kTag18Angle;  
+    //       m_targetID = 18;
+    //     } 
+    //     m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+    //   }
+    // } else if (m_turnTo5thTag.getAsBoolean()) {
+    //   if (m_alliance.isPresent()) {
+    //     if (m_alliance.get() == Alliance.Red) {
+    //       m_targetAngle = VisionConstants.kTag6Angle;
+    //       m_targetID = 6;
+    //     } else 
+    //     if (m_alliance.get() == Alliance.Blue) {
+    //       m_targetAngle = VisionConstants.kTag19Angle;
+    //       m_targetID = 19;
+    //     } 
+    //     m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+    //   }
+    // } else if (m_turnTo6thTag.getAsBoolean()) {
+    //   if (m_alliance.isPresent()) {
+    //     if (m_alliance.get() == Alliance.Red) {
+    //       m_targetAngle = VisionConstants.kTag11Angle;
+    //       m_targetID = 11;
+    //     } else if (m_alliance.get() == Alliance.Blue) {
+    //       m_targetAngle = VisionConstants.kTag20Angle;
+    //       m_targetID = 20;
+    //     } 
+    //     m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+    //   }
+    // } else if (m_centerToTag.getAsBoolean()) {
+    //   m_currentYaw = m_vision.getTargetYaw();
+    //   m_xySpeed = m_pid.calculate(m_currentYaw, 0);
+    //   m_xSpeed = m_xySpeed*Math.sin(Math.toRadians(VisionConstants.kTagAngles[m_targetID - 6]));
+    //   m_ySpeed = m_xySpeed*Math.cos(Math.toRadians(VisionConstants.kTagAngles[m_targetID - 6]));
+    // } 
 
     m_vision.setTargetID(m_targetID);
+        
+    if (m_turningSpeed > DriveConstants.kMaxTurningRadiansPerSecond){
+      m_turningSpeed = DriveConstants.kMaxTurningRadiansPerSecond;
+    }
 
     SmartDashboard.putNumber("X speed", m_xSpeed);
     SmartDashboard.putNumber("Y speed", m_ySpeed);
