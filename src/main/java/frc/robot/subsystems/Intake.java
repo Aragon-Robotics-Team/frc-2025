@@ -14,11 +14,12 @@ public class Intake extends SubsystemBase {
   /** Creates a new Intake. */
   private SparkMax m_intakeMotor = new SparkMax(IntakeConstants.kIntakeMotorID, MotorType.kBrushless);
 
-  public Intake() {}  
+  public Intake() {
+    
+  }  
   
-  public void setIntakeSpeed (double speed) {
-   
-    m_intakeMotor.set (speed);
+  public void setIntakeSpeed (double speed) {   
+    m_intakeMotor.set(speed);
   }
   @Override
   public void periodic() {
