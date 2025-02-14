@@ -65,7 +65,9 @@ public class RobotContainer {
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
 
+
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+
 
 
 
@@ -163,6 +165,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
     
     // make sure this doesn't accidently run
@@ -186,6 +189,7 @@ public class RobotContainer {
     m_indexerOutButton.whileTrue(m_intakeOut);
     m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
 
+    m_armToPosButton.whileTrue(m_armToPos);
   }
 
   /**
