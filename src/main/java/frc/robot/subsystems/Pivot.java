@@ -76,20 +76,20 @@ public class Pivot extends SubsystemBase {
 
   /*public double getSimPivotPosition() {
     return m_pivotSim.getAngularPositionRotations();
-  }*/
+  }
 
   public double getPivotPosition() {
     return m_encoder.get();
   }
 
-  /*public DCMotorSim getPivotSim() {
+  public DCMotorSim getPivotSim() {
     return m_pivotSim;
-  }*/
+  }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    //m_pivotSim.setInputVoltage(m_pivotSim.getInputVoltage());
-    //m_pivotSim.update(0.02);
+    m_pivotSim.setInputVoltage(m_pivotSim.getInputVoltage());
+    m_pivotSim.update(0.02);
   }
 }

@@ -27,16 +27,7 @@ public class PivotToPosition extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-<<<<<<< HEAD
-<<<<<<< HEAD
     m_pivot.setPivotSpeed(0);
-=======
-    //m_pivot.setPivotSpeed(0);
-    //m_initialPosition = m_pivot.getSimPivotPosition();
->>>>>>> f369119 (pivot code with working simulation)
-=======
-    m_pivot.setPivotSpeed(0);
->>>>>>> b9c56d3 (working simulation, with constants)
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -44,11 +35,7 @@ public class PivotToPosition extends Command {
   public void execute() {
     m_pivot.setPivotSpeed(m_speed);
     SmartDashboard.putNumber("Pivot Speed", m_speed);
-<<<<<<< HEAD
     SmartDashboard.putNumber("Rotations", m_pivot.getPivotPosition());
-=======
-    SmartDashboard.putNumber("Rotations", m_pivot.getSimPivotPosition());
->>>>>>> f369119 (pivot code with working simulation)
     
     //m_pivot.getPivotSim().setInputVoltage(12 * m_speed);
     //m_pivot.getPivotSim().update(0.02);
