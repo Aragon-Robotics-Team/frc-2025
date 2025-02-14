@@ -39,8 +39,8 @@ public class RobotContainer {
   private final Joystick m_secondJoystick = new Joystick(1);
   private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private SendableChooser<Command> m_autoChooser;
-  private Intake m_intakeMotor = new Intake();
-  private IntakeIn m_intakeIn = new IntakeIn(m_intakeMotor);
+  private Intake m_intake = new Intake();
+  private IntakeIn m_intakeIn = new IntakeIn(m_intake);
   private JoystickButton m_intakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeButtonID); //change number later
 
   private Elevator m_elevator = new Elevator();
