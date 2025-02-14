@@ -45,9 +45,10 @@ public class ArmToPos extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-  if(Math.abs(m_pos - m_arm.getArmPos()) < 0.1){
-    return true;
-  }
-   return false;
+    if (pid.atSetpoint()){
+      return true;
+    }
+    return false;
   }
 }
+
