@@ -24,8 +24,12 @@ public class Arm extends SubsystemBase {
     m_arm.setNeutralMode(NeutralModeValue.Brake);
   }
   
-  public void setSpeed(double m_speed){
-    m_arm.set(m_speed);
+  public void setSpeed(double speed){
+    if ((getTopLimitSwitch() && speed < 0) || (getBottomLimitSwitch() && speed > 0)){
+      speed = 0;
+    }
+    m_arm.set(speed);
+    System.out.println(speed);  
   }
 
   public double getEncoderPosition(){
@@ -33,16 +37,18 @@ public class Arm extends SubsystemBase {
   }
 
   public Boolean getTopLimitSwitch(){
-    return m_topLimitSwitch.get();
+    return !m_topLimitSwitch.get();
   }
 
   public Boolean getBottomLimitSwitch(){
-    return m_bottomLimitSwitch.get();
+    return !m_bottomLimitSwitch.get();
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Arm encoder ticks", getEncoderPosition());
+    SmartDashboard.putBoolean("Top Arm Limit", getTopLimitSwitch());
+    SmartDashboard.putBoolean("Bottom Arm Limit", getBottomLimitSwitch());
     // This method will be called once per scheduler run
   }
 }
