@@ -56,6 +56,10 @@ public class RobotContainer {
 
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
   private SendableChooser<Command> m_autoChooser;
+  private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
+  // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  // private SendableChooser<Command> m_autoChooser;
+
 
   private Intake m_intake = new Intake();
   private RunIntake m_intakeIn = new RunIntake(m_intake, 0.3); // positive speed == intake in
@@ -115,7 +119,8 @@ public class RobotContainer {
     m_indexerOutButton.whileTrue(m_intakeOut);
     m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
     m_armToPosButton.whileTrue(m_armToPos);
-   m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);m_elevatorPositionButton.whileTrue(m_elevatorPosition);
+    m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
+    m_elevatorPositionButton.whileTrue(m_elevatorPosition);
 
   }
 
