@@ -162,7 +162,7 @@ public class RobotContainer {
     return null; //temporary
   }
 
-  private void getTeleopCommand() {
+  public void getTeleopCommand() {
     // commenting this out for elevator testing so arm doesn't randomly trigger
     // m_arm.setDefaultCommand(m_arcadeArm);
     m_pivot.setDefaultCommand(m_arcadePivot);
