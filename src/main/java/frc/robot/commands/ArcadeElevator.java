@@ -34,7 +34,19 @@ public class ArcadeElevator extends Command {
   @Override
   public void execute() {
     //if we are going down the speed is negative and we are going to make our speed 0.
+<<<<<<< HEAD
     m_speed = m_joystick.getRawAxis(ElevatorConstants.kElevatorYAxis);
+=======
+    SmartDashboard.putNumber("Elevator Joystick speed", m_joystick.getRawAxis(ElevatorConstants.kElevatorYAxis));
+    if ((!(m_elevator.getLimitSwitch())))
+    {
+      m_elevator.setElevatorPosition(0);
+    }
+    if(m_joystick.getRawAxis(ElevatorConstants.kElevatorYAxis) * ElevatorConstants.kElevatorMultiplier<0 && (!(m_elevator.getLimitSwitch()))){
+       m_elevator.setSpeed(0);
+
+       SmartDashboard.putNumber("Elevator speed", 0);
+>>>>>>> e2c522c (Avi/elevator position (#8))
 
     if (m_elevator.getLimitSwitch()) {
       m_elevator.setElevatorPosition(0);
