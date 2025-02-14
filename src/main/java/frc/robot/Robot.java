@@ -25,25 +25,25 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
   private Command m_teleopCommand;
 
-  private final RobotContainer m_robotContainer;
-  //private final SwerveDrive m_swerve;
-
-
-
-
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
-  @Override
-  public void robotInit() {
-    // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
-    // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
+  private RobotContainer m_robotContainer;
+    //private final SwerveDrive m_swerve;
+  
+  
+  
+  
+    /**
+     * This function is run when the robot is first started up and should be used for any
+     * initialization code.
+     */
+    @Override
+    public void robotInit() {
+      // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
+      // autonomous chooser on the dashboard.
+      m_robotContainer = new RobotContainer();
     //m_swerve = m_robotContainer.m_swerve;
-  }
+  
 
-    var directory = new File("/home/lvuser/logs");
+    File directory = new File("/home/lvuser/logs");
 
     if (!directory.exists())
     {
@@ -53,6 +53,7 @@ public class Robot extends LoggedRobot {
     Logger.addDataReceiver(new WPILOGWriter("/home/lvuser/logs")); 
     Logger.start();
   }
+  
   
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
@@ -125,4 +126,5 @@ public class Robot extends LoggedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+
 }
