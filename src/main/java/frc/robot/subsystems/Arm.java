@@ -14,10 +14,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
-  private TalonFX m_arm = new TalonFX(ArmConstants.ArmTalonDeviceId);
-  private DigitalInput toplimitSwitch = new DigitalInput(ArmConstants.topLimitSwitchChannel);
-  private DigitalInput bottomlimitSwitch = new DigitalInput(ArmConstants.bottomLimitSwitchChannel);
-  private DutyCycleEncoder encoder = new DutyCycleEncoder(ArmConstants.encoderChannel);
+  private TalonFX m_arm = new TalonFX(ArmConstants.kArmTalonDeviceId);
+  private DigitalInput toplimitSwitch = new DigitalInput(ArmConstants.kTopLimitSwitchChannel);
+  private DigitalInput bottomlimitSwitch = new DigitalInput(ArmConstants.kBottomLimitSwitchChannel);
+  private DutyCycleEncoder encoder = new DutyCycleEncoder(ArmConstants.kEncoderChannel);
   
 
   // we have removed the Arm constructor
