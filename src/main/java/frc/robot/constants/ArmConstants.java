@@ -4,6 +4,8 @@
 
 package frc.robot.constants;
 
+import edu.wpi.first.wpilibj.DutyCycle;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -19,8 +21,15 @@ public final class ArmConstants {
   public static final int kArmYAxis = 1;
   public static final double kArmMultiplier = 0.2;
 
-  public static int encoderChannel = 9; 
+  // PID constants by jamal
+  public static final double kP = 0.1;
+  public static final double kI = 0.1;
+  public static final double kD = 0.1;
+
   // DIO channel 0 has been taken by elevator
   // DIO channels 1, 2, 3, 4 have been taken by the swerve
+
+public static Object encoder;
+public static DutyCycle encoderChannel;
 }
 // find in future!
