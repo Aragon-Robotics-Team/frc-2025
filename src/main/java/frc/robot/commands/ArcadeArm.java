@@ -36,7 +36,6 @@ private double m_speed;
   @Override
   public void execute() {
     m_speed = m_operatorJoystick.getRawAxis(ArmConstants.kArmYAxis) * ArmConstants.kArmMultiplier;
-    SmartDashboard.putNumber("Arm speed", m_speed);
     m_arm.setSpeed(m_speed);
     /*
     if (speed>0){
