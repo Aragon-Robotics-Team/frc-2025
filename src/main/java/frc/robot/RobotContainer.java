@@ -175,6 +175,7 @@ public class RobotContainer {
 
     // commenting this out for elevator testing so arm doesn't randomly trigger
     // m_arm.setDefaultCommand(m_arcadeArm);
+    m_pivot.setDefaultCommand(m_arcadePivot);
     //m_swerve.setDefaultCommand(m_swerveJoystick);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
