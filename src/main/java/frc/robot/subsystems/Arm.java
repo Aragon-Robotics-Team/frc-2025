@@ -14,12 +14,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ArmConstants;
 
 public class Arm extends SubsystemBase {
-  private TalonFX m_arm = new TalonFX(ArmConstants.ArmTalonDeviceId);
-  private DigitalInput toplimitSwitch = new DigitalInput(ArmConstants.topLimitSwitchChannel);
-  private DigitalInput bottomlimitSwitch = new DigitalInput(ArmConstants.bottomLimitSwitchChannel);
-  private DutyCycleEncoder encoder = new DutyCycleEncoder(ArmConstants.encoderChannel);
+  private TalonFX m_arm = new TalonFX(ArmConstants.kArmTalonDeviceId);
+  private DigitalInput m_topLimitSwitch = new DigitalInput(ArmConstants.kTopLimitSwitchChannel);
+  private DigitalInput m_bottomLimitSwitch = new DigitalInput(ArmConstants.kBottomLimitSwitchChannel);
+  private DutyCycleEncoder m_encoder = new DutyCycleEncoder(ArmConstants.kEncoderChannel);
   
-
   // we have removed the Arm constructor
   public Arm(){
     m_arm.setNeutralMode(NeutralModeValue.Brake);
@@ -30,15 +29,15 @@ public class Arm extends SubsystemBase {
   }
 
   public double getEncoderPosition(){
-    return encoder.get();
+    return m_encoder.get();
   }
 
   public Boolean getTopLimitSwitch(){
-    return toplimitSwitch.get();
+    return m_topLimitSwitch.get();
   }
 
   public Boolean getBottomLimitSwitch(){
-    return bottomlimitSwitch.get();
+    return m_bottomLimitSwitch.get();
   }
 
   @Override

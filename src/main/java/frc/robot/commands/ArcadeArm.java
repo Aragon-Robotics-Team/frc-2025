@@ -17,6 +17,7 @@ public class ArcadeArm extends Command {
 
 private Arm m_arm;
 private Joystick m_operatorJoystick;
+private double m_speed;
 
   public ArcadeArm(Arm arm, Joystick operatorjoystick) {
     m_arm = arm;
@@ -34,9 +35,9 @@ private Joystick m_operatorJoystick;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double speed = m_operatorJoystick.getRawAxis(ArmConstants.kArmYAxis) * ArmConstants.kArmMultiplier;
-    SmartDashboard.putNumber("Arm speed", speed);
-    m_arm.setSpeed(speed);
+    m_speed = m_operatorJoystick.getRawAxis(ArmConstants.kArmYAxis) * ArmConstants.kArmMultiplier;
+    SmartDashboard.putNumber("Arm speed", m_speed);
+    m_arm.setSpeed(m_speed);
     /*
     if (speed>0){
       if (m_arm.getTopLimitSwitch()){
