@@ -52,7 +52,7 @@ public class RobotContainer {
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
 
   private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, 1);
-  private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 20);
+  private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 15);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();

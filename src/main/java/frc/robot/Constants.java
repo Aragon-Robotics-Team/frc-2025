@@ -15,19 +15,25 @@ package frc.robot;
 public final class Constants {
    public final class ElevatorConstants{
     public static final int kElevatorYAxis = 0;
-    public static final double kElevatorMultiplier = 0.1;
-    public static final int deviceId = 19;
-    public static final int deviceId2=24;
+    public static final double kElevatorMultiplier = Math.PI/26;
+    public static final double kTicksPerFoot = 12.9285;
+    public static final double kTicksPerSecondPerSpeed = 5;
+    public static final int deviceId = 5;
+    public static final int deviceId2=0;
     public static final int limitSwitchDio=0;
 
-
-    public static final double kElevatorTickConversionRate = 13.9285; // to move our elevator a foot upwards, it costs 13.9285 elevator ticks (and two trainees)
-    //max ticks -- ~60.25
+    // This is the max speed tolerated by trapezoidal. The unit is the speed is put into setSpeed() (goes from -1 to 1)
     public static final double maxSpeed = 0.1;
-    public static final double maxAcceleration = 0.01;
+
+    // This is the max acceleration tolerated by trapezoidal. Units are in ticks/s^2
+    public static final double maxAcceleration = 1;
+
     public static final double kP = 0.1;
     public static final double kI = 0;
     public static final double kD = 0.0001;
+
+    public static final double kPositionDeadband  = 0.1;
+    public static final double kVelocityDeadband = 0.05;
 
    }  
    public final class JoystickConstants{
