@@ -33,7 +33,7 @@ public final class Constants {
    
     public static final class IntakeConstants {
         public static final int kIntakeMotorID = 0;
-        public static final double speed = .14159265;
+        public static final double speed = .5;
         public static final int kIntakeButtonID = 1;
     }
     } 
