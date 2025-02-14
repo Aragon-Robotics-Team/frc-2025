@@ -33,7 +33,7 @@ public class ArcadePivot extends Command {
   public void execute() {
     m_pivot.setPivotSpeed(m_joystick.getRawAxis(0));
     SmartDashboard.putNumber("Pivot Speed", m_joystick.getRawAxis(0));
-    SmartDashboard.putNumber("Rotations", m_pivot.getSimPivotPosition());
+    SmartDashboard.putNumber("Rotations", m_pivot.getPivotPosition());
   }
 
   // Called once the command ends or is interrupted.

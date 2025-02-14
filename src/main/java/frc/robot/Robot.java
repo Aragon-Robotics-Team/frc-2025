@@ -101,6 +101,7 @@ public class Robot extends LoggedRobot {
       m_autonomousCommand.cancel();
     }
 
+    m_robotContainer.getTeleopCommand();
   }
 
   /** This function is called periodically during operator control. */
