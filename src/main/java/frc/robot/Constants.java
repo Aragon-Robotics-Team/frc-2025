@@ -15,7 +15,7 @@ package frc.robot;
 public final class Constants {
     public static final class PivotConstants {
         public static final int kLeftPivotMotorID = 0; 
-        public static final int kRightPivotMotorID = 1; //change
+        public static final int kRightPivotMotorID = 1; //TODO: change
 
         public static final int kNumMotors = 2;
         public static final int kGearRatio = 108;
