@@ -255,8 +255,12 @@ public class RobotContainer {
 =======
 
   private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, 1);
+<<<<<<< HEAD
   private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 20);
 >>>>>>> 49f1c04 (Added Elevator PID Command)
+=======
+  private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 15);
+>>>>>>> 37d1f37 (Added conversions for units)
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     bindSubsystemCommands();

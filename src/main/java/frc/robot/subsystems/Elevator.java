@@ -58,7 +58,6 @@ public class Elevator extends SubsystemBase {
   public double getSpeed(){
     //getVelocity returns RPM, so /60 converts it to RPS.
     return m_neo1.getEncoder().getVelocity()/60;
-
   }
 
   public double getElevatorPosition() {
