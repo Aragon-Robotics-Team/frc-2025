@@ -11,6 +11,9 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.ctre.phoenix6.signals.NeutralModeValue;
+import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.ArmConstants;
@@ -20,7 +23,7 @@ public class Arm extends SubsystemBase {
   private SparkMax m_armOuttakeMotor = new SparkMax(ArmConstants.ArmOuttakeMotorDeviceId, MotorType.kBrushless);
 
   //private DigitalInput toplimitSwitch = new DigitalInput(ArmConstants.topLimitSwitchChannel);
-  //private DigitalInput bottomlimitSwitch = new DigitalInput(ArmConstants.bottomLimitSwitchChannel);
+  private DigitalInput bottomlimitSwitch = new DigitalInput(ArmConstants.bottomLimitSwitchChannel);
   private DutyCycleEncoder encoder = new DutyCycleEncoder(ArmConstants.encoderChannel);
   
 
@@ -46,9 +49,9 @@ public class Arm extends SubsystemBase {
   //  return toplimitSwitch.get();
  // }
 
-  // public Boolean getBottomLimitSwitch(){
-  //   return bottomlimitSwitch.get();
-  // }
+  public Boolean getBottomLimitSwitch(){
+    return bottomlimitSwitch.get();
+  }
 
   @Override
   public void periodic() {
