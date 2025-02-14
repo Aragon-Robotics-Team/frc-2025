@@ -106,8 +106,6 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-
-
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
     // m_armToPosButton.whileTrue(m_armToPos);
    
