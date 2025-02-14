@@ -24,6 +24,7 @@ public class ElevatorPosition extends Command {
   private double m_initialPosition;
   private double m_currentPosition;
   private double m_error;
+  private double m_speed;
 
 
   /** Creates a new ElevatorPosition. */
@@ -41,7 +42,6 @@ public class ElevatorPosition extends Command {
   @Override
   public void initialize() {
     m_initialPosition = m_elevator.getElevatorPosition();
-
   }
 
   
@@ -50,14 +50,14 @@ public class ElevatorPosition extends Command {
   public void execute() {
     m_currentPosition = m_elevator.getElevatorPosition();
     //m_currentPosition = m_currentPosition - m_initialPosition;
-    double setSpeed = m_pid.calculate(m_currentPosition, m_pid.getSetpoint());
+    m_speed = m_pid.calculate(m_currentPosition, m_pid.getSetpoint());
     // if (setSpeed > 0.5)
     // {
     //   setSpeed = 0.5;
     // }
     Logger.recordOutput("currentPosition", m_currentPosition);
     Logger.recordOutput("Setpoint", m_pid.getSetpoint());
-    m_elevator.setSpeed(setSpeed);
+    m_elevator.setSpeed(m_speed);
   }
 
   // Called once the command ends or is interrupted.
