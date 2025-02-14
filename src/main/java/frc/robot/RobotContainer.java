@@ -31,6 +31,8 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pivot;
+import frc.robot.subsystems.Intake;
+import frc.robot.commands.SpinArmOuttakeMotor;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -108,6 +110,7 @@ public class RobotContainer {
   private JoystickButton m_pivotButtonToStow = new JoystickButton(m_secondJoystick, PivotConstants.kPivotStowButtonID);
   private JoystickButton m_pivotButtonToIntake = new JoystickButton(m_secondJoystick, PivotConstants.kPivotIntakeButtonID);
 
+  
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
@@ -151,6 +154,12 @@ public class RobotContainer {
     m_pivotButtonToIntake.onTrue(m_pivotPIDToIntake);
     // m_armToPosButton.whileTrue(m_armToPos);
    
+    m_intakeInButton.whileTrue(m_intakeIn);
+    m_intakeOutButton.whileTrue(m_intakeOut);
+    m_indexerInButton.whileTrue(m_intakeIn);
+    m_indexerOutButton.whileTrue(m_intakeOut);
+    m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
+    m_armToPosButton.whileTrue(m_armToPos);
   }
 
   /**
