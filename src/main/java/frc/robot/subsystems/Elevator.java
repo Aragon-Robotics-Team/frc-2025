@@ -5,6 +5,9 @@
 package frc.robot.subsystems;
 
 
+
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.spark.SparkBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -40,12 +43,18 @@ public class Elevator extends SubsystemBase {
   public void setSpeed(double speed) {
     m_elevator.set(speed);
     m_elevator2Max.set(-speed);
+    SmartDashboard.putNumber("setSpeed", speed);
+    
   }
   public double getElevatorPosition() {
     return m_elevator.getEncoder().getPosition();
   }
   public boolean getLimitSwitch(){
     return bottomLimitSwitch.get();
+  }
+
+  public void setElevatorPosition(double position) {
+    m_elevator.getEncoder().setPosition(position);
   }
   // public void SetNeutralMode(IdleMode neutralMode) {
 
@@ -55,6 +64,7 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Encoder ticks", getElevatorPosition());
+    SmartDashboard.putNumber("elevator speed", m_elevator.getEncoder().getVelocity());
   }
   public void addRequirements(){}
 }
