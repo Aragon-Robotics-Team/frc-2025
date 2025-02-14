@@ -30,6 +30,7 @@ public class ElevatorToPosition extends Command {
     m_goal = new TrapezoidProfile.State(goal*ElevatorConstants.kTicksPerFoot/12, 0);
 
     m_profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(ElevatorConstants.kMaxSpeed*ElevatorConstants.kTicksPerSecondPerSpeed, ElevatorConstants.kMaxAcceleration));
+
     m_timer = new Timer();
     m_pid = new PIDController(ElevatorConstants.kP, ElevatorConstants.kI, ElevatorConstants.kD);
     
@@ -56,11 +57,12 @@ public class ElevatorToPosition extends Command {
 
     SmartDashboard.putNumber("Elevator/setspeed", speed);
 
-    SmartDashboard.putNumber("Elevator/real velocity", m_elevator.getSpeed());
+    SmartDashboard.putNumber("Elevator/real velocity RPS", m_elevator.getSpeed());
     SmartDashboard.putNumber("Elevator/feedForward", idealState.velocity);
     SmartDashboard.putNumber("Elevator/velocity error", m_elevator.getSpeed() - idealState.velocity);
-    SmartDashboard.putNumber("Elevator/position", m_elevator.getElevatorPosition());
-    SmartDashboard.putNumber("Elevator/ideal position", idealState.position);
+    SmartDashboard.putNumber("Elevator/position (ticks)", m_elevator.getElevatorPosition());
+    SmartDashboard.putNumber("Elevator/ideal position (ticks)", idealState.position);
+
     SmartDashboard.putNumber("Elevator/position error", m_elevator.getElevatorPosition() - idealState.position);
   }
 
