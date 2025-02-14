@@ -33,9 +33,9 @@ public class PIDForPivot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_pivot.setPivotSpeed(m_pid.calculate(m_pivot.getSimPivotPosition(), m_goal));
-    SmartDashboard.putNumber("Pivot Speed", m_pid.calculate(m_pivot.getSimPivotPosition(), m_goal));
-    SmartDashboard.putNumber("Rotations", m_pivot.getSimPivotPosition());
+    m_pivot.setPivotSpeed(m_pid.calculate(m_pivot.getPivotPosition(), m_goal));
+    SmartDashboard.putNumber("Pivot Speed", m_pid.calculate(m_pivot.getPivotPosition(), m_goal));
+    SmartDashboard.putNumber("Rotations", m_pivot.getPivotPosition());
   }
 
   // Called once the command ends or is interrupted.

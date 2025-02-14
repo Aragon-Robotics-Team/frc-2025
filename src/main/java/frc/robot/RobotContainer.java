@@ -91,10 +91,9 @@ public class RobotContainer {
     return null; //temporary
   }
 
-  public Command getTeleopCommand() {
+  public void getTeleopCommand() {
     //m_swerve.setDefaultCommand(m_swerveJoystick);
     m_pivot.setDefaultCommand(m_arcadePivot);
-    return null;
   }
 
   
