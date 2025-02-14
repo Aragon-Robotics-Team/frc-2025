@@ -15,7 +15,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.ArcadeElevator;
+import frc.robot.commands.ArmToPos;
 import frc.robot.commands.SwerveJoystick;
+import frc.robot.constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.ElevatorPosition;
@@ -43,7 +45,8 @@ public class RobotContainer {
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
-  
+  private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0); // TODO: Change tick number
+  private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -66,6 +69,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     m_elevatorPositionButton.whileTrue(m_elevatorPosition);
+    m_armToPosButton.whileTrue(m_armToPos);
   }
 
   /**

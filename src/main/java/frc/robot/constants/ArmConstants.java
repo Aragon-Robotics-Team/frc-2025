@@ -23,7 +23,8 @@ public final class ArmConstants {
   public static final double kI = 0.1;
   public static final double kD = 0.1;
 
-  public static int kEncoderChannel = 9; 
+  public static final int kEncoderChannel = 9; 
+  public static final int kArmButtonID = 2; // TODO: Change to actual button ID
   // DIO channel 0 has been taken by elevator
   // DIO channels 1, 2, 3, 4 have been taken by the swerve
 }
