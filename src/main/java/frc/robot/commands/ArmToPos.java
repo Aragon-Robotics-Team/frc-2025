@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.ArmConstants;
 import frc.robot.subsystems.Arm;
@@ -14,6 +15,7 @@ import frc.robot.subsystems.Arm;
 public class ArmToPos extends Command {
   private double m_pos;
   private Arm m_arm;
+  private double m_speed;
   
   // Creates a PIDController with gains kP, kI, and kD
   PIDController m_pid = new PIDController(ArmConstants.kP, ArmConstants.kI, ArmConstants.kD);
@@ -33,7 +35,9 @@ public class ArmToPos extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.setSpeed(m_pid.calculate(m_arm.getEncoderPosition(), m_pos));
+    m_speed = -m_pid.calculate(m_arm.getEncoderPosition(), m_pos);
+    m_arm.setSpeed(m_speed);
+    SmartDashboard.putNumber("Arm PID Speed", m_speed);
   }
 
   // Called once the command ends or is interrupted.
