@@ -34,8 +34,7 @@ public final class Constants {
     public static final class IntakeConstants {
         public static final int kIntakeMotorID = 0;
         public static final double speed = .14159265;
-        private JoystickButton m_intakeButton = new JoystickButton(m_joystick, 1); //change number later
-        private SparkMax m_intakeMotor = new SparkMax(0, MotorType.kBrushless);
+        public static final int kIntakeButtonID = 1;
     }
     } 
  

@@ -12,12 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.subsystems.SwerveDrive;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.IntakeIn;
@@ -39,7 +41,7 @@ public class RobotContainer {
   private SendableChooser<Command> m_autoChooser;
   private Intake m_intakeMotor = new Intake();
   private IntakeIn m_intakeIn = new IntakeIn(m_intakeMotor);
- 
+  private JoystickButton m_intakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeButtonID); //change number later
 
   private Elevator m_elevator = new Elevator();
 
