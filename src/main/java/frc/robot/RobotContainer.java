@@ -39,10 +39,11 @@ public class RobotContainer {
   //public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-
+  private final JoystickButton m_button = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
+  // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  private final Joystick m_driverJoystick = new Joystick(0);
   private Elevator m_elevator = new Elevator();
 
-  //private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator,42);
 
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
@@ -92,8 +93,9 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
-    // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
 
+    // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
+    
     // make sure this doesn't accidently run
     // m_armToPosButton.whileTrue(m_armToPos);
 
@@ -104,6 +106,7 @@ public class RobotContainer {
     
 
     m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
+
 
   }
 
