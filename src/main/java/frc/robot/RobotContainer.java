@@ -19,13 +19,14 @@ import frc.robot.commands.SwerveJoystick;
 import frc.robot.constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
+import frc.robot.commands.ElevatorPosition;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.commands.SpinArmOuttakeMotor;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
- * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
+ * periodic methods (other than commandsthe scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
@@ -36,13 +37,19 @@ public class RobotContainer {
   private final Joystick m_secondJoystick = new Joystick(1);
   private final JoystickButton m_button = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  // private SendableChooser<Command> m_autoChooser;
+  private final Joystick m_driverJoystick = new Joystick(0);
+  private Elevator m_elevator = new Elevator();
+
+  private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator,42);
+
+  private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
+  private SendableChooser<Command> m_autoChooser;
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
   private final SpinArmOuttakeMotor m_spinArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm);
   
-  private Elevator m_elevator = new Elevator();
+
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -64,6 +71,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
    m_button.whileTrue(m_spinArmOuttakeMotor);
+    m_elevatorPositionButton.whileTrue(m_elevatorPosition);
   }
 
   /**
@@ -81,6 +89,6 @@ public class RobotContainer {
     m_arm.setDefaultCommand(m_arcadeArm);
     // m_swerve.setDefaultCommand(m_swerveJoystick);
     m_elevator.setDefaultCommand(m_arcadeElevator);
-
+    // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }
