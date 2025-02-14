@@ -9,6 +9,9 @@ package frc.robot.subsystems;
 import com.reduxrobotics.sensors.canandgyro.Canandgyro;
 import com.reduxrobotics.canand.CanandEventLoop;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.littletonrobotics.junction.Logger;
 
@@ -91,32 +94,20 @@ public class SwerveDrive extends SubsystemBase
   int kUpdateFrequency = 50;
   protected final ReentrantReadWriteLock m_stateLock = new ReentrantReadWriteLock();
   //protected OdometryThread m_odometryThread;
-
-  protected SwerveModulePosition[] m_modulePositions;
-  protected SwerveModuleState[] m_moduleStates;
-
-  private final Canandgyro m_imu = new Canandgyro(DriveConstants.kIMUCanID);
-
-  private final SwerveDriveOdometry m_odo = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getAngle(), new SwerveModulePosition[] {
-    m_frontLeft.getPosition(),
-    m_frontRight.getPosition(),
-    m_backLeft.getPosition(),
-    m_backRight.getPosition()
-  });
-
-
-  
-
+  private final OdometryThread m_odoThread = new OdometryThread();
 
   private final Field2d m_field = new Field2d();
-
-
 
   private double m_xStartPose;
   private double m_yStartPose;
 
+  private void odometryThreadInit(){
+    ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    scheduler.scheduleAtFixedRate(m_odoThread, 4, 10, TimeUnit.MILLISECONDS);
+  }
+
   public void resetHeading() {
-    m_imu.setYaw(0.0);
+    m_odoThread.resetHeading();
   }
 
   public InstantCommand resetHeadingCommand(){
@@ -124,20 +115,15 @@ public class SwerveDrive extends SubsystemBase
   }
 
   public void adjustAngle(double angle){
-    m_imu.setYaw(angle);
+    m_odoThread.adjustAngle(angle);
   }
 
   public void resetOdo(Pose2d pose) {
-    m_odo.resetPosition(getAngle(), new SwerveModulePosition[] {
-      m_frontLeft.getPosition(),
-      m_frontRight.getPosition(),
-      m_backLeft.getPosition(),
-      m_backRight.getPosition()
-    }, pose);
+    m_odoThread.resetOdo(pose);
   }
 
   public Pose2d getPoseMeters(){
-    return m_odo.getPoseMeters();
+    return m_odoThread.getPoseMeters();
   }
 
   public SwerveDriveKinematics getSwerveKinematics(){
@@ -145,12 +131,7 @@ public class SwerveDrive extends SubsystemBase
   }
 
   public void setModuleStates(SwerveModuleState[] states) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.kMaxTranslationalMetersPerSecond);
-
-    m_frontLeft.setDesiredState(states[0]);
-    m_frontRight.setDesiredState(states[1]);
-    m_backLeft.setDesiredState(states[2]);
-    m_backRight.setDesiredState(states[3]);
+    m_odoThread.setModuleStates(states);
   }
 
   public void resetAllDistances() {
@@ -172,16 +153,11 @@ public class SwerveDrive extends SubsystemBase
   }
 
   public Rotation2d getAngle() {
-    double angle = m_imu.getYaw();
-    angle *= 360;
-    return Rotation2d.fromDegrees(angle);
+    return m_odoThread.getAngle();
   }
 
-  
-
-  public double getAngleDegrees()
-  {
-    return Math.IEEEremainder(-m_imu.getYaw() * 360, 360);
+  public double getAngleDegrees(){
+    return m_odoThread.getAngleDegrees();
   }
 
   public ChassisSpeeds getChassisSpeeds() { 
@@ -193,43 +169,18 @@ public class SwerveDrive extends SubsystemBase
     );
   }
 
-  public SwerveModulePosition[] getModulePositions()
-  {
-    SwerveModulePosition[] positions = new SwerveModulePosition[kModuleCount];
-    for (int i = 0; i < kModuleCount; i++)
-    {
-      positions[i] = m_modules[i].getPosition();
-    }
-    return positions;
-  }
-
-  public SwerveModuleState[] getModuleStates()
-  {
-    SwerveModuleState[] states = new SwerveModuleState[kModuleCount];
-    for (int i = 0; i < kModuleCount; i++)
-    {
-      states[i] = m_modules[i].getState();
-    }
-    return states;
-  }
-
   public void driveRobotRelative(ChassisSpeeds speeds) { 
     ChassisSpeeds dis = ChassisSpeeds.discretize(speeds, 0.02); //needed to correct skew whilst rotating and translating simultaneously.
     SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(dis);
-    setModuleStates(states);
+    m_odoThread.setModuleStates(states);
   }
 
   public void resetOdoToPose(){
-    m_odo.resetPosition(getAngle(), new SwerveModulePosition[] {
-        m_frontLeft.getPosition(), m_frontRight.getPosition(),
-        m_backLeft.getPosition(), m_backRight.getPosition()
-      }, new Pose2d(m_xStartPose, m_yStartPose, getAngle()));
-  }
+    m_odoThread.resetOdoToPose(m_xStartPose, m_yStartPose);
+  }  
 
-  
-
-  public SwerveDrive() 
-  {
+  public SwerveDrive() {
+    odometryThreadInit();
     CanandEventLoop.getInstance();
     // Leaving one here so I can remember how to do this later;
     // NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
@@ -299,8 +250,7 @@ public class SwerveDrive extends SubsystemBase
   }
   
   
-  public void stop() 
-  {
+  public void stop() {
     m_frontLeft.stop();
     m_frontRight.stop();
     m_backLeft.stop();
@@ -388,21 +338,15 @@ public class SwerveDrive extends SubsystemBase
   
 
   @Override
-  public void periodic() 
-  {
-    m_modulePositions = getModulePositions();
-    m_moduleStates = getModuleStates();
-    m_odo.update(getAngle(), m_modulePositions);
-
-
-    m_field.setRobotPose(m_odo.getPoseMeters());
+  public void periodic() {
+    m_field.setRobotPose(m_odoThread.getPoseMeters());
     // SmartDashboard.putData("Swerve/Odo/Field", m_field);
 
     // SmartDashboard.putNumber("X", getPoseMeters().getX());
     // SmartDashboard.putNumber("Y", getPoseMeters().getY());
 
-    Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
-    SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
+    Logger.recordOutput("Omega", m_odoThread.getAngularVelocityYaw() * 2 * Math.PI);
+    SmartDashboard.putNumber("Omega", m_odoThread.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Angle", getAngle().getDegrees());
   }
 }
