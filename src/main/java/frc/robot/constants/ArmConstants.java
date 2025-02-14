@@ -19,6 +19,9 @@ public final class ArmConstants {
   public static final int kArmYAxis = 1;
   public static final double kArmMultiplier = 0.2;
 
+  public static final int ArmOuttakeMotorDeviceId = 18;
+  public static final double ArmOuttakeMotorSpeed = 0.4;
+  public static final int kArmOuttakeJoystickButton = 3;
   public static int encoderChannel = 9; 
   // DIO channel 0 has been taken by elevator
   // DIO channels 1, 2, 3, 4 have been taken by the swerve
