@@ -36,7 +36,7 @@ public class RobotContainer {
   private Elevator m_elevator = new Elevator();
 
   //private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator,42);
+  private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator,13.9285);
 
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
   private SendableChooser<Command> m_autoChooser;

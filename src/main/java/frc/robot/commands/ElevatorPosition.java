@@ -14,9 +14,9 @@ import frc.robot.subsystems.Elevator;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorPosition extends Command {
   private static final class Config {
-    private static final double kP = 0.035;
+    private static final double kP = 0.07;
     private static final double kI = 0.01;
-    private static final double kD = 0.01;
+    private static final double kD = 0.0;
   }
 
   private PIDController m_pid = new PIDController(Config.kP, Config.kI, Config.kD);
@@ -70,6 +70,7 @@ public class ElevatorPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return m_pid.atSetpoint();
+    //return m_pid.atSetpoint();
+    return false;
   }
 }
