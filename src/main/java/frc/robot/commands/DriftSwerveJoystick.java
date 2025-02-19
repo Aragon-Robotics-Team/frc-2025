@@ -32,7 +32,6 @@ public class SwerveJoystick extends Command {
   private final SlewRateLimiter m_xSlewRateLimiter;
   private final SlewRateLimiter m_ySlewRateLimiter;
   private final SwerveDrive m_swerveDrive;
-  public int m_driveMode = 0;
   private final Vision m_vision;
 
   private double m_xSpeed, m_ySpeed, m_turningSpeed, m_xySpeed;
@@ -73,33 +72,9 @@ public class SwerveJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = -m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
-    double ySpeed = -m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
-    double turningSpeed = -m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
-
-
-    // if (m_driveMode == 0) { //standard mode;
-    // //Makes the speed response exponential in relation to the joystick input.
-    // //That way, the first little bit of joystick input gives more control.  
-    // xSpeed = Math.signum(xSpeed) * (Math.pow(2, Math.abs(xSpeed)) -1) * -1;
-    // ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -1;
-    // turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -1;
-    // //xSpeed = Math.pow(xSpeed, 5);
-    // // ySpeed = Math.pow(ySpeed, 5);
-    // // turningSpeed = Math.pow(turningSpeed, 5);
-    // }
-    // else if(m_driveMode == 1)
-    // {
-    //   xSpeed = Math.signum(xSpeed) * (Math.pow(2, Math.abs(xSpeed)) -1) * -0.1;
-    //   ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -0.1;
-    //   turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -0.1;
-    // }
-  
-      //xSpeed = Math.pow(xSpeed, 5);
-      // ySpeed = Math.pow(ySpeed, 5);
-      // turningSpeed = Math.pow(turningSpeed, 5);
-    
-    System.out.println("Before appliance " + m_turningSpeed);
+    m_xSpeed = m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
+    m_ySpeed = m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
+    m_turningSpeed = m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
     //Makes the speed response exponential in relation to the joystick input.
     //That way, the first little bit of joystick input gives more control.  
     m_xSpeed = Math.signum(m_xSpeed) * (Math.pow(2, Math.abs(m_xSpeed)) -1) * -1;
@@ -119,9 +94,9 @@ public class SwerveJoystick extends Command {
     m_xSpeed = m_xSlewRateLimiter.calculate(m_xSpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
     m_ySpeed = m_ySlewRateLimiter.calculate(m_ySpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
     m_turningSpeed = m_turningSpeed * DriveConstants.kMaxTurningRadiansPerSecond;
-    SmartDashboard.putNumber("Joystick/xSpeedCommanded", m_xSpeed);
-    SmartDashboard.putNumber("Joystick/ySpeedCommanded", m_ySpeed);
-    SmartDashboard.putNumber("Joystick/turningSpeedCommanded", m_turningSpeed);
+    // SmartDashboard.putNumber("Joystick/xSpeedCommanded", xSpeed);
+    // SmartDashboard.putNumber("Joystick/ySpeedCommanded", ySpeed);
+    // SmartDashboard.putNumber("Joystick/turningSpeedCommanded", turningSpeed);
     //Logger.recordOutput(getName(), desiredSwerveModuleStates);
 
     m_currentAngle = m_swerveDrive.getAngleDegrees();
