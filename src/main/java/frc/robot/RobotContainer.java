@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.JoystickConstants;
 import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.ArmToPos;
@@ -51,7 +52,9 @@ public class RobotContainer {
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
 
-  private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, 1);
+  private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, JoystickConstants.kElevatorTestButtonID);
+
+  //Input of 15 means that the elevator will ideally move up by 15 inches. This was just chosen as a test.
   private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 15);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
