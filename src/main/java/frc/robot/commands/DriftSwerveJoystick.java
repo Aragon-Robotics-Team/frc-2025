@@ -22,16 +22,17 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.IOConstants;
 import frc.robot.constants.VisionConstants;
+import frc.robot.subsystems.DriftSwerveDrive;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.subsystems.Vision;
 
-public class SwerveJoystick extends Command {
+public class DriftSwerveJoystick extends Command {
   /** Creates a new SwerveJoystick. */
 
   private final Joystick m_joystick;
   private final SlewRateLimiter m_xSlewRateLimiter;
   private final SlewRateLimiter m_ySlewRateLimiter;
-  private final SwerveDrive m_swerveDrive;
+  private final DriftSwerveDrive m_swerveDrive;
   private final Vision m_vision;
 
   private double m_xSpeed, m_ySpeed, m_turningSpeed, m_xySpeed;
@@ -44,7 +45,7 @@ public class SwerveJoystick extends Command {
   private int m_targetID;
   private final Optional<Alliance> m_alliance = DriverStation.getAlliance(); 
 
-  public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick, Vision vision, JoystickButton turnTo1stTag, JoystickButton turnTo2ndTag, JoystickButton turnTo3rdTag, JoystickButton turnTo4thTag, JoystickButton turnTo5thTag, JoystickButton turnTo6thTag, JoystickButton centerToTag) {
+  public DriftSwerveJoystick(DriftSwerveDrive swerveDrive, Joystick joystick, Vision vision, JoystickButton turnTo1stTag, JoystickButton turnTo2ndTag, JoystickButton turnTo3rdTag, JoystickButton turnTo4thTag, JoystickButton turnTo5thTag, JoystickButton turnTo6thTag, JoystickButton centerToTag) {
     m_xSlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
     m_ySlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
     m_joystick = joystick;
