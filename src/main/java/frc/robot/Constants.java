@@ -29,7 +29,7 @@ public final class Constants {
     public static final int deviceId = 19;
     public static final int deviceId2 = 24;
 
-    public static final int limitSwitchDio=0;
+    public static final int limitSwitchDio = 0;
 
     // This is the max speed tolerated by trapezoidal. The unit is the speed that is put into setSpeed() (goes from -1 to 1)
     public static final double kMaxSpeed = 0.8;
