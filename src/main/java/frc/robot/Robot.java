@@ -25,7 +25,7 @@ public class Robot extends LoggedRobot {
   private Command m_autonomousCommand;
   private Command m_teleopCommand;
 
-  private final RobotContainer m_robotContainer;
+  private RobotContainer m_robotContainer;
   //private final SwerveDrive m_swerve;
 
 
@@ -100,8 +100,6 @@ public class Robot extends LoggedRobot {
     if (m_autonomousCommand != null) {
       m_autonomousCommand.cancel();
     }
-
-    m_robotContainer.getTeleopCommand();
   }
 
   /** This function is called periodically during operator control. */
