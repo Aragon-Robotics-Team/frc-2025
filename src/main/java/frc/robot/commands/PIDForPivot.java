@@ -16,13 +16,9 @@ public class PIDForPivot extends Command {
   /** Creates a new PIDForPivot. */
   private PIDController m_pid = new PIDController(PivotConstants.kP, PivotConstants.kI, PivotConstants.kD);
   private Pivot m_pivot;
-<<<<<<< HEAD
   private double m_goal; // this goal should be in rotations -- a number from 0.672 to 0.999
   private double speed;
 
-=======
-  private double m_goal;
->>>>>>> 825abcd (working pivot PID on simulation)
   public PIDForPivot(Pivot pivot, double goal) {
     m_pivot = pivot;
     m_goal = goal;
