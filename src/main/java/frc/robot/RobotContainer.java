@@ -64,12 +64,14 @@ public class RobotContainer {
 
   private Pivot m_pivot = new Pivot();
   private double m_speed = PivotConstants.kPivotSpeed; //change later
-  private PivotToPosition m_pivotToA = new PivotToPosition(m_pivot, m_speed, PivotConstants.kPivotPositionToA);
-  private PivotToPosition m_pivotToB = new PivotToPosition(m_pivot, m_speed, PivotConstants.kPivotPositionToB);
-  private PivotToPosition m_pivotToC = new PivotToPosition(m_pivot, m_speed, PivotConstants.kPivotPositionToC);
-  private JoystickButton m_pivotButtonToA = new JoystickButton(m_secondJoystick, PivotConstants.kButtonNumToA);
-  private JoystickButton m_pivotButtonToB = new JoystickButton(m_secondJoystick, PivotConstants.kButtonNumToB);
-  private JoystickButton m_pivotButtonToC = new JoystickButton(m_secondJoystick, PivotConstants.kButtonNumToC);
+
+  // we actually only have 2 pivot positions -- the intake from the ground, and the stow upwards
+  // intake from the ground is at approximately 0.1385 rotations
+  // pivot stow is at approximately 0.8069 rotations
+  private PivotToPosition m_pivotToStow = new PivotToPosition(m_pivot, m_speed, PivotConstants.kPivotStowPosition);
+  private PivotToPosition m_pivotToIntake = new PivotToPosition(m_pivot, m_speed, PivotConstants.kPivotIntakePosition);
+  private JoystickButton m_pivotButtonToStow = new JoystickButton(m_secondJoystick, PivotConstants.kPivotStowButtonID);
+  private JoystickButton m_pivotButtonToIntake = new JoystickButton(m_secondJoystick, PivotConstants.kPivotIntakeButtonID);
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
@@ -100,9 +102,8 @@ public class RobotContainer {
   private ElevatorRatioTest m_elevatorRatioTestthree = new ElevatorRatioTest(m_elevator, 0.45);
   private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_secondJoystick);
 
-  private PIDForPivot m_pivotPIDToA = new PIDForPivot(m_pivot, PivotConstants.kPivotPositionToA);
-  private PIDForPivot m_pivotPIDToB = new PIDForPivot(m_pivot, PivotConstants.kPivotPositionToB);
-  private PIDForPivot m_pivotPIDToC = new PIDForPivot(m_pivot, PivotConstants.kPivotPositionToC);
+  private PIDForPivot m_pivotPIDToStow = new PIDForPivot(m_pivot, PivotConstants.kPivotStowPosition);
+  private PIDForPivot m_pivotPIDToIntake = new PIDForPivot(m_pivot, PivotConstants.kPivotIntakePosition);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -135,11 +136,9 @@ public class RobotContainer {
 
     // m_pivotButtonToA.onTrue(m_pivotToA);
     // m_pivotButtonToB.onTrue(m_pivotToB);
-    // m_pivotButtonToC.onTrue(m_pivotToC);
 
-    m_pivotButtonToA.onTrue(m_pivotPIDToA);
-    m_pivotButtonToB.onTrue(m_pivotPIDToB);
-    m_pivotButtonToC.onTrue(m_pivotPIDToC);
+    //m_pivotButtonToA.onTrue(m_pivotPIDToA);
+    //m_pivotButtonToB.onTrue(m_pivotPIDToB);
   }
 
   /**
