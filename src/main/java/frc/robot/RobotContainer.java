@@ -81,7 +81,6 @@ public class RobotContainer {
 
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
 
-
   private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
   private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);
   private final JoystickButton m_intakeArmOuttakeButton = new JoystickButton(m_secondJoystick, 0);
@@ -179,8 +178,8 @@ public class RobotContainer {
     m_pivot.setDefaultCommand(m_arcadePivot);
     // comment it all out so that intake doesn't accidently trigger arm
     // m_arm.setDefaultCommand(m_arcadeArm);
-    //m_swerve.setDefaultCommand(m_swerveJoystick);
-    m_elevator.setDefaultCommand(m_arcadeElevator);
+    // m_swerve.setDefaultCommand(m_swerveJoystick);
+    // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }
