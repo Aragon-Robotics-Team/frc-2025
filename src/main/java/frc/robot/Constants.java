@@ -64,25 +64,30 @@ public final class Constants {
  
 
     public static final class PivotConstants {
-        public static final int kPivotMotorID = 23;
+        public static final int kPivotMotorID = 14;
+        public static final int kPivotEncoderChannel = 7;
 
+        public static final int kTopLimitSwitchID = 6;
+        public static final int kBottomLimitSwitchID = 8;
+
+        // sim constants
         public static final int kNumMotors = 2;
         public static final int kGearRatio = 108;
 
-        public static final int kEncoderChannelA = 0;
-        public static final int kEncoderChannelB = 1;
 
-        public static final double kPivotSpeed = 0.7;
+        public static final double kPivotSpeed = 0.15;
 
-        public static final double kPivotPositionToA = 0;
-        public static final double kPivotPositionToB = 2;
-        public static final double kPivotPositionToC = 10;
+        
+        public static final double kPivotStowPosition = 0;
+        public static final double kPivotIntakePosition = 2;
 
-        public static final int kButtonNumToA = 1;
-        public static final int kButtonNumToB = 2;
-        public static final int kButtonNumToC = 3;
+        public static final double kBottomPivotRotations = 0.998 - 0.0167; // 5% limit subtracted from the original value
+        public static final double kTopPivotRotations = 0.673 + 0.0167;
 
-        public static final double kRotationTolerance = 0.05;
+        public static final int kPivotStowButtonID = 1;
+        public static final int kPivotIntakeButtonID = 2;
+
+        public static final double kRotationTolerance = 0.02;
 
         public static final double kP = 0.7;
         public static final double kI = 0.001;

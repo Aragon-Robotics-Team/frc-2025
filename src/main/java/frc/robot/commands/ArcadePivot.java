@@ -14,6 +14,8 @@ import frc.robot.subsystems.Pivot;
 public class ArcadePivot extends Command {
   private Pivot m_pivot;
   private Joystick m_joystick;
+  private double speed;
+
   /** Creates a new ArcadePivot. */
   public ArcadePivot(Pivot pivot, Joystick joystick) {
     m_pivot = pivot;
@@ -31,9 +33,25 @@ public class ArcadePivot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_pivot.setPivotSpeed(m_joystick.getRawAxis(0));
-    SmartDashboard.putNumber("Pivot Speed", m_joystick.getRawAxis(0));
+    speed = m_joystick.getRawAxis(0);
     SmartDashboard.putNumber("Rotations", m_pivot.getPivotPosition());
+    SmartDashboard.putBoolean("Bottom Pivot Limit", m_pivot.getBottomLimitSwitch());
+    SmartDashboard.putBoolean("Top Pivot Limit", m_pivot.getTopLimitSwitch());
+    
+    // if our pivot is at the top
+    if ((speed < 0) && ((m_pivot.getTopLimitSwitch() || (m_pivot.getPivotPosition() < PivotConstants.kTopPivotRotations)))){
+      m_pivot.setPivotSpeed(0);
+      SmartDashboard.putNumber("Pivot Speed", 0);
+
+      // if our pivot is at the bottom
+    } else if ((speed > 0) && ((m_pivot.getBottomLimitSwitch() || (m_pivot.getPivotPosition() > PivotConstants.kBottomPivotRotations)))){
+      m_pivot.setPivotSpeed(0);
+      SmartDashboard.putNumber("Pivot Speed", 0);
+
+    } else {
+      m_pivot.setPivotSpeed(speed);
+      SmartDashboard.putNumber("Pivot Speed", speed);
+    }
   }
 
   // Called once the command ends or is interrupted.
