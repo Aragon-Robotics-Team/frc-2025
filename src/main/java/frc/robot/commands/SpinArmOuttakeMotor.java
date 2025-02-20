@@ -13,9 +13,11 @@ import frc.robot.subsystems.Arm;
 public class SpinArmOuttakeMotor extends Command {
   /** Creates a new SpinArmOuttakeMotor. */
   private Arm m_arm;
+  private double m_speed;
   
-  public SpinArmOuttakeMotor(Arm arm) {
-  m_arm = arm;
+  public SpinArmOuttakeMotor(Arm arm, double speed) {
+    m_arm = arm;
+    m_speed = speed;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_arm);
@@ -28,7 +30,7 @@ public class SpinArmOuttakeMotor extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.spinArmOuttakeMotor(ArmConstants.ArmOuttakeMotorSpeed);
+    m_arm.spinArmOuttakeMotor(m_speed);
   }
 
   // Called once the command ends or is interrupted.
