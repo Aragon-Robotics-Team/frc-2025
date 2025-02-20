@@ -22,7 +22,7 @@ public final class Constants {
     public static final int kElevatorYAxis = 0;
     public static final double kElevatorMultiplier = 0.1;
     public static final int deviceId = 19;
-    public static final int deviceId2=24;
+    public static final int deviceId2 = 24;
     public static final int limitSwitchDio=0;
 
 
@@ -36,9 +36,11 @@ public final class Constants {
    }
    
     public static final class IntakeConstants {
-        public static final int kIntakeMotorID = 0;
-        public static final double speed = .5;
-        public static final int kIntakeButtonID = 1;
+        public static final int kIntakeMotorID = 22;
+        public static final int kIndexerMotorID = 17;
+
+        public static final int kIntakeButtonID = 3;
+        public static final int kEjectIntakeButtonID = 4;
     }
     } 
  

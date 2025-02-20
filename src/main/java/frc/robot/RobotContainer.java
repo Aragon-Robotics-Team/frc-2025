@@ -50,15 +50,18 @@ public class RobotContainer {
 
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
   private SendableChooser<Command> m_autoChooser;
+
   private Intake m_intake = new Intake();
-  private IntakeIn m_intakeIn = new IntakeIn(m_intake);
+  private IntakeIn m_intakeIn = new IntakeIn(m_intake, 0.3); // positive speed == intake in
+  private IntakeIn m_ejectIntake = new IntakeIn(m_intake, -0.3);
+  
   private JoystickButton m_intakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeButtonID); //change number later
+  private JoystickButton m_ejectIntakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kEjectIntakeButtonID);
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
-  private Elevator m_elevator = new Elevator();
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -81,9 +84,10 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
-    m_armToPosButton.whileTrue(m_armToPos);
+    // m_armToPosButton.whileTrue(m_armToPos);
    
     m_intakeButton.whileTrue(m_intakeIn);
+    m_ejectIntakeButton.whileTrue(m_ejectIntake);
   }
 
   /**
@@ -98,7 +102,8 @@ public class RobotContainer {
   }
 
   private void getTeleopCommand() {
-    m_arm.setDefaultCommand(m_arcadeArm);
+    // comment it all out so that intake doesn't accidently trigger arm
+    // m_arm.setDefaultCommand(m_arcadeArm);
     //m_swerve.setDefaultCommand(m_swerveJoystick);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
