@@ -25,6 +25,8 @@ public final class Constants {
     public static final double kElevatorMultiplier = 0.2;
 
     public static final double kTicksPerFoot = 12.9285;
+
+    //Change later while testing robot
     public static final double kTicksPerSecondPerSpeed = 5;
     public static final int deviceId = 19;
     public static final int deviceId2 = 24;
