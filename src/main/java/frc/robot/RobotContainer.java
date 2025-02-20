@@ -61,8 +61,11 @@ public class RobotContainer {
   // private SendableChooser<Command> m_autoChooser;
 
   private Intake m_intake = new Intake();
-  private IntakeIn m_intakeIn = new IntakeIn(m_intake);
+  private IntakeIn m_intakeIn = new IntakeIn(m_intake, 0.3); // positive speed == intake in
+  private IntakeIn m_ejectIntake = new IntakeIn(m_intake, -0.3);
+  
   private JoystickButton m_intakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeButtonID); //change number later
+  private JoystickButton m_ejectIntakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kEjectIntakeButtonID);
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
@@ -123,6 +126,7 @@ public class RobotContainer {
 
    
     m_intakeButton.whileTrue(m_intakeIn);
+    m_ejectIntakeButton.whileTrue(m_ejectIntake);
   }
 
   /**
