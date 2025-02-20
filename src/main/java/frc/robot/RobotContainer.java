@@ -83,6 +83,13 @@ public class RobotContainer {
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
 
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
+<<<<<<< HEAD
+=======
+
+
+  private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
+  private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);
+>>>>>>> 19f82ba (02/19 changes - added indexer)
 
   private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
   private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);

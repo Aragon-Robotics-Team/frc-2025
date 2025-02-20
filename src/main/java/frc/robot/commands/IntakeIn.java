@@ -13,9 +13,12 @@ import frc.robot.subsystems.Intake;
 public class IntakeIn extends Command {
  //change later
   private Intake m_intakeMotor;
+  private double m_speed; 
+
   /** Creates a new SpinForIntake. */
-  public IntakeIn(Intake intake) {
+  public IntakeIn(Intake intake, double speed) {
     m_intakeMotor = intake;
+    m_speed = speed;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_intakeMotor);
   }
@@ -24,18 +27,21 @@ public class IntakeIn extends Command {
   @Override
   public void initialize() {
     m_intakeMotor.setIntakeSpeed(0);
+    m_intakeMotor.setIndexerSpeed(0);
   }
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_intakeMotor.setIntakeSpeed(IntakeConstants.speed);
-    SmartDashboard.putNumber("Intake Speed",IntakeConstants.speed);
+    m_intakeMotor.setIntakeSpeed(m_speed);
+    m_intakeMotor.setIndexerSpeed(m_speed);
+    SmartDashboard.putNumber("Intake Speed", m_speed);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_intakeMotor.setIntakeSpeed(0);
+    m_intakeMotor.setIndexerSpeed(0);
   }
 
   // Returns true when the command should end.
