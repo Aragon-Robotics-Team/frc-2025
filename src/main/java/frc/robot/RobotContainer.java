@@ -71,12 +71,14 @@ public class RobotContainer {
 
   private final JoystickButton m_armIntakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeIntakeButtonID);
   private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeOuttakeButtonID);
-  // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  // private SendableChooser<Command> m_autoChooser;
+
 
   private Intake m_intake = new Intake();
-  private IntakeIn m_intakeIn = new IntakeIn(m_intake);
+  private IntakeIn m_intakeIn = new IntakeIn(m_intake, 0.3); // positive speed == intake in
+  private IntakeIn m_ejectIntake = new IntakeIn(m_intake, -0.3);
+  
   private JoystickButton m_intakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeButtonID); //change number later
+  private JoystickButton m_ejectIntakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kEjectIntakeButtonID);
 
 
   private Pivot m_pivot = new Pivot();
@@ -100,6 +102,7 @@ public class RobotContainer {
 
   private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
   private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);
+
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
 
@@ -141,7 +144,6 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
-
     
     // make sure this doesn't accidently run
     // m_armToPosButton.whileTrue(m_armToPos);
@@ -157,7 +159,9 @@ public class RobotContainer {
     m_pivotButtonToStow.onTrue(m_pivotPIDToStow);
     m_pivotButtonToIntake.onTrue(m_pivotPIDToIntake);
 
+
     m_intakeButton.whileTrue(m_intakeIn);
+    m_ejectIntakeButton.whileTrue(m_ejectIntake);
   }
 
   /**
@@ -176,7 +180,7 @@ public class RobotContainer {
     // commenting this out for elevator testing so arm doesn't randomly trigger
     // m_arm.setDefaultCommand(m_arcadeArm);
     m_pivot.setDefaultCommand(m_arcadePivot);
-    //m_swerve.setDefaultCommand(m_swerveJoystick);
+    // m_swerve.setDefaultCommand(m_swerveJoystick);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
