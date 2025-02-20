@@ -85,7 +85,6 @@ public class RobotContainer {
   private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);
   private final JoystickButton m_intakeArmOuttakeButton = new JoystickButton(m_secondJoystick, 0);
 
-
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
