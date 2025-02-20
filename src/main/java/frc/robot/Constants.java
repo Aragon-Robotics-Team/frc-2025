@@ -17,7 +17,10 @@ public final class Constants {
     public static final int kElevatorYAxis = 0;
     public static final double kElevatorMultiplier = Math.PI/26;
     public static final double kTicksPerFoot = 12.9285;
+
+    //Change later while testing robot
     public static final double kTicksPerSecondPerSpeed = 5;
+
     public static final int deviceId = 5;
     public static final int deviceId2 = 0;
     public static final int limitSwitchDio = 0;
@@ -25,14 +28,8 @@ public final class Constants {
     // This is the max speed tolerated by trapezoidal. The unit is the speed that is put into setSpeed() (goes from -1 to 1)
     public static final double kMaxSpeed = 0.1;
 
-    // This is the max acceleration tolerated by trapezoidal. Units are in ticks/s^2
+    // This is the max acceleration tolerated by trapezoidal. Units are in "motor speed"/s, where "motor speed" refers to the speed set from -1 to 1 in the subsystem methods.
     public static final double kMaxAcceleration = 1;
-
-    // This is the max speed tolerated by trapezoidal. The unit is the speed is put into setSpeed() (goes from -1 to 1)
-    public static final double maxSpeed = 0.1;
-
-    // This is the max acceleration tolerated by trapezoidal. Units are in ticks/s^2
-    public static final double maxAcceleration = 1;
 
     public static final double kP = 0.1;
     public static final double kI = 0;
