@@ -47,16 +47,16 @@ public class RobotContainer {
   //public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-  private final JoystickButton m_button = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  private final Joystick m_driverJoystick = new Joystick(0);
+
   private Elevator m_elevator = new Elevator();
 
   private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator,42);
-
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
+  
   private SendableChooser<Command> m_autoChooser;
-  private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
+  private final JoystickButton m_armIntakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeIntakeButtonID);
+  private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeOuttakeButtonID);
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   // private SendableChooser<Command> m_autoChooser;
 
@@ -87,6 +87,9 @@ public class RobotContainer {
 
   private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
   private final SpinArmOuttakeMotor m_spinArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm);
+
+  private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
+  private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -136,10 +139,9 @@ public class RobotContainer {
   }
 
   private void getTeleopCommand() {
-    // comment it all out so that intake doesn't accidently trigger arm
     // m_arm.setDefaultCommand(m_arcadeArm);
-    //m_swerve.setDefaultCommand(m_swerveJoystick);
-    m_elevator.setDefaultCommand(m_arcadeElevator);
+    // m_swerve.setDefaultCommand(m_swerveJoystick);
+    // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }
