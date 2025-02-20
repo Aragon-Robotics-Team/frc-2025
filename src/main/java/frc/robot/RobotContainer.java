@@ -122,7 +122,6 @@ public class RobotContainer {
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
 
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
-  private Elevator m_elevator = new Elevator();
 
 
 
