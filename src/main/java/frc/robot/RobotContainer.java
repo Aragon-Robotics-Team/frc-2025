@@ -37,12 +37,12 @@ public class RobotContainer {
   //public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-  private final JoystickButton m_button = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private Elevator m_elevator = new Elevator();
 
   private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator,42);
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
+  
   private SendableChooser<Command> m_autoChooser;
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   // private SendableChooser<Command> m_autoChooser;
@@ -76,8 +76,8 @@ public class RobotContainer {
   
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
 
-  private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
-  private final SpinArmOuttakeMotor m_spinArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, ArmConstants.ArmOuttakeMotorSpeed);
+  private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
+  private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -110,7 +110,6 @@ public class RobotContainer {
     m_indexerOutButton.whileTrue(m_intakeOut);
     m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
     m_armToPosButton.whileTrue(m_armToPos);
-    m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
     m_elevatorPositionButton.whileTrue(m_elevatorPosition);
 
   }
@@ -127,9 +126,9 @@ public class RobotContainer {
   }
 
   private void getTeleopCommand() {
-    m_arm.setDefaultCommand(m_arcadeArm);
-    //m_swerve.setDefaultCommand(m_swerveJoystick);
-    m_elevator.setDefaultCommand(m_arcadeElevator);
+    // m_arm.setDefaultCommand(m_arcadeArm);
+    // m_swerve.setDefaultCommand(m_swerveJoystick);
+    // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }
