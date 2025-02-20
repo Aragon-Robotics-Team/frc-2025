@@ -54,6 +54,15 @@ public class RobotContainer {
   private SendableChooser<Command> m_autoChooser;
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   // private SendableChooser<Command> m_autoChooser;
+=======
+
+  private Intake m_intake = new Intake();
+  private IntakeIn m_intakeIn = new IntakeIn(m_intake, 0.3); // positive speed == intake in
+  private IntakeIn m_ejectIntake = new IntakeIn(m_intake, -0.3);
+  
+  private JoystickButton m_intakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeButtonID); //change number later
+  private JoystickButton m_ejectIntakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kEjectIntakeButtonID);
+>>>>>>> 7c85582 (02/19 changes - added indexer)
 
   private Pivot m_pivot = new Pivot();
   private double m_speed = PivotConstants.kPivotSpeed; //change later
@@ -90,6 +99,7 @@ public class RobotContainer {
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
 
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
+<<<<<<< HEAD
 
   private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
   private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);
@@ -156,6 +166,12 @@ public class RobotContainer {
 
     m_pivotButtonToStow.onTrue(m_pivotPIDToStow);
     m_pivotButtonToIntake.onTrue(m_pivotPIDToIntake);
+=======
+    // m_armToPosButton.whileTrue(m_armToPos);
+   
+    m_intakeButton.whileTrue(m_intakeIn);
+    m_ejectIntakeButton.whileTrue(m_ejectIntake);
+>>>>>>> 7c85582 (02/19 changes - added indexer)
   }
 
   /**
@@ -170,10 +186,15 @@ public class RobotContainer {
   }
 
   private void getTeleopCommand() {
+<<<<<<< HEAD
 
     // commenting this out for elevator testing so arm doesn't randomly trigger
     // m_arm.setDefaultCommand(m_arcadeArm);
     m_pivot.setDefaultCommand(m_arcadePivot);
+=======
+    // comment it all out so that intake doesn't accidently trigger arm
+    // m_arm.setDefaultCommand(m_arcadeArm);
+>>>>>>> 7c85582 (02/19 changes - added indexer)
     //m_swerve.setDefaultCommand(m_swerveJoystick);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
