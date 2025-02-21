@@ -31,10 +31,6 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Pivot;
-import frc.robot.subsystems.Intake;
-import frc.robot.commands.SpinArmOuttakeMotor;
-import frc.robot.commands.IntakeIn;
-import frc.robot.subsystems.Intake;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -53,7 +49,6 @@ public class RobotContainer {
 
   private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator,42);
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
-  
   private SendableChooser<Command> m_autoChooser;
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   // private SendableChooser<Command> m_autoChooser;
