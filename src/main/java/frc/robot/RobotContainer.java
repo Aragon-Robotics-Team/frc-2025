@@ -55,11 +55,12 @@ public class RobotContainer {
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
-  private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
+
+
+  private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change rotation number
+  
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
 
-  private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeJoystickButton);
-  private final SpinArmOuttakeMotor m_spinArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm);
 
   private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
   private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);
@@ -100,6 +101,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
 
+
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
     
     // make sure this doesn't accidently run
@@ -112,7 +114,6 @@ public class RobotContainer {
     
 
     m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
-
 
 
   }
