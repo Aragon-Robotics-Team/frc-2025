@@ -26,9 +26,12 @@ import frc.robot.commands.SwerveJoystick;
 import frc.robot.constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.Indexer;
 import frc.robot.commands.ElevatorPosition;
+import frc.robot.commands.RunIndexer;
 import frc.robot.subsystems.SwerveDrive;
-import frc.robot.commands.IntakeIn;
+import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunIntakeWithIndexer;
 import frc.robot.subsystems.Intake;
 
 /**
@@ -52,11 +55,23 @@ public class RobotContainer {
   private SendableChooser<Command> m_autoChooser;
 
   private Intake m_intake = new Intake();
-  private IntakeIn m_intakeIn = new IntakeIn(m_intake, 0.3); // positive speed == intake in
-  private IntakeIn m_ejectIntake = new IntakeIn(m_intake, -0.3);
-  
-  private JoystickButton m_intakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeButtonID); //change number later
-  private JoystickButton m_ejectIntakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kEjectIntakeButtonID);
+  private RunIntake m_intakeIn = new RunIntake(m_intake, 0.3); // positive speed == intake in
+  private RunIntake m_intakeOut = new RunIntake(m_intake, -0.3);
+
+  private Indexer m_indexer = new Indexer();
+  private RunIndexer m_indexerIn = new RunIndexer(m_indexer, 0.3); //TODO: Change these speeds
+  private RunIndexer m_indexerOut = new RunIndexer(m_indexer, -0.3);
+
+  // Same speed:
+  private RunIntakeWithIndexer m_intakeWithIndexer = new RunIntakeWithIndexer(m_intake, m_indexer, 0.3);
+  // Different speed:
+  // private RunIntakeWithIndexer m_intakeWithIndexer = new RunIntakeWithIndexer(m_intake, m_indexer, 0.3, 0.5);
+
+  private JoystickButton m_intakeInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeInButtonID); //change number later
+  private JoystickButton m_intakeOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeOutButtonID);
+  private JoystickButton m_indexerInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerInButtonID);
+  private JoystickButton m_indexerOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerOutButtonID);
+  private JoystickButton m_intakeWithIndexerButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeWithIndexerButtonID);
 
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
@@ -86,8 +101,11 @@ public class RobotContainer {
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
     // m_armToPosButton.whileTrue(m_armToPos);
    
-    m_intakeButton.whileTrue(m_intakeIn);
-    m_ejectIntakeButton.whileTrue(m_ejectIntake);
+    m_intakeInButton.whileTrue(m_intakeIn);
+    m_intakeOutButton.whileTrue(m_intakeOut);
+    m_indexerInButton.whileTrue(m_intakeIn);
+    m_indexerOutButton.whileTrue(m_intakeOut);
+    m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
   }
 
   /**

@@ -39,8 +39,11 @@ public final class Constants {
         public static final int kIntakeMotorID = 22;
         public static final int kIndexerMotorID = 17;
 
-        public static final int kIntakeButtonID = 3;
-        public static final int kEjectIntakeButtonID = 4;
+        public static final int kIntakeInButtonID = 3; //TODO: Change these button IDs
+        public static final int kIntakeOutButtonID = 4;
+        public static final int kIndexerInButtonID = 5;
+        public static final int kIndexerOutButtonID = 6;
+        public static final int kIntakeWithIndexerButtonID = 7;
     }
     } 
  
