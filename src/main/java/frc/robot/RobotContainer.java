@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.JoystickConstants;
+import frc.robot.Constants.ElevatorConstants;
 import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.ArmToPos;
@@ -23,6 +23,7 @@ import frc.robot.constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.ElevatorPosition;
+import frc.robot.commands.ElevatorRatioTest;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.commands.SpinArmOuttakeMotor;
 
@@ -68,10 +69,18 @@ public class RobotContainer {
 
   //Input of 15 means that the elevator will ideally move up by 15 inches. This was just chosen as a test.
 
-  private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, JoystickConstants.kElevatorTestButtonID);
-
-  
+  private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, ElevatorConstants.kElevatorTestButtonID);
   private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 15);
+
+  private JoystickButton m_elevatorRatioTestButton = new JoystickButton(m_secondJoystick, 4);
+  private ElevatorRatioTest m_elevatorRatioTestone = new ElevatorRatioTest(m_elevator, 0.35);
+
+  private JoystickButton m_elevatorRatioTestButtonTwo = new JoystickButton(m_secondJoystick, 3);
+  private ElevatorRatioTest m_elevatorRatioTesttwo = new ElevatorRatioTest(m_elevator, 0.4);
+
+  private JoystickButton m_elevatorRatioTestButtonThree = new JoystickButton(m_secondJoystick, 2);
+  private ElevatorRatioTest m_elevatorRatioTestthree = new ElevatorRatioTest(m_elevator, 0.45);
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
@@ -91,11 +100,16 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
-	  m_armToPosButton.whileTrue(m_armToPos);
-	  m_elevatorPositionButton.whileTrue(m_elevatorPosition);
-	  // m_elevatorPositionButton.whileTrue(m_elevatorPosition);
-	  m_armOuttakeButton.whileTrue(m_intakeArmOuttakeMotor);
-	  m_armOuttakeButton.whileTrue(m_outtakeArmOuttakeMotor);
+    // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
+    
+    // make sure this doesn't accidently run
+    // m_armToPosButton.whileTrue(m_armToPos);
+
+    m_elevatorTestButton.onTrue(m_elevatorTest);
+    //m_elevatorRatioTestButton.whileTrue(m_elevatorRatioTestone);
+    //m_elevatorRatioTestButtonTwo.whileTrue(m_elevatorRatioTesttwo);
+    //m_elevatorRatioTestButtonThree.whileTrue(m_elevatorRatioTestthree);
+    
   }
 
   /**
@@ -110,8 +124,10 @@ public class RobotContainer {
   }
 
   private void getTeleopCommand() {
+
+    // commenting this out for elevator testing so arm doesn't randomly trigger
     // m_arm.setDefaultCommand(m_arcadeArm);
-    // m_swerve.setDefaultCommand(m_swerveJoystick);
+    //m_swerve.setDefaultCommand(m_swerveJoystick);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
