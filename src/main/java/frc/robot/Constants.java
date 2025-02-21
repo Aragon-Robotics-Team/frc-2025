@@ -41,7 +41,11 @@ public final class Constants {
     public static final double kPositionDeadband  = 0.1;
     public static final double kVelocityDeadband = 0.05;
 
+    public static final double kElevatorTickConversionRate = 13.9285; // to move our elevator a foot upwards, it costs 13.9285 elevator ticks (and two trainees)
+    // max ticks -- ~60.25
    }  
+
+
    public final class JoystickConstants{
     public static final int kJoystickPort = 1;
 
