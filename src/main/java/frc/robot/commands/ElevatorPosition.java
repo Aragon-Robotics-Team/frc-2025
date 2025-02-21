@@ -15,8 +15,8 @@ import frc.robot.subsystems.Elevator;
 public class ElevatorPosition extends Command {
   private static final class Config {
     private static final double kP = 0.035;
-    private static final double kI = 0.01;
-    private static final double kD = 0.01;
+    private static final double kI = 0.0;
+    private static final double kD = 0.0;
   }
 
   private PIDController m_pid = new PIDController(Config.kP, Config.kI, Config.kD);
