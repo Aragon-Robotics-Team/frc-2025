@@ -149,14 +149,6 @@ public class RobotContainer {
 
     m_pivotButtonToStow.onTrue(m_pivotPIDToStow);
     m_pivotButtonToIntake.onTrue(m_pivotPIDToIntake);
-    // m_armToPosButton.whileTrue(m_armToPos);
-   
-    m_intakeInButton.whileTrue(m_intakeIn);
-    m_intakeOutButton.whileTrue(m_intakeOut);
-    m_indexerInButton.whileTrue(m_intakeIn);
-    m_indexerOutButton.whileTrue(m_intakeOut);
-    m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
-    m_armToPosButton.whileTrue(m_armToPos);
   }
 
   /**
@@ -176,7 +168,7 @@ public class RobotContainer {
     m_pivot.setDefaultCommand(m_arcadePivot);
     // comment it all out so that intake doesn't accidently trigger arm
     // m_arm.setDefaultCommand(m_arcadeArm);
-    // m_swerve.setDefaultCommand(m_swerveJoystick);
+    //m_swerve.setDefaultCommand(m_swerveJoystick);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
