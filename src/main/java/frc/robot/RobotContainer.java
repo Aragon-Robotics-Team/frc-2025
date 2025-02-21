@@ -53,7 +53,6 @@ public class RobotContainer {
   // private SendableChooser<Command> m_autoChooser;
 
 
-
   private Intake m_intake = new Intake();
   private RunIntake m_intakeIn = new RunIntake(m_intake, 0.3); // positive speed == intake in
   private RunIntake m_intakeOut = new RunIntake(m_intake, -0.3);
@@ -75,7 +74,6 @@ public class RobotContainer {
   // Same speed:
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
-
 
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change rotation number
   
