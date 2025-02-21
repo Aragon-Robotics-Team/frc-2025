@@ -32,11 +32,11 @@ public class Arm extends SubsystemBase {
   }
   
   public void setSpeed(double speed){
-    if ((getTopLimitSwitch() && speed < 0) || (getBottomLimitSwitch() && speed > 0)){
+    if ((getTopLimitSwitch() && speed > 0) || (getBottomLimitSwitch() && speed < 0)){
       speed = 0;
     }
     m_arm.set(speed);
-    System.out.println(speed);  
+    // System.out.println(speed);  
   }
 
   public double getEncoderPosition(){
@@ -44,6 +44,7 @@ public class Arm extends SubsystemBase {
   }
   public Boolean getTopLimitSwitch(){
     return !m_topLimitSwitch.get();
+  }
 
   public void spinArmOuttakeMotor(double m_speed){
     m_armOuttakeMotor.set(m_speed);
