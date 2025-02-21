@@ -1,6 +1,10 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
+<<<<<<< HEAD
+=======
+
+>>>>>>> 0486a15 (02/20 arm tuning changes)
 /*
 package frc.robot.subsystems;
 
@@ -143,7 +147,7 @@ public class Vision extends SubsystemBase {
     // This method will be called once per scheduler run
     m_result = m_cam.getAllUnreadResults();
     if (!m_result.isEmpty()) {
-      m_targets = m_result.get(0).getTargets().get()
+      m_targets = m_result.get(0).getTargets().get();
       m_bestTarget = m_result.getBestTarget();
 
       for(PhotonTrackedTarget target : m_result){
@@ -171,3 +175,4 @@ public class Vision extends SubsystemBase {
    
   }
 }
+*/
