@@ -21,7 +21,6 @@ import frc.robot.commands.ElevatorPosition;
 import frc.robot.commands.ElevatorRatioTest;
 import frc.robot.commands.ElevatorToPosition;
 import frc.robot.commands.PIDForPivot;
-import frc.robot.commands.PivotToPosition;
 import frc.robot.commands.RunIndexer;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeWithIndexer;
@@ -54,26 +53,6 @@ public class RobotContainer {
   private SendableChooser<Command> m_autoChooser;
   // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   // private SendableChooser<Command> m_autoChooser;
-=======
-
-  private Intake m_intake = new Intake();
-  private IntakeIn m_intakeIn = new IntakeIn(m_intake, 0.3); // positive speed == intake in
-  private IntakeIn m_ejectIntake = new IntakeIn(m_intake, -0.3);
-  
-  private JoystickButton m_intakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeButtonID); //change number later
-  private JoystickButton m_ejectIntakeButton = new JoystickButton(m_secondJoystick, IntakeConstants.kEjectIntakeButtonID);
->>>>>>> 7c85582 (02/19 changes - added indexer)
-
-  private Pivot m_pivot = new Pivot();
-  private double m_speed = PivotConstants.kPivotSpeed; //change later
-
-  // we actually only have 2 pivot positions -- the intake from the ground, and the stow upwards
-  // intake from the ground is at approximately 0.1385 rotations
-  // pivot stow is at approximately 0.8069 rotations
-  private PivotToPosition m_pivotToStow = new PivotToPosition(m_pivot, m_speed, PivotConstants.kPivotStowPosition);
-  private PivotToPosition m_pivotToIntake = new PivotToPosition(m_pivot, m_speed, PivotConstants.kPivotIntakePosition);
-  private JoystickButton m_pivotButtonToStow = new JoystickButton(m_secondJoystick, PivotConstants.kPivotStowButtonID);
-  private JoystickButton m_pivotButtonToIntake = new JoystickButton(m_secondJoystick, PivotConstants.kPivotIntakeButtonID);
 
   private Intake m_intake = new Intake();
   private RunIntake m_intakeIn = new RunIntake(m_intake, 0.3); // positive speed == intake in
@@ -99,7 +78,7 @@ public class RobotContainer {
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
 
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
-<<<<<<< HEAD
+
 
   private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
   private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);
@@ -120,10 +99,14 @@ public class RobotContainer {
 
   private JoystickButton m_elevatorRatioTestButtonThree = new JoystickButton(m_secondJoystick, 2);
   private ElevatorRatioTest m_elevatorRatioTestthree = new ElevatorRatioTest(m_elevator, 0.45);
+  
+  private Pivot m_pivot = new Pivot();
   private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_secondJoystick);
 
   private PIDForPivot m_pivotPIDToStow = new PIDForPivot(m_pivot, PivotConstants.kPivotStowPosition);
   private PIDForPivot m_pivotPIDToIntake = new PIDForPivot(m_pivot, PivotConstants.kPivotIntakePosition);
+  private JoystickButton m_pivotButtonToStow = new JoystickButton(m_secondJoystick, PivotConstants.kPivotStowButtonID);
+  private JoystickButton m_pivotButtonToIntake = new JoystickButton(m_secondJoystick, PivotConstants.kPivotIntakeButtonID);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -166,12 +149,8 @@ public class RobotContainer {
 
     m_pivotButtonToStow.onTrue(m_pivotPIDToStow);
     m_pivotButtonToIntake.onTrue(m_pivotPIDToIntake);
-=======
     // m_armToPosButton.whileTrue(m_armToPos);
    
-    m_intakeButton.whileTrue(m_intakeIn);
-    m_ejectIntakeButton.whileTrue(m_ejectIntake);
->>>>>>> 7c85582 (02/19 changes - added indexer)
   }
 
   /**
@@ -186,15 +165,11 @@ public class RobotContainer {
   }
 
   private void getTeleopCommand() {
-<<<<<<< HEAD
-
     // commenting this out for elevator testing so arm doesn't randomly trigger
     // m_arm.setDefaultCommand(m_arcadeArm);
     m_pivot.setDefaultCommand(m_arcadePivot);
-=======
     // comment it all out so that intake doesn't accidently trigger arm
     // m_arm.setDefaultCommand(m_arcadeArm);
->>>>>>> 7c85582 (02/19 changes - added indexer)
     //m_swerve.setDefaultCommand(m_swerveJoystick);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
