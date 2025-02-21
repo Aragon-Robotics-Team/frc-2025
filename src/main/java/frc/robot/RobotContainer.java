@@ -27,7 +27,9 @@ import frc.robot.constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Indexer;
 import frc.robot.commands.ElevatorPosition;
+import frc.robot.commands.RunIndexer;
 import frc.robot.commands.RunIndexer;
 import frc.robot.subsystems.SwerveDrive;
 import frc.robot.commands.RunIntake;
@@ -35,6 +37,8 @@ import frc.robot.commands.RunIntakeWithIndexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.SpinArmOuttakeMotor;
 import frc.robot.commands.IntakeIn;
+import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunIntakeWithIndexer;
 import frc.robot.subsystems.Intake;
 
 /**
@@ -55,7 +59,6 @@ public class RobotContainer {
 
   private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator,42);
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
-  
   private SendableChooser<Command> m_autoChooser;
   private final JoystickButton m_armIntakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeIntakeButtonID);
   private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeOuttakeButtonID);
@@ -81,7 +84,7 @@ public class RobotContainer {
   private JoystickButton m_indexerInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerInButtonID);
   private JoystickButton m_indexerOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerOutButtonID);
   private JoystickButton m_intakeWithIndexerButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeWithIndexerButtonID);
-
+  // Same speed:
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
 
@@ -128,6 +131,14 @@ public class RobotContainer {
     m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
     m_elevatorPositionButton.whileTrue(m_elevatorPosition);
 
+    // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
+    // m_armToPosButton.whileTrue(m_armToPos);
+   
+    m_intakeInButton.whileTrue(m_intakeIn);
+    m_intakeOutButton.whileTrue(m_intakeOut);
+    m_indexerInButton.whileTrue(m_intakeIn);
+    m_indexerOutButton.whileTrue(m_intakeOut);
+    m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
   }
 
   /**
