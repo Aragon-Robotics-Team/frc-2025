@@ -151,8 +151,6 @@ public class Vision extends SubsystemBase {
     m_result = m_cam.getAllUnreadResults();
     if (!m_result.isEmpty()) {
       m_targets = m_result.get(0).getTargets().get();
-
-
       m_bestTarget = m_result.getBestTarget();
 
       for(PhotonTrackedTarget target : m_result){

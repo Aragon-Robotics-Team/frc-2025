@@ -23,13 +23,7 @@ public final class ArmConstants {
   public static final double kI = 0.01;
   public static final double kD = 0;
 
-
-
-  public static final int kArmOuttakeIntakeButtonID = 5;
-  public static final int kArmOuttakeOuttakeButtonID = 6;
-  
-
-  public static final int kEncoderChannel = 9; 
+  public static final int kEncoderChannel = 5; 
   public static final int ArmOuttakeMotorDeviceId = 18;
   public static final int kArmOuttakeIntakeButtonID = 5;
   public static final int kArmOuttakeOuttakeButtonID = 6;
