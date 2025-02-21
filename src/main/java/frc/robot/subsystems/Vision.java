@@ -145,10 +145,14 @@ public class Vision extends SubsystemBase {
     m_result = m_cam.getAllUnreadResults();
     if (!m_result.isEmpty()) {
 <<<<<<< HEAD
+<<<<<<< HEAD
       m_targets = m_result.get(0).getTargets().get();
 =======
       m_targets = m_result.get(0).getTargets().get()
 >>>>>>> aefb047 (new changes by Alex)
+=======
+      m_targets = m_result.get(0).getTargets().get();
+>>>>>>> 81cd70a (02/20 arm tuning changes)
       m_bestTarget = m_result.getBestTarget();
 
       for(PhotonTrackedTarget target : m_result){
@@ -176,5 +180,6 @@ public class Vision extends SubsystemBase {
    
   }
 }
+<<<<<<< HEAD
 <<<<<<< HEAD
 */
