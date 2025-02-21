@@ -43,32 +43,36 @@ public class ElevatorToPosition extends Command {
   public void initialize() {
     m_start = new TrapezoidProfile.State(m_elevator.getElevatorPosition(), m_elevator.getSpeed());
     m_timer.restart();
+    SmartDashboard.putNumber("Time", m_timer.get());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     TrapezoidProfile.State idealState = m_profile.calculate(m_timer.get(), m_start, m_goal);
-    double speed = idealState.velocity + m_pid.calculate(m_elevator.getElevatorPosition(), idealState.position);
+    double speed = m_pid.calculate(m_elevator.getElevatorPosition(), idealState.position);
     //speed is currently in ticks/s, so the divison converts it back to "motor" speed.
-    m_elevator.setSpeed(speed/ElevatorConstants.kTicksPerSecondPerSpeed);
+    m_elevator.setSpeed(speed);
 
     //All constants are in ticks and seconds
 
-    SmartDashboard.putNumber("Elevator/setspeed", speed);
+    SmartDashboard.putNumber("Elevator/setspeed", speed/ElevatorConstants.kTicksPerSecondPerSpeed);
 
     SmartDashboard.putNumber("Elevator/real velocity RPS", m_elevator.getSpeed());
-    SmartDashboard.putNumber("Elevator/feedForward", idealState.velocity);
+    SmartDashboard.putNumber("Elevator/ideal velocity", idealState.velocity);
     SmartDashboard.putNumber("Elevator/velocity error", m_elevator.getSpeed() - idealState.velocity);
     SmartDashboard.putNumber("Elevator/position (ticks)", m_elevator.getElevatorPosition());
-    SmartDashboard.putNumber("Elevator/ideal position (ticks)", idealState.position);
-
+    SmartDashboard.putNumber("Elevator/position command", idealState.position);
     SmartDashboard.putNumber("Elevator/position error", m_elevator.getElevatorPosition() - idealState.position);
+    SmartDashboard.putNumber("Goal", m_goal.position);
+    SmartDashboard.putNumber("Time", m_timer.get());
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    SmartDashboard.putNumber("Time", m_timer.get());
+  }
 
   // Returns true when the command should end.
   @Override
