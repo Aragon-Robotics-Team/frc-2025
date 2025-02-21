@@ -23,18 +23,19 @@ import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.subsystems.SwerveDrive;
 
-import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.Constants.IntakeConstants;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.ArmToPos;
 import frc.robot.commands.ElevatorToPosition;
-import frc.robot.commands.SwerveJoystick;
+
 import frc.robot.constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.ElevatorPosition;
 import frc.robot.commands.ElevatorRatioTest;
-import frc.robot.subsystems.SwerveDrive;
+
+
 
 import frc.robot.commands.SpinArmOuttakeMotor;
 
@@ -48,9 +49,6 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.commands.RunIndexer;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeWithIndexer;
-import frc.robot.subsystems.Intake;
-import frc.robot.commands.SpinArmOuttakeMotor;
-import frc.robot.commands.IntakeIn;
 import frc.robot.subsystems.Intake;
 
 
@@ -116,6 +114,7 @@ public class RobotContainer {
   private JoystickButton m_pivotButtonToIntake = new JoystickButton(m_secondJoystick, PivotConstants.kPivotIntakeButtonID);
 
   private final Arm m_arm = new Arm(); 
+
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
 
   
