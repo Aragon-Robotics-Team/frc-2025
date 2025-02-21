@@ -21,6 +21,9 @@ public class ArmToPos extends Command {
   PIDController m_pid = new PIDController(ArmConstants.kP, ArmConstants.kI, ArmConstants.kD);
   
   /** Creates a new ArmToPos. */
+  // NOTE
+  // max encoder ticks the arm should be at (near scoring position) == 0.904
+  // min encoder ticks the arm should be at (at the bottom, when intaking fron the indexer) == 0.469
   public ArmToPos(Arm arm, double pos) {
     m_pos = pos;
     m_arm = arm;
@@ -37,7 +40,10 @@ public class ArmToPos extends Command {
   public void execute() {
     m_speed = -m_pid.calculate(m_arm.getEncoderPosition(), m_pos);
     m_arm.setSpeed(m_speed);
-    SmartDashboard.putNumber("Arm PID Speed", m_speed);
+    SmartDashboard.putNumber("Real Arm Position", m_arm.getEncoderPosition());
+    SmartDashboard.putNumber("Arm Set Position", m_pos);
+    SmartDashboard.putNumber("Arm Error", m_pos - m_arm.getEncoderPosition());
+    SmartDashboard.putNumber("Arm PID Speed", -m_speed);
   }
 
   // Called once the command ends or is interrupted.
