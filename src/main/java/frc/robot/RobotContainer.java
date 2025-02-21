@@ -78,6 +78,8 @@ public class RobotContainer {
 
   private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
   private final SpinArmOuttakeMotor m_outtakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, -0.7);
+  private final JoystickButton m_intakeArmOuttakeButton = new JoystickButton(m_secondJoystick, 0);
+
 
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -111,7 +113,7 @@ public class RobotContainer {
     m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
     m_armToPosButton.whileTrue(m_armToPos);
     m_elevatorPositionButton.whileTrue(m_elevatorPosition);
-
+	  // m_elevatorPositionButton.whileTrue(m_elevatorPosition);
   }
 
   /**
