@@ -14,24 +14,18 @@ package frc.robot.constants;
  */
 public final class ArmConstants {
   public static final int kArmTalonDeviceId = 23; 
-  public static final int kTopLimitSwitchChannel = 1;
-  public static final int kBottomLimitSwitchChannel = 10;
+  public static final int kTopLimitSwitchChannel = 7;
+  public static final int kBottomLimitSwitchChannel = 6;
   public static final int kArmYAxis = 1;
   public static final double kArmMultiplier = 0.5;
 
-  public static final double kP = 1;
-  public static final double kI = 0.01;
-  public static final double kD = 0;
+  public static final double kP = 0.75;
+  public static final double kI = 0.001;
+  public static final double kD = 0.1;
 
-  public static final int kEncoderChannel = 5; 
-  public static final int ArmOuttakeMotorDeviceId = 18;
-  public static final int kArmOuttakeIntakeButtonID = 5;
-  public static final int kArmOuttakeOuttakeButtonID = 6;
-  
-  public static int encoderChannel = 9; 
+  public static final int kEncoderChannel = 9; 
+  public static final int kArmButtonID = 1; // TODO: Change to actual button ID
   // DIO channel 0 has been taken by elevator
   // DIO channels 1, 2, 3, 4 have been taken by the swerve
-
-  public static final int kArmButtonID = 1;
 }
 // find in future!
