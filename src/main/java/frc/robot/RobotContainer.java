@@ -35,20 +35,24 @@ public class RobotContainer {
   //public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-  private Elevator m_elevator = new Elevator();
+
+  private final SwerveDrive m_swerve = new SwerveDrive();
+  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+
+  // private Elevator m_elevator = new Elevator();
 
   //private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator,42);
+  // private final ElevatorPosition m_elevatorPosition = new ElevatorPosition(m_elevator,42);
 
   private JoystickButton m_elevatorPositionButton = new JoystickButton(m_secondJoystick, 1);
   private SendableChooser<Command> m_autoChooser;
 
-  private final Arm m_arm = new Arm();
-  private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
-  private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
-  private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
+  // private final Arm m_arm = new Arm();
+  // private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
+  // private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
+  // private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
 
-  private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
+  // private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
@@ -69,7 +73,7 @@ public class RobotContainer {
    */
   private void configureBindings() {
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
-    m_armToPosButton.whileTrue(m_armToPos);
+    // m_armToPosButton.whileTrue(m_armToPos);
   }
 
   /**
@@ -84,8 +88,8 @@ public class RobotContainer {
   }
 
   private void getTeleopCommand() {
-    m_arm.setDefaultCommand(m_arcadeArm);
-    //m_swerve.setDefaultCommand(m_swerveJoystick);
+    // m_arm.setDefaultCommand(m_arcadeArm);
+    m_swerve.setDefaultCommand(m_swerveJoystick);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
