@@ -56,5 +56,7 @@ public class ArmToPos extends Command {
   @Override
   public boolean isFinished() {
     return false;
+    // TODO
+    // NEED THE FINISH PID THING
   }
 }

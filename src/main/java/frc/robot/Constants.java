@@ -40,9 +40,6 @@ public final class Constants {
 
     public static final double kPositionDeadband  = 0.1;
     public static final double kVelocityDeadband = 0.05;
-
-    public static final double kElevatorTickConversionRate = 13.9285; // to move our elevator a foot upwards, it costs 13.9285 elevator ticks (and two trainees)
-    // max ticks -- ~60.25
    }  
 
 
@@ -60,26 +57,28 @@ public final class Constants {
 
         // sim constants
         public static final int kNumMotors = 2;
-        public static final int kGearRatio = 108;
+        public static final int kGearRatio = 112; // gear ratio is actually 112
 
 
         public static final double kPivotSpeed = 0.15;
 
         
-        public static final double kPivotStowPosition = 0;
-        public static final double kPivotIntakePosition = 2;
+        public static final double kPivotStowPosition = 0.677;
+        public static final double kPivotIntakePosition = 0.997;
 
-        public static final double kBottomPivotRotations = 0.998 - 0.0167; // 5% limit subtracted from the original value
-        public static final double kTopPivotRotations = 0.673 + 0.0167;
+        public static final double kBottomPivotRotations = 0.998; // we need to be ON the hardstop
+        // 5% limit subtracted from the original value
+        public static final double kTopPivotRotations = 0.676 + 0.0167;
 
         public static final int kPivotStowButtonID = 1;
         public static final int kPivotIntakeButtonID = 2;
 
         public static final double kRotationTolerance = 0.02;
 
-        public static final double kP = 0.7;
-        public static final double kI = 0.001;
-        public static final double kD = 0.001;
+        // sim constants -- kp = 0.7, ki = 0.001, kd = 0.001
+        public static final double kP = 3;
+        public static final double kD = 0;
+        public static final double kI = 1;
 
         public static final double kPivotPIDErrorTolerance = 0.001;
         public static final double kPivotDerivativeTolerance = 0.001;
