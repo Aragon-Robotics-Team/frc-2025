@@ -4,41 +4,25 @@
 
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.ArcadeArm;
-import frc.robot.commands.SwerveJoystick;
-import frc.robot.subsystems.SwerveDrive;
-
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.IntakeConstants;
+import frc.robot.commands.ArcadeArm;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.ArmToPos;
-import frc.robot.commands.SwerveJoystick;
+import frc.robot.commands.ElevatorPosition;
+import frc.robot.commands.RunIndexer;
+import frc.robot.commands.RunIntake;
+import frc.robot.commands.RunIntakeWithIndexer;
+import frc.robot.commands.SpinArmOuttakeMotor;
 import frc.robot.constants.ArmConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.Indexer;
-import frc.robot.subsystems.Indexer;
-import frc.robot.commands.ElevatorPosition;
-import frc.robot.commands.RunIndexer;
-import frc.robot.commands.RunIndexer;
-import frc.robot.subsystems.SwerveDrive;
-import frc.robot.commands.RunIntake;
-import frc.robot.commands.RunIntakeWithIndexer;
-import frc.robot.subsystems.Intake;
-import frc.robot.commands.SpinArmOuttakeMotor;
-import frc.robot.commands.IntakeIn;
-import frc.robot.commands.RunIntake;
-import frc.robot.commands.RunIntakeWithIndexer;
 import frc.robot.subsystems.Intake;
 
 /**
@@ -128,7 +112,7 @@ public class RobotContainer {
     m_indexerOutButton.whileTrue(m_intakeOut);
     m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
     m_armToPosButton.whileTrue(m_armToPos);
-    m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
+    // m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
     m_elevatorPositionButton.whileTrue(m_elevatorPosition);
 
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
