@@ -114,15 +114,6 @@ public class RobotContainer {
     m_armToPosButton.whileTrue(m_armToPos);
     // m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
     m_elevatorPositionButton.whileTrue(m_elevatorPosition);
-
-    // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
-    // m_armToPosButton.whileTrue(m_armToPos);
-   
-    m_intakeInButton.whileTrue(m_intakeIn);
-    m_intakeOutButton.whileTrue(m_intakeOut);
-    m_indexerInButton.whileTrue(m_intakeIn);
-    m_indexerOutButton.whileTrue(m_intakeOut);
-    m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
   }
 
   /**
