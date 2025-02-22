@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import edu.wpi.first.wpilibj.simulation.DutyCycleSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PivotConstants;
 
@@ -34,7 +35,7 @@ public class Pivot extends SubsystemBase {
   private DigitalInput bottomLimitSwitch = new DigitalInput(PivotConstants.kBottomLimitSwitchID); // 8
 
 
-  private SparkMaxConfig brakeMode = new SparkMaxConfig();
+  private SparkMaxConfig brakeMode = new SparkMaxConfig(); 
 
   /** Creates a new Pivot. */
   public Pivot() {
@@ -45,8 +46,22 @@ public class Pivot extends SubsystemBase {
   public void setPivotSpeed(double speed) {
     // negative speed -- move pivot up
     // positive speed -- move pivot down (to intake)
-    m_pivotMotor.set(-speed);
 
+    if ((speed < 0) && ((getTopLimitSwitch() || (getPivotPosition() < PivotConstants.kTopPivotRotations)))){
+      m_pivotMotor.set(0);
+      SmartDashboard.putNumber("Pivot Speed", 0);
+
+      // if our pivot is at the bottom
+    } else if ((speed > 0) && ((getBottomLimitSwitch() || (getPivotPosition() > PivotConstants.kBottomPivotRotations)))){
+      m_pivotMotor.set(0);
+      SmartDashboard.putNumber("Pivot Speed", 0);
+    } else {
+      m_pivotMotor.set(-speed);
+      SmartDashboard.putNumber("Pivot Speed", speed);
+    }
+    
+    // set a negative speed to sync up with the pivot speed graph
+    SmartDashboard.putNumber("Actual Pivot Motor Speed", -m_pivotMotor.getAppliedOutput());
     //m_pivotSim.setInputVoltage(speed * 12);
   }
 

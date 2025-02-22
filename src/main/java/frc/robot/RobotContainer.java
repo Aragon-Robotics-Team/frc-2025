@@ -87,9 +87,8 @@ public class RobotContainer {
   // Same speed:
   private final Arm m_arm = new Arm();
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
+  private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
 
-  private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change rotation number
-  
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
 
   private final SpinArmOuttakeMotor m_intakeArmOuttakeMotor = new SpinArmOuttakeMotor(m_arm, 0.7);
@@ -155,8 +154,8 @@ public class RobotContainer {
     // m_pivotButtonToA.onTrue(m_pivotToA);
     // m_pivotButtonToB.onTrue(m_pivotToB);
 
-    //m_pivotButtonToA.onTrue(m_pivotPIDToA);
-    //m_pivotButtonToB.onTrue(m_pivotPIDToB);
+    m_pivotButtonToStow.onTrue(m_pivotPIDToStow);
+    m_pivotButtonToIntake.onTrue(m_pivotPIDToIntake);
   }
 
   /**

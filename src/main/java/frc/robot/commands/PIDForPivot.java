@@ -16,7 +16,9 @@ public class PIDForPivot extends Command {
   /** Creates a new PIDForPivot. */
   private PIDController m_pid = new PIDController(PivotConstants.kP, PivotConstants.kI, PivotConstants.kD);
   private Pivot m_pivot;
-  private double m_goal;
+  private double m_goal; // this goal should be in rotations -- a number from 0.672 to 0.999
+  private double speed;
+
   public PIDForPivot(Pivot pivot, double goal) {
     m_pivot = pivot;
     m_goal = goal;
@@ -27,15 +29,23 @@ public class PIDForPivot extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    // NOTE
+    // later, we should look into "Setting a Max Integrator Value" (see wpilib docs) which basically
+    // limits the integral output value to stop excessive wind up/over shoot
     m_pid.setTolerance(PivotConstants.kPivotPIDErrorTolerance, PivotConstants.kPivotDerivativeTolerance);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_pivot.setPivotSpeed(m_pid.calculate(m_pivot.getPivotPosition(), m_goal));
-    SmartDashboard.putNumber("Pivot Speed", m_pid.calculate(m_pivot.getPivotPosition(), m_goal));
+    speed = m_pid.calculate(m_pivot.getPivotPosition(), m_goal);
+    m_pivot.setPivotSpeed(speed);
+
+    // see Pivot.java subsystem
+    // SmartDashboard.putNumber("Pivot Speed", m_pid.calculate(m_pivot.getPivotPosition(), m_goal));
     SmartDashboard.putNumber("Rotations", m_pivot.getPivotPosition());
+    SmartDashboard.putNumber("Goal Rotations", m_goal);
+    SmartDashboard.putNumber("Pivot Rotations Error", Math.max(m_goal, m_pivot.getPivotPosition()) - Math.min(m_pivot.getPivotPosition(), m_goal));
   }
 
   // Called once the command ends or is interrupted.
