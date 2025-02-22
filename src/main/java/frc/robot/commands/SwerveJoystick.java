@@ -128,7 +128,7 @@ public class SwerveJoystick extends Command {
     SmartDashboard.putNumber("Current angle", m_currentAngle);
     if (m_turnTo1stTag.getAsBoolean()){
       m_targetAngle = VisionConstants.kTag10Angle;
-      m_targetID = 10;
+      m_targetID = 8; // change to tag 8 as that is the test tag
       m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
     }
     if (m_turnTo1stTag.getAsBoolean()){

@@ -50,17 +50,17 @@ public class DriftSwerveDrive extends SubsystemBase
     51, 
     1,
     9, 
-    -0.529990463821544 - (Math.PI / 2.0), 
-    false,
+    -0.679890463821544 + 0.03, 
+    true,
     true, 
     "FrontLeft"
   );
 
   private final DriftSwerveModule m_frontRight = new DriftSwerveModule(
     52, 
-    1,
+    3,
     7, 
-    1.415447275814819 + (Math.PI / 2.0), 
+    1.415447275814819 + (Math.PI / 2.0) - 0.007, 
     true,
     true, 
     "FrontRight"
@@ -70,7 +70,7 @@ public class DriftSwerveDrive extends SubsystemBase
    53, 
     7,
     8, 
-    1.253910661599266 + (Math.PI / 2.0), 
+    1.286619661599266 - 0.01  + (Math.PI / 2.0), 
     false, 
     true, 
     "BackLeft"
@@ -80,7 +80,7 @@ public class DriftSwerveDrive extends SubsystemBase
     54, 
     5,
     6, 
-    -0.456511594330128 - (Math.PI / 2.0), 
+    -0.406511594330128 - 0.01 - (Math.PI / 2.0), 
     true, 
     false, 
     "BackRight"
@@ -220,6 +220,7 @@ public class DriftSwerveDrive extends SubsystemBase
 
   public void driveRobotRelative(ChassisSpeeds speeds) { 
     ChassisSpeeds dis = ChassisSpeeds.discretize(speeds, 0.02); //needed to correct skew whilst rotating and translating simultaneously.
+    System.out.println(dis);
     SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(dis);
     setModuleStates(states);
   }
