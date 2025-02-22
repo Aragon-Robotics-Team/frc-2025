@@ -9,7 +9,8 @@ package frc.robot.constants;
 public final class IOConstants {
     public static final double kDeadband = 0.05;
 
-    public static int kJoystickXAxis = 0; // todo -- test this, but I'm pretty sure that left/right is axis 0 and thus should be x
+    public static final int kDriveJoystickId = 0;
+    public static int kJoystickXAxis = 0;
     public static int kJoystickYAxis = 1;
     public static int kJoystickRotAxis = 4;
 
