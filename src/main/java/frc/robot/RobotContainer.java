@@ -114,7 +114,7 @@ public class RobotContainer {
     //m_elevatorRatioTestButtonThree.whileTrue(m_elevatorRatioTestthree);
     
 
-    m_armOuttakeButton.whileTrue(m_spinArmOuttakeMotor);
+    m_armOuttakeButton.whileTrue(m_intakeArmOuttakeMotor);
 
 
 
