@@ -4,6 +4,11 @@
 
 package frc.robot;
 
+import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkMax;
+
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants. This class should not be used for any other purpose. All constants should be declared
@@ -25,7 +30,9 @@ public final class Constants {
 
     public static final int deviceId = 19;
     public static final int deviceId2 = 24;
+
     public static final int limitSwitchDio = 0;
+
 
     // This is the max speed tolerated by trapezoidal. The unit is the speed that is put into setSpeed() (goes from -1 to 1)
     public static final double kMaxSpeed = 0.8;
@@ -45,7 +52,6 @@ public final class Constants {
 
    public final class JoystickConstants{
     public static final int kJoystickPort = 1;
-
    }
 
     public static final class PivotConstants {
@@ -84,4 +90,17 @@ public final class Constants {
         public static final double kPivotDerivativeTolerance = 0.001;
     }
 
-}
+
+
+    public static final class IntakeConstants {
+        public static final int kIntakeMotorID = 22;
+        public static final int kIndexerMotorID = 17;
+
+        public static final int kIntakeInButtonID = 3; //TODO: Change these button IDs
+        public static final int kIntakeOutButtonID = 4;
+        public static final int kIndexerInButtonID = 5;
+        public static final int kIndexerOutButtonID = 6;
+        public static final int kIntakeWithIndexerButtonID = 7;
+    }
+} 
+
