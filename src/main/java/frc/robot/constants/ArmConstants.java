@@ -16,7 +16,7 @@ public final class ArmConstants {
   public static final int kArmTalonDeviceId = 23; 
   public static final int kTopLimitSwitchChannel = 1;
   public static final int kBottomLimitSwitchChannel = 10;
-  public static final int kArmYAxis = 1;
+  public static final int kArmManualControlAxis = 1;
   public static final double kArmMultiplier = 0.5;
 
   public static final double kP = 1;

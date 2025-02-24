@@ -18,8 +18,9 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
    public final class ElevatorConstants{
-    public static final int kElevatorYAxis = 0;
+    public static final int kElevatorManualControlAxis = 5; // todo: check that this is the right axis (via testing)
 
     public static final int kElevatorTestButtonID = 5;
     public static final double kElevatorMultiplier = 0.1;
@@ -54,6 +55,8 @@ public final class Constants {
 
 
     public static final class PivotConstants {
+        public static final int kManualPivotControlAxis = 4;
+
         public static final int kPivotMotorID = 14;
         public static final int kPivotEncoderChannel = 7;
 
@@ -103,6 +106,8 @@ public final class Constants {
         public static final int kIndexerOutButtonID = 6;
         public static final int kIntakeWithIndexerButtonID = 7;
         */
+
+        public static final int kManualOuttakeTriggerAxis = 3;
     }
 } 
 
