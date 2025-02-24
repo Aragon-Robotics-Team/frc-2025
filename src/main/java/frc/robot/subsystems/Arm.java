@@ -29,8 +29,7 @@ public class Arm extends SubsystemBase {
   private DigitalInput m_topLimitSwitch = new DigitalInput(ArmConstants.kTopLimitSwitchChannel);
   private DigitalInput m_bottomLimitSwitch = new DigitalInput(ArmConstants.kBottomLimitSwitchChannel);
   private DutyCycleEncoder m_encoder = new DutyCycleEncoder(ArmConstants.kEncoderChannel);
-  private SparkMax m_armOuttakeMotor = new SparkMax(ArmConstants.ArmOuttakeMotorDeviceId, MotorType.kBrushless);
-
+  
   // we have removed the Arm constructor
   public Arm(){
     m_arm.setNeutralMode(NeutralModeValue.Brake);
@@ -52,11 +51,6 @@ public class Arm extends SubsystemBase {
   public Boolean getTopLimitSwitch(){
     return !m_topLimitSwitch.get();
   }
-
-  public void spinArmOuttakeMotor(double m_speed){
-    m_armOuttakeMotor.set(m_speed);
-  }
-
 
   public Boolean getBottomLimitSwitch(){
     return !m_bottomLimitSwitch.get();

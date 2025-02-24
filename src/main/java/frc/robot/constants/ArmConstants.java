@@ -24,7 +24,7 @@ public final class ArmConstants {
   public static final double kD = 0;
 
   public static final int kEncoderChannel = 5; 
-  public static final int ArmOuttakeMotorDeviceId = 18;
+  public static final int EndEffectorMotorDeviceID = 18;
   public static final int kArmOuttakeIntakeButtonID = 5;
   public static final int kArmOuttakeOuttakeButtonID = 6;
   
@@ -34,6 +34,6 @@ public final class ArmConstants {
 
   public static final int kArmButtonID = 1;
 
-  public static final int kArmOuttakeMotorOverrideAxis = 4;
+  public static final int kEndEffectorMotorOverrideAxis = 4;
 }
 // find in future!
