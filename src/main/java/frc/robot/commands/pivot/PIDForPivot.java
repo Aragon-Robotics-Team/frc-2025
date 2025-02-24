@@ -55,9 +55,9 @@ public class PIDForPivot extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_pid.atSetpoint()) {
-      return true;
-    }
+    // if(m_pid.atSetpoint()) {
+    //   return true;
+    // }
     return false;
   }
 }

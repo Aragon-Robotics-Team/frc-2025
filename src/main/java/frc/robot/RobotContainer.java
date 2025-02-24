@@ -17,10 +17,10 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.PivotConstants;
-import frc.robot.commands.SpinEndEffectorMotor;
 import frc.robot.commands.SwerveJoystick;
 import frc.robot.commands.arm.ArcadeArm;
 import frc.robot.commands.arm.ArmToPos;
+import frc.robot.commands.arm.SpinEndEffectorMotor;
 import frc.robot.commands.elevator.ArcadeElevator;
 import frc.robot.commands.elevator.ElevatorToPosition;
 import frc.robot.commands.intake_indexer.RunIndexer;
@@ -105,10 +105,10 @@ public class RobotContainer {
 
 
   private final EndEffector m_endEffector = new EndEffector();
-  private SpinEndEffectorMotor m_spinArmOuttake = new SpinEndEffectorMotor(m_endEffector, -0.7, false, m_secondJoystick); // spin out is probably a negative speed, and this just spins it out
-  private JoystickButton m_spinArmOuttakeRollersButton = new JoystickButton(m_secondJoystick, IOConstants.kArmOuttakeRollersButtonID);
+  private SpinEndEffectorMotor m_spinEndEffector = new SpinEndEffectorMotor(m_endEffector, -0.7, false, m_secondJoystick); // spin out is probably a negative speed, and this just spins it out
+  private JoystickButton m_spinEndEffectorButton = new JoystickButton(m_secondJoystick, IOConstants.kArmOuttakeRollersButtonID);
 
-  private SpinEndEffectorMotor m_joystickOverrideSpinArmOuttake = new SpinEndEffectorMotor(m_endEffector, 0, true, m_secondJoystick); 
+  private SpinEndEffectorMotor m_joystickOverrideSpinEndEffector = new SpinEndEffectorMotor(m_endEffector, 0, true, m_secondJoystick); 
   // lowkey terrible coding practice
   // note that the speed here doesn't matter so I'm not going to fret about that too much
 
@@ -184,15 +184,6 @@ public class RobotContainer {
   private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_secondJoystick, IOConstants.kGroundIntakeCoralButtonID);
   // end intake/indexer
 
-
-
-
-
-
-
-
-
-
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     bindSubsystemCommands();
@@ -201,9 +192,6 @@ public class RobotContainer {
     // Configure the trigger bindings
     configureBindings();
   }
-
-
-
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -222,7 +210,7 @@ public class RobotContainer {
     m_resetHeadingButton.onTrue(m_resetHeadingCommand); // button 4, y button
     // to add - button 5 - left align to reef (vision)
     // to add - button 6 - right align to reef (vision)
-    m_spinArmOuttakeRollersButton.whileTrue(m_spinArmOuttake); // button 7, spin arm outtake roller
+    m_spinEndEffectorButton.whileTrue(m_spinEndEffector); // button 7, spin arm outtake roller
 
 
 
@@ -240,7 +228,7 @@ public class RobotContainer {
       m_pivotPIDToIntake.andThen(m_spinIntakeRollers)
     );
 
-    
+    // TODO: Change seconds
     // what it does is move the pivot up and at the same time index in for 1s then index out for 2s
     m_groundIntakeCoralButton.onFalse(
       Commands.parallel(
@@ -276,7 +264,7 @@ public class RobotContainer {
         m_arcadePivot,
         m_arcadeArm,
         m_manualIntakeIndexerIntake,
-        m_joystickOverrideSpinArmOuttake
+        m_joystickOverrideSpinEndEffector
       )
     );
 
@@ -284,7 +272,7 @@ public class RobotContainer {
     // gonna assume it takes <1.5s to score that piece
     // finally, reset position by going back to ArmToGroundIntake position
     m_L1ScoringButton.onTrue(
-      m_armToL1.andThen(m_spinArmOuttake.withTimeout(1.5)).andThen(m_armToGroundIntake)
+      m_armToL1.andThen(m_spinEndEffector.withTimeout(1.5)).andThen(m_armToGroundIntake)
     );
 
 
@@ -296,7 +284,7 @@ public class RobotContainer {
         m_elevatorToL2,
         m_armToL2
       ).andThen(
-        m_spinArmOuttake.withTimeout(1.5)
+        m_spinEndEffector.withTimeout(1.5)
       ).andThen(
         Commands.parallel(
           m_armToGroundIntake,
@@ -311,7 +299,7 @@ public class RobotContainer {
         m_elevatorToL3,
         m_armToL3
       ).andThen(
-        m_spinArmOuttake.withTimeout(1.5)
+        m_spinEndEffector.withTimeout(1.5)
       ).andThen(
         Commands.parallel(
           m_armToGroundIntake,
@@ -326,7 +314,7 @@ public class RobotContainer {
         m_elevatorToL4,
         m_armToL4
       ).andThen(
-        m_spinArmOuttake.withTimeout(1.5)
+        m_spinEndEffector.withTimeout(1.5)
       ).andThen(
         Commands.parallel(
           m_armToGroundIntake,

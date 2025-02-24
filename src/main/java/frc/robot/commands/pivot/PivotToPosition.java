@@ -50,9 +50,9 @@ public class PivotToPosition extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if((m_pivot.getPivotPosition() - m_goal > -PivotConstants.kRotationTolerance) && (m_pivot.getPivotPosition() - m_goal < PivotConstants.kRotationTolerance)) {
-      return true;
-    }
+    // if((m_pivot.getPivotPosition() - m_goal > -PivotConstants.kRotationTolerance) && (m_pivot.getPivotPosition() - m_goal < PivotConstants.kRotationTolerance)) {
+    //   return true;
+    // }
     return false;
   }
 }
