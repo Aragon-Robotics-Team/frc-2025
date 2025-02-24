@@ -6,39 +6,14 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj2.command.Command;
-
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import com.pathplanner.lib.auto.AutoBuilder;
-
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.Constants.ElevatorConstants;
-import frc.robot.commands.ArcadeArm;
-import frc.robot.commands.SwerveJoystick;
-import frc.robot.subsystems.SwerveDrive;
-
-
-import frc.robot.Constants.IntakeConstants;
-import frc.robot.commands.ArcadeElevator;
-import frc.robot.commands.ArmToPos;
-import frc.robot.commands.ElevatorToPosition;
-
-import frc.robot.constants.ArmConstants;
-import frc.robot.subsystems.Arm;
-import frc.robot.subsystems.Elevator;
-import frc.robot.commands.ElevatorPosition;
-import frc.robot.commands.ElevatorRatioTest;
-
-
-
-import frc.robot.commands.SpinArmOuttakeMotor;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import frc.robot.constants.IOConstants;
 import frc.robot.constants.ArmConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.PivotConstants;
@@ -71,17 +46,16 @@ import frc.robot.commands.ElevatorToPosition;
 import frc.robot.subsystems.Pivot;
 import frc.robot.commands.ArcadePivot;
 import frc.robot.commands.PIDForPivot;
-import frc.robot.commands.PivotToPosition;
+// import frc.robot.commands.PivotToPosition; -- unused, use PID for Pivot instead
 
 import frc.robot.commands.SpinArmOuttakeMotor;
 
 
-
+import frc.robot.subsystems.Intake;
 import frc.robot.subsystems.Indexer;
 import frc.robot.commands.RunIndexer;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeWithIndexer;
-import frc.robot.subsystems.Intake;
 
 
 /**
@@ -93,13 +67,18 @@ import frc.robot.subsystems.Intake;
 public class RobotContainer {
  
   // The robot's subsystems and  are defined here...
-  //public final SwerveDrive m_swerve = new SwerveDrive();
+
+  public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
 
 
-  // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private SendableChooser<Command> m_autoChooser;
+
+
+  private final InstantCommand m_resetHeadingCommand = m_swerve.resetHeadingCommand();
+  private final JoystickButton m_resetHeadingButton = new JoystickButton(m_driverJoystick, IOConstants.kResetHeadingButtonID);
 
 
 
@@ -112,6 +91,10 @@ public class RobotContainer {
   // use these for actual code
   private final JoystickButton m_armIntakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeIntakeButtonID);
   private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeOuttakeButtonID);
+
+
+  private SpinArmOuttakeMotor m_spinArmOuttake = new SpinArmOuttakeMotor(m_arm, -0.7); // spin out is probably a negative speed, and this just spins it out
+  private JoystickButton m_spinArmOuttakeRollersButton = new JoystickButton(m_secondJoystick, IOConstants.kArmOuttakeRollersButtonID);
 
 
 
@@ -150,24 +133,29 @@ public class RobotContainer {
 
   // begin intake/indexer
   private Intake m_intake = new Intake();
-  private RunIntake m_intakeIn = new RunIntake(m_intake, 0.3); // positive speed == intake in
-  private RunIntake m_intakeOut = new RunIntake(m_intake, -0.3);
+  private final double kIntakeIndexerSpeed = 0.6;
+  private RunIntake m_intakeIn = new RunIntake(m_intake, kIntakeIndexerSpeed); // positive speed == intake in
+  private RunIntake m_intakeOut = new RunIntake(m_intake, -kIntakeIndexerSpeed);
 
   private Indexer m_indexer = new Indexer();
-  private RunIndexer m_indexerIn = new RunIndexer(m_indexer, 0.3); //TODO: Change these speeds
-  private RunIndexer m_indexerOut = new RunIndexer(m_indexer, -0.3);
+  private RunIndexer m_indexerIn = new RunIndexer(m_indexer, kIntakeIndexerSpeed);
+  private RunIndexer m_indexerOut = new RunIndexer(m_indexer, -kIntakeIndexerSpeed);
 
   // Same speed:
-  private RunIntakeWithIndexer m_intakeWithIndexer = new RunIntakeWithIndexer(m_intake, m_indexer, 0.3);
+  // private RunIntakeWithIndexer m_intakeWithIndexer = new RunIntakeWithIndexer(m_intake, m_indexer, kIntakeIndexerSpeed);
   // Different speed:
   // private RunIntakeWithIndexer m_intakeWithIndexer = new RunIntakeWithIndexer(m_intake, m_indexer, 0.3, 0.5);
 
+  private RunIntakeWithIndexer m_spinIntakeRollers = new RunIntakeWithIndexer(m_intake, m_indexer, kIntakeIndexerSpeed); // used for ground intake coral
 
-  private JoystickButton m_intakeInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeInButtonID); //change number later
-  private JoystickButton m_intakeOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeOutButtonID);
-  private JoystickButton m_indexerInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerInButtonID);
-  private JoystickButton m_indexerOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerOutButtonID);
-  private JoystickButton m_intakeWithIndexerButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeWithIndexerButtonID);
+
+  // note: these buttons are both not assigned and also missing the right IDs
+  // private JoystickButton m_intakeInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeInButtonID);
+  // private JoystickButton m_intakeOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeOutButtonID);
+  // private JoystickButton m_indexerInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerInButtonID);
+  // private JoystickButton m_indexerOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerOutButtonID);
+
+  private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_secondJoystick, IOConstants.kGroundIntakeCoralButtonID);
   // end intake/indexer
 
 
@@ -182,11 +170,14 @@ public class RobotContainer {
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     getTeleopCommand();
-    // m_autoChooser = AutoBuilder.buildAutoChooser();
+    m_autoChooser = AutoBuilder.buildAutoChooser();
     // SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
     // Configure the trigger bindings
     configureBindings();
   }
+
+
+
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
@@ -198,6 +189,46 @@ public class RobotContainer {
    * joysticks}.
    */
   private void configureBindings() {
+    // see discord channel for button bindings
+
+    
+    // driver joystick bindings:
+    m_resetHeadingButton.onTrue(m_resetHeadingCommand); // button 4, y button
+    // to add - button 5 - left align to reef (vision)
+    // to add - button 6 - right align to reef (vision)
+    m_spinArmOuttakeRollersButton.whileTrue(m_spinArmOuttake); // button 7, spin arm outtake roller
+
+
+
+    // button 8 -- ground intake coral
+    // to my knowledge, this button, when pressed, is supposed to 
+    // 1. make the pivot go down
+    // 2. indefinitely spin the intake/indexer wheels
+    // when released, this command is to move the pivot up, and also spin the indexer in for 1 second, then spin the indexer out for 3 seconds
+    // NOTE this command (as of now) DOES NOT move the arm to the desired location to ground intake coral
+  
+    // lowkey unsure if this code works
+    m_groundIntakeCoralButton.onTrue(
+      m_pivotPIDToIntake.andThen(m_spinIntakeRollers)
+    );
+
+    
+    // what it does is move the pivot up and at the same time index in for 1s then index out for 2s
+    m_groundIntakeCoralButton.onFalse(
+      Commands.parallel(
+        m_pivotPIDToStow,
+        m_indexerIn.withTimeout(1).andThen(
+          m_indexerOut.withTimeout(2)
+        )
+      )
+    );
+
+    // end driver joystick bindings
+
+
+
+
+
 
 
     // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
@@ -210,37 +241,24 @@ public class RobotContainer {
     m_pivotButtonToStow.onTrue(m_pivotPIDToStow);
     m_pivotButtonToIntake.onTrue(m_pivotPIDToIntake);
 
-   
-    m_intakeInButton.whileTrue(m_intakeIn);
-    m_intakeOutButton.whileTrue(m_intakeOut);
-    m_indexerInButton.whileTrue(m_intakeIn);
-    m_indexerOutButton.whileTrue(m_intakeOut);
-    m_intakeWithIndexerButton.whileTrue(m_intakeWithIndexer);
+    
   }
 
 
 
 
-  /**
-   * Use this to pass the autonomous command to the main {@link Robot} class.
-   *
-   * @return the command to run in autonomous
-   */
   public Command getAutonomousCommand() {
-    // An example command will be run in autonomous
-    //return m_autoChooser.getSelected();
-    return null;
+    return m_autoChooser.getSelected();
   }
 
 
 
   private void getTeleopCommand() {
+    m_swerve.setDefaultCommand(m_swerveJoystick);
 
-    // commenting this out for elevator testing so arm doesn't randomly trigger
 
     // m_arm.setDefaultCommand(m_arcadeArm);
     m_pivot.setDefaultCommand(m_arcadePivot);
-    // m_swerve.setDefaultCommand(m_swerveJoystick);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
