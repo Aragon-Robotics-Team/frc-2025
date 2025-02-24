@@ -108,6 +108,7 @@ public final class Constants {
         */
 
         public static final int kManualOuttakeTriggerAxis = 3;
+        public static final int kManualIntakeTriggerAxis = 4;
     }
 } 
 

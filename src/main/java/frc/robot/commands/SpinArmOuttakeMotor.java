@@ -14,10 +14,15 @@ public class SpinArmOuttakeMotor extends Command {
   /** Creates a new SpinArmOuttakeMotor. */
   private Arm m_arm;
   private double m_speed;
+  private boolean kJoystickControl; // true if we're controlling this with a joystick false if with just a constant speed
+  // my bad gang this is actually terrible code
+  private Joystick m_joystick;
   
-  public SpinArmOuttakeMotor(Arm arm, double speed) {
+  public SpinArmOuttakeMotor(Arm arm, double speed, boolean joystickControl, Joystick joystick) {
     m_arm = arm;
     m_speed = speed;
+    kJoystickControl = joystickControl;
+    m_joystick = joystick;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_arm);
@@ -30,7 +35,11 @@ public class SpinArmOuttakeMotor extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_arm.spinArmOuttakeMotor(m_speed);
+    if (kJoystickControl){
+      m_arm.spinArmOuttakeMotor(m_joystick.getRawAxis(ArmConstants.kArmOuttakeMotorOverrideAxis));
+    } else {
+      m_arm.spinArmOuttakeMotor(m_speed);
+    }
   }
 
   // Called once the command ends or is interrupted.
