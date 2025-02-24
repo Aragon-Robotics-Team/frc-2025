@@ -33,7 +33,7 @@ public class ArcadePivot extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    speed = m_joystick.getRawAxis(0);
+    speed = m_joystick.getRawAxis(PivotConstants.kManualPivotControlAxis);
     SmartDashboard.putNumber("Rotations", m_pivot.getPivotPosition());
     SmartDashboard.putBoolean("Bottom Pivot Limit", m_pivot.getBottomLimitSwitch());
     SmartDashboard.putBoolean("Top Pivot Limit", m_pivot.getTopLimitSwitch());

@@ -56,6 +56,7 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.commands.RunIndexer;
 import frc.robot.commands.RunIntake;
 import frc.robot.commands.RunIntakeWithIndexer;
+import frc.robot.commands.RunIntakeWithIndexerJoystick;
 
 
 /**
@@ -81,7 +82,17 @@ public class RobotContainer {
   private final JoystickButton m_resetHeadingButton = new JoystickButton(m_driverJoystick, IOConstants.kResetHeadingButtonID);
 
 
+  private final JoystickButton m_elevatorArmManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kElevatorArmManualOverrideButtonID); // 7
+  private final JoystickButton m_pivotArmManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kPivotArmManualOverrideButtonID); // 8 (i think)
 
+
+
+
+
+  private final JoystickButton m_L1ScoringButton = new JoystickButton(m_secondJoystick, IOConstants.kL1ScoringButtonID);
+  private final JoystickButton m_L2ScoringButton = new JoystickButton(m_secondJoystick, IOConstants.kL2ScoringButtonID);
+  private final JoystickButton m_L3ScoringButton = new JoystickButton(m_secondJoystick, IOConstants.kL3ScoringButtonID);
+  private final JoystickButton m_L4ScoringButton = new JoystickButton(m_secondJoystick, IOConstants.kL4ScoringButtonID);
 
 
   private final Arm m_arm = new Arm(); 
@@ -91,6 +102,15 @@ public class RobotContainer {
   // use these for actual code
   private final JoystickButton m_armIntakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeIntakeButtonID);
   private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeOuttakeButtonID);
+
+
+  private final ArmToPos m_armToL1 = new ArmToPos(m_arm, 0); // todo: change all these constants
+  private final ArmToPos m_armToL2 = new ArmToPos(m_arm, 0); // see that google sheet where i did that thing
+  private final ArmToPos m_armToL3 = new ArmToPos(m_arm, 0);
+  private final ArmToPos m_armToL4 = new ArmToPos(m_arm, 0);
+
+  private final ArmToPos m_armToSubstationIntake = new ArmToPos(m_arm, 0);
+  private final ArmToPos m_armToGroundIntake = new ArmToPos(m_arm, 0); // probably used in different command
 
 
   private SpinArmOuttakeMotor m_spinArmOuttake = new SpinArmOuttakeMotor(m_arm, -0.7); // spin out is probably a negative speed, and this just spins it out
@@ -107,6 +127,14 @@ public class RobotContainer {
   private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, ElevatorConstants.kElevatorTestButtonID);
   private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 15);
 
+
+  // todo -- get constants
+  private ElevatorToPosition m_elevatorToL2 = new ElevatorToPosition(m_elevator, 0);
+  private ElevatorToPosition m_elevatorToL3 = new ElevatorToPosition(m_elevator, 0);
+  private ElevatorToPosition m_elevatorToL4 = new ElevatorToPosition(m_elevator, 0);
+
+  private ElevatorToPosition m_elevatorToSubstationIntake = new ElevatorToPosition(m_elevator, 0);
+  private ElevatorToPosition m_elevatorToGround = new ElevatorToPosition(m_elevator, 0); // reset elevator position
 
 
 
@@ -148,6 +176,8 @@ public class RobotContainer {
 
   private RunIntakeWithIndexer m_spinIntakeRollers = new RunIntakeWithIndexer(m_intake, m_indexer, kIntakeIndexerSpeed); // used for ground intake coral
 
+  private RunIntakeWithIndexerJoystick m_manualOuttakeIndexerIntake = new RunIntakeWithIndexerJoystick(m_secondJoystick, m_intake, m_indexer, false);
+  private RunIntakeWithIndexerJoystick m_manualIntakeIndexerIntake = new RunIntakeWithIndexerJoystick(m_secondJoystick, m_intake, m_indexer, true);
 
   // note: these buttons are both not assigned and also missing the right IDs
   // private JoystickButton m_intakeInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeInButtonID);
@@ -169,7 +199,7 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    getTeleopCommand();
+    bindSubsystemCommands();
     m_autoChooser = AutoBuilder.buildAutoChooser();
     // SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
     // Configure the trigger bindings
@@ -191,7 +221,7 @@ public class RobotContainer {
   private void configureBindings() {
     // see discord channel for button bindings
 
-    
+
     // driver joystick bindings:
     m_resetHeadingButton.onTrue(m_resetHeadingCommand); // button 4, y button
     // to add - button 5 - left align to reef (vision)
@@ -206,6 +236,8 @@ public class RobotContainer {
     // 2. indefinitely spin the intake/indexer wheels
     // when released, this command is to move the pivot up, and also spin the indexer in for 1 second, then spin the indexer out for 3 seconds
     // NOTE this command (as of now) DOES NOT move the arm to the desired location to ground intake coral
+
+    // --> this might actually be a good idea if arm is manually moved
   
     // lowkey unsure if this code works
     m_groundIntakeCoralButton.onTrue(
@@ -225,21 +257,85 @@ public class RobotContainer {
 
     // end driver joystick bindings
 
+/////////////////////////////////////////////////////////////
+
+    // start operator joystick bindings
+    // for the joystick axes, once buttons 7/8 are pressed, manual arm control happens
+    // same with pivot/elevator override
+
+    // NOTE: I may need to fix these commands (and/or other commands) so that the manual override can interrupt other commands
+    // button id 7 (back left button), allows manual control of elevator/arm
+    // also allows for manual intake/outtake
+    m_elevatorArmManualControlButton.whileTrue(
+      Commands.parallel(
+        m_arcadeElevator,
+        m_arcadeArm
+        // add a line when button 3 is pressed the manual intake/outtkae starts going
+      )
+    );
+
+    // button id 8 (back right button) allows manual control of arm/pivot
+    m_pivotArmManualControlButton.whileTrue(
+      Commands.parallel(
+        m_arcadePivot,
+        m_arcadeArm
+      )
+    );
+
+    // L1-4 scoring
+    // gonna assume it takes <1.5s to score that piece
+    // finally, reset position by going back to ArmToGroundIntake position
+    m_L1ScoringButton.onTrue(
+      m_armToL1.andThen(m_spinArmOuttake.withTimeout(1.5)).andThen(m_armToGroundIntake)
+    );
 
 
+    //************************************************************** */
+    // MASSIVE TODO - make sure that this works and doesnt break metal
+    //************************************************************** */
+    m_L2ScoringButton.onTrue(
+      Commands.parallel(
+        m_elevatorToL2,
+        m_armToL2
+      ).andThen(
+        m_spinArmOuttake.withTimeout(1.5)
+      ).andThen(
+        Commands.parallel(
+          m_armToGroundIntake,
+          m_elevatorToGround
+        )
+      )
+    );
 
+    // L3
+    m_L3ScoringButton.onTrue(
+      Commands.parallel(
+        m_elevatorToL3,
+        m_armToL3
+      ).andThen(
+        m_spinArmOuttake.withTimeout(1.5)
+      ).andThen(
+        Commands.parallel(
+          m_armToGroundIntake,
+          m_elevatorToGround
+        )
+      )
+    );
 
-
-
-    // m_elevatorPositionButton.whileTrue(m_elevatorPosition); TODO: Restore this
-    m_elevatorTestButton.onTrue(m_elevatorTest);
-
-    // make sure this doesn't accidently run
-    // m_armToPosButton.whileTrue(m_armToPos);
-
-    
-    m_pivotButtonToStow.onTrue(m_pivotPIDToStow);
-    m_pivotButtonToIntake.onTrue(m_pivotPIDToIntake);
+    // L4
+    m_L4ScoringButton.onTrue(
+      Commands.parallel(
+        m_elevatorToL4,
+        m_armToL4
+      ).andThen(
+        m_spinArmOuttake.withTimeout(1.5)
+      ).andThen(
+        Commands.parallel(
+          m_armToGroundIntake,
+          m_elevatorToGround
+        )
+      )
+    );
 
     
   }
@@ -253,12 +349,18 @@ public class RobotContainer {
 
 
 
-  private void getTeleopCommand() {
+  private void bindSubsystemCommands() {
     m_swerve.setDefaultCommand(m_swerveJoystick);
 
 
+    // note: there are really no default commands 
+    // instead, the code should do everything for us
+    // when a manual override is needed, a button is already pressed
+    // thus, see the button binding on true part for that
+    // (note to self): I may get a watchdog error for this in which case I'll bind null or something
+
     // m_arm.setDefaultCommand(m_arcadeArm);
-    m_pivot.setDefaultCommand(m_arcadePivot);
+    // m_pivot.setDefaultCommand(m_arcadePivot);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }

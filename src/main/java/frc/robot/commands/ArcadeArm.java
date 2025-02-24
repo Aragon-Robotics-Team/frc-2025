@@ -35,7 +35,7 @@ private double m_speed;
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_speed = m_operatorJoystick.getRawAxis(ArmConstants.kArmYAxis) * ArmConstants.kArmMultiplier;
+    m_speed = m_operatorJoystick.getRawAxis(ArmConstants.kArmManualControlAxis) * ArmConstants.kArmMultiplier;
     m_arm.setSpeed(m_speed);
     /*
     if (speed>0){

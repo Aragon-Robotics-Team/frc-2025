@@ -23,4 +23,18 @@ public final class IOConstants {
 
     // this is for ground intaking coral (see exact specs)
     public static final int kGroundIntakeCoralButtonID = 8;
+
+
+
+
+    // button constants for robot operator:
+    public static final int kElevatorArmManualOverrideButtonID = 7;
+    public static final int kPivotArmManualOverrideButtonID = 8;
+    
+    // L1-4 scoring
+    public static final int kL1ScoringButtonID = 1;
+    public static final int kL2ScoringButtonID = 2;
+    public static final int kL3ScoringButtonID = 3;
+    public static final int kL4ScoringButtonID = 4;
+
 }
