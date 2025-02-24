@@ -50,9 +50,8 @@ public final class Constants {
    }  
 
 
-   public final class JoystickConstants{
-    public static final int kJoystickPort = 1;
-   }
+   // joystick constants removed -- see IOConstants.java (in constants folder)
+
 
     public static final class PivotConstants {
         public static final int kPivotMotorID = 14;
