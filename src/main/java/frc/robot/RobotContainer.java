@@ -5,59 +5,41 @@
 package frc.robot;
 
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import com.pathplanner.lib.auto.AutoBuilder;
-
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-import frc.robot.constants.IOConstants;
-import frc.robot.constants.ArmConstants;
-import frc.robot.Constants.ElevatorConstants;
-import frc.robot.Constants.PivotConstants;
-
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-
-
-// swerve imports
-import com.ctre.phoenix6.swerve.SwerveModule;
+import frc.robot.Constants.ElevatorConstants;
+import frc.robot.Constants.PivotConstants;
+import frc.robot.commands.SpinEndEffectorMotor;
 import frc.robot.commands.SwerveJoystick;
-import frc.robot.subsystems.SwerveDrive;
-
+import frc.robot.commands.arm.ArcadeArm;
+import frc.robot.commands.arm.ArmToPos;
+import frc.robot.commands.elevator.ArcadeElevator;
+import frc.robot.commands.elevator.ElevatorToPosition;
+import frc.robot.commands.intake_indexer.RunIndexer;
+import frc.robot.commands.intake_indexer.RunIntake;
+import frc.robot.commands.intake_indexer.RunIntakeWithIndexer;
+import frc.robot.commands.intake_indexer.RunIntakeWithIndexerJoystick;
+import frc.robot.commands.pivot.ArcadePivot;
+import frc.robot.commands.pivot.PIDForPivot;
+import frc.robot.constants.IOConstants;
 // arm imports
 import frc.robot.subsystems.Arm;
-import frc.robot.commands.ArcadeArm;
-import frc.robot.commands.ArmToPos;
-
 // elevator imports
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.EndEffector;
-import frc.robot.commands.ArcadeElevator;
-import frc.robot.commands.ElevatorToPosition;
-// import frc.robot.commands.ElevatorPosition; -- as far as i know this file hasn't been tuned or used
-// so it is commented out. See ElevatorToPosition for trapezoidal elevator
-// import frc.robot.commands.ElevatorRatioTest; -- code used during testing
-
+import frc.robot.subsystems.Indexer;
+import frc.robot.subsystems.Intake;
 // pivot imports
 import frc.robot.subsystems.Pivot;
-import frc.robot.commands.ArcadePivot;
-import frc.robot.commands.PIDForPivot;
-// import frc.robot.commands.PivotToPosition; -- unused, use PID for Pivot instead
-
-import frc.robot.commands.SpinEndEffectorMotor;
-
-
-import frc.robot.subsystems.Intake;
-import frc.robot.subsystems.Indexer;
-import frc.robot.commands.RunIndexer;
-import frc.robot.commands.RunIntake;
-import frc.robot.commands.RunIntakeWithIndexer;
-import frc.robot.commands.RunIntakeWithIndexerJoystick;
+import frc.robot.subsystems.SwerveDrive;
 
 
 /**
