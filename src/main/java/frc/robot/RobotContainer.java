@@ -36,6 +36,7 @@ import frc.robot.commands.ArmToPos;
 
 // elevator imports
 import frc.robot.subsystems.Elevator;
+import frc.robot.subsystems.EndEffector;
 import frc.robot.commands.ArcadeElevator;
 import frc.robot.commands.ElevatorToPosition;
 // import frc.robot.commands.ElevatorPosition; -- as far as i know this file hasn't been tuned or used
@@ -48,7 +49,7 @@ import frc.robot.commands.ArcadePivot;
 import frc.robot.commands.PIDForPivot;
 // import frc.robot.commands.PivotToPosition; -- unused, use PID for Pivot instead
 
-import frc.robot.commands.SpinArmOuttakeMotor;
+import frc.robot.commands.SpinEndEffectorMotor;
 
 
 import frc.robot.subsystems.Intake;
@@ -121,11 +122,11 @@ public class RobotContainer {
   private final JoystickButton m_substationIntakeArmButton = new JoystickButton(m_secondJoystick, IOConstants.kArmToSubstationButtonID);
 
 
-
-  private SpinArmOuttakeMotor m_spinArmOuttake = new SpinArmOuttakeMotor(m_arm, -0.7, false, m_secondJoystick); // spin out is probably a negative speed, and this just spins it out
+  private final EndEffector m_endEffector = new EndEffector();
+  private SpinEndEffectorMotor m_spinArmOuttake = new SpinEndEffectorMotor(m_endEffector, -0.7, false, m_secondJoystick); // spin out is probably a negative speed, and this just spins it out
   private JoystickButton m_spinArmOuttakeRollersButton = new JoystickButton(m_secondJoystick, IOConstants.kArmOuttakeRollersButtonID);
 
-  private SpinArmOuttakeMotor m_joystickOverrideSpinArmOuttake = new SpinArmOuttakeMotor(m_arm, 0, true, m_secondJoystick); 
+  private SpinEndEffectorMotor m_joystickOverrideSpinArmOuttake = new SpinEndEffectorMotor(m_endEffector, 0, true, m_secondJoystick); 
   // lowkey terrible coding practice
   // note that the speed here doesn't matter so I'm not going to fret about that too much
 
