@@ -97,11 +97,16 @@ public class RobotContainer {
 
   private final Arm m_arm = new Arm(); 
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
+
+
+  // unused
+  /*
   private final ArmToPos m_armToPos = new ArmToPos(m_arm, 0.781); // TODO: Change tick number
   private JoystickButton m_armToPosButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmButtonID);
   // use these for actual code
   private final JoystickButton m_armIntakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeIntakeButtonID);
   private final JoystickButton m_armOuttakeButton = new JoystickButton(m_secondJoystick, ArmConstants.kArmOuttakeOuttakeButtonID);
+  */
 
 
   private final ArmToPos m_armToL1 = new ArmToPos(m_arm, 0); // todo: change all these constants
@@ -112,9 +117,17 @@ public class RobotContainer {
   private final ArmToPos m_armToSubstationIntake = new ArmToPos(m_arm, 0);
   private final ArmToPos m_armToGroundIntake = new ArmToPos(m_arm, 0); // probably used in different command
 
+  private final JoystickButton m_stowArmButton = new JoystickButton(m_secondJoystick, IOConstants.kStowArmButtonID);
+  private final JoystickButton m_substationIntakeArmButton = new JoystickButton(m_secondJoystick, IOConstants.kArmToSubstationButtonID);
 
-  private SpinArmOuttakeMotor m_spinArmOuttake = new SpinArmOuttakeMotor(m_arm, -0.7); // spin out is probably a negative speed, and this just spins it out
+
+
+  private SpinArmOuttakeMotor m_spinArmOuttake = new SpinArmOuttakeMotor(m_arm, -0.7, false, m_secondJoystick); // spin out is probably a negative speed, and this just spins it out
   private JoystickButton m_spinArmOuttakeRollersButton = new JoystickButton(m_secondJoystick, IOConstants.kArmOuttakeRollersButtonID);
+
+  private SpinArmOuttakeMotor m_joystickOverrideSpinArmOuttake = new SpinArmOuttakeMotor(m_arm, 0, true, m_secondJoystick); 
+  // lowkey terrible coding practice
+  // note that the speed here doesn't matter so I'm not going to fret about that too much
 
 
 
@@ -269,8 +282,8 @@ public class RobotContainer {
     m_elevatorArmManualControlButton.whileTrue(
       Commands.parallel(
         m_arcadeElevator,
-        m_arcadeArm
-        // add a line when button 3 is pressed the manual intake/outtkae starts going
+        m_arcadeArm,
+        m_manualOuttakeIndexerIntake
       )
     );
 
@@ -278,7 +291,9 @@ public class RobotContainer {
     m_pivotArmManualControlButton.whileTrue(
       Commands.parallel(
         m_arcadePivot,
-        m_arcadeArm
+        m_arcadeArm,
+        m_manualIntakeIndexerIntake,
+        m_joystickOverrideSpinArmOuttake
       )
     );
 
@@ -337,7 +352,10 @@ public class RobotContainer {
       )
     );
 
-    
+
+    // bind buttons 5, 6
+    m_stowArmButton.onTrue(m_armToGroundIntake); // button 5 -- stow arm
+    m_substationIntakeArmButton.onTrue(m_armToSubstationIntake); // button 6 -- move arm to substation intake position
   }
 
 

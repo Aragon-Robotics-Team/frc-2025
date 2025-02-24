@@ -45,8 +45,8 @@ public class RunIntakeWithIndexerJoystick extends Command {
       m_intake.setIntakeSpeed(m_joystick.getRawAxis(IntakeConstants.kManualOuttakeTriggerAxis));
       m_indexer.setIndexerSpeed(m_joystick.getRawAxis(IntakeConstants.kManualOuttakeTriggerAxis));
     } else {
-      m_intake.setIntakeSpeed(-m_joystick.getRawAxis(IntakeConstants.kManualOuttakeTriggerAxis));
-      m_indexer.setIndexerSpeed(-m_joystick.getRawAxis(IntakeConstants.kManualOuttakeTriggerAxis));
+      m_intake.setIntakeSpeed(-m_joystick.getRawAxis(IntakeConstants.kManualIntakeTriggerAxis));
+      m_indexer.setIndexerSpeed(-m_joystick.getRawAxis(IntakeConstants.kManualIntakeTriggerAxis));
     }
   }
 

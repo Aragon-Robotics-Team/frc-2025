@@ -33,5 +33,7 @@ public final class ArmConstants {
   // DIO channels 1, 2, 3, 4 have been taken by the swerve
 
   public static final int kArmButtonID = 1;
+
+  public static final int kArmOuttakeMotorOverrideAxis = 4;
 }
 // find in future!

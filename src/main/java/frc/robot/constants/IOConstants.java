@@ -37,4 +37,9 @@ public final class IOConstants {
     public static final int kL3ScoringButtonID = 3;
     public static final int kL4ScoringButtonID = 4;
 
+    // button 5: stow arm
+    public static final int kStowArmButtonID = 5;
+    // button 6: move arm to substation intake position
+    public static final int kArmToSubstationButtonID = 6;
+
 }
