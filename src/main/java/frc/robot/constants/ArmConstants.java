@@ -24,7 +24,7 @@ public final class ArmConstants {
   public static final double kD = 0;
 
   public static final int kEncoderChannel = 5; 
-  public static final int EndEffectorMotorDeviceID = 18;
+  public static final int kEndEffectorMotorDeviceID = 18;
   public static final int kArmOuttakeIntakeButtonID = 5;
   public static final int kArmOuttakeOuttakeButtonID = 6;
   
@@ -34,16 +34,16 @@ public final class ArmConstants {
 
   public static final int kArmButtonID = 1;
 
-  public static final int kEndEffectorMotorOverrideAxis = 4;
+  public static final int kEndEffectorMotorOverrideAxis = 3;
 
 
   // ALL THESE HAVE TO BE CHANGED (TODO)
-  public static final double kL1ArmTickPosition = 0;
-  public static final double kL2ArmTickPosition = 0;
-  public static final double kL3ArmTickPosition = 0;
-  public static final double kL4ArmTickPosition = 0;
+  public static final double kL1ArmTickPosition = 0.908;
+  public static final double kL2ArmTickPosition = 0.834;
+  public static final double kL3ArmTickPosition = 0.834;
+  public static final double kL4ArmTickPosition = 0.804;
 
-  public static final double kSubstationTickPosition = 0;
+  public static final double kSubstationTickPosition = 0.420;
   public static final double kGroundIntakeTickPosition = 0.469; // this is verified by testing
   
   

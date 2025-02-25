@@ -32,28 +32,28 @@ public final class DriveConstants {
 
     public static final int kFrontLeftDriveId = 1; //CAN
     public static final int kFrontLeftTurnId = 11; //CAN
-    public static final int kFrontLeftTurnEncoderPort = 1; //PWM
+    public static final int kFrontLeftTurnEncoderPort = 2; //PWM
     public static final double kFrontLeftTurnEncoderOffset = 0.58 + 1.57;
     public static final boolean kFrontLeftDriveReversed = true;
     public static final boolean kFrontLeftTurningReversed = true;
         
     public static final int kFrontRightDriveId = 4; //CAN
     public static final int kFrontRightTurnId = 14; //CAN
-    public static final int kFrontRightTurnEncoderPort = 4; //PWM
+    public static final int kFrontRightTurnEncoderPort = 3; //PWM
     public static final double kFrontRightTurnEncoderOffset = 5.91 + 1.54;
     public static final boolean kFrontRightDriveReversed = true;
     public static final boolean kFrontRightTurningReversed = true;
         
     public static final int kBackLeftDriveId = 2; //CAN
     public static final int kBackLeftTurnId = 12; //CAN
-    public static final int kBackLeftTurnEncoderPort = 2; //PWM
+    public static final int kBackLeftTurnEncoderPort = 0; //PWM
     public static final double kBackLeftTurnEncoderOffset = 1.8 + 1.59;
     public static final boolean kBackLeftDriveReversed = true;
     public static final boolean kBackLeftTurningReversed = false;
         
     public static final int kBackRightDriveId = 3; //CAN
     public static final int kBackRightTurnId = 13; //CAN
-    public static final int kBackRightTurnEncoderPort = 3; //PWM
+    public static final int kBackRightTurnEncoderPort = 4; //PWM
     public static final double kBackRightTurnEncoderOffset = 2.46 + 1.56;
     public static final boolean kBackRightDriveReversed = true;
     public static final boolean kBackRightTurningReversed = false;

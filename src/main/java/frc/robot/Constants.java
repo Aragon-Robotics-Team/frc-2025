@@ -30,7 +30,7 @@ public final class Constants {
     public static final int deviceId = 19;
     public static final int deviceId2 = 24;
 
-    public static final int limitSwitchDio = 0;
+    public static final int limitSwitchDio = 9;
 
 
     // This is the max speed tolerated by trapezoidal. The unit is the speed that is put into setSpeed() (goes from -1 to 1)
@@ -56,7 +56,7 @@ public final class Constants {
     public static final double kL3ElevatorHeight = 25.013;
     public static final double kL4ElevatorHeight = 51.094;
 
-    public static final double kSubstationIntakeElevatorHeight = 0; // TO CHANGE
+    public static final double kSubstationIntakeElevatorHeight = 29.9; 
    }  
 
 
@@ -113,8 +113,8 @@ public final class Constants {
         public static final int kIntakeWithIndexerButtonID = 7;
         */
 
-        public static final int kManualOuttakeTriggerAxis = 3;
-        public static final int kManualIntakeTriggerAxis = 4;
+        public static final int kManualOuttakeTriggerAxis = 2;
+        public static final int kManualIntakeTriggerAxis = 3;
     }
 } 
 
