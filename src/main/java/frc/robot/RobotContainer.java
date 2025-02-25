@@ -339,7 +339,7 @@ public class RobotContainer {
     // note: elevator should always be reset for correctness
 
     // NOTE: i do not use the .until here (or later) since the feedforward must be used to keep the elevator at the reasonable position
-    /* /////
+    /*]] /////
     m_L1ScoringButton.onTrue(
       Commands.parallel(
         // m_armToL1.until(m_armToL1::atSetpoint),
