@@ -19,7 +19,7 @@ public final class IOConstants {
     public static final int kVisionRightAlignButtonID = 6; // top right button
     
     // this is for both indexer/intake mechanism outtake (spinning out)
-    public static final int kArmOuttakeRollersButtonID = 7;
+    public static final int kEndEffectorOuttakeButtonID = 7;
 
     // this is for ground intaking coral (see exact specs)
     public static final int kGroundIntakeCoralButtonID = 8;
@@ -33,13 +33,13 @@ public final class IOConstants {
     
     // L1-4 scoring
     public static final int kL1ScoringButtonID = 1;
-    public static final int kL2ScoringButtonID = 2;
-    public static final int kL3ScoringButtonID = 3;
-    public static final int kL4ScoringButtonID = 4;
+    public static final int kL2ScoringButtonID = 3;
+    public static final int kL3ScoringButtonID = 4;
+    public static final int kL4ScoringButtonID = 2;
 
     // button 5: stow arm
-    public static final int kStowArmButtonID = 5;
+    public static final int kStowButtonID = 5;
     // button 6: move arm to substation intake position
-    public static final int kArmToSubstationButtonID = 6;
+    public static final int kSubstationButtonID = 6;
 
 }
