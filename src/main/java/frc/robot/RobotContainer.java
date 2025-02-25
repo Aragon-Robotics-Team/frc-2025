@@ -183,9 +183,11 @@ public class RobotContainer {
   private RunIntakeWithIndexer m_spinIntakeIndexerRollers = new RunIntakeWithIndexer(m_intake, m_indexer, kIntakeIndexerSpeed); // used for ground intake coral
   private RunIntakeWithIndexer m_outtakeIntakeIndexerRollers = new RunIntakeWithIndexer(m_intake, m_indexer, -kIntakeIndexerSpeed);
 
-  private RunIntakeWithIndexerJoystick m_manualOuttakeIndexerIntake = new RunIntakeWithIndexerJoystick(m_secondJoystick, m_intake, m_indexer, false);
-  private RunIntakeWithIndexerJoystick m_manualIntakeIndexerIntake = new RunIntakeWithIndexerJoystick(m_secondJoystick, m_intake, m_indexer, true);
-
+  // combine these into one command
+  
+  private RunIntakeWithIndexerJoystick m_manualSpinIndexerIntake = new RunIntakeWithIndexerJoystick(m_secondJoystick, m_intake, m_indexer);
+  
+  
   // note: these buttons are both not assigned and also missing the right IDs
   // private JoystickButton m_intakeInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeInButtonID);
   // private JoystickButton m_intakeOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeOutButtonID);
@@ -253,6 +255,8 @@ public class RobotContainer {
     // the intake and the indexer will outtake for 2 seconds
 
     
+    // the .until is kept here as when the elevator/arm reach "ground", there is no ff needed to hold them up -- they are at the lowest position
+    // ok i have been convinced by kaitlyn
     /* ///// -- elevator CANNOT GO DOWN -- elevator to ground doesnt work
     m_groundIntakeCoralButton.onTrue(
       Commands.parallel(
@@ -261,7 +265,9 @@ public class RobotContainer {
         m_pivotPIDToIntake
       ).andThen(
         Commands.parallel(
-          m_spinIntakeIndexerRollers, 
+          m_elevatorToGround,
+          m_armToGroundIntake,
+          m_spinIntakeIndexerRollers,
           m_spinEndEffector
         )
       )
@@ -297,32 +303,20 @@ public class RobotContainer {
     // button id 7 (back left button), allows manual control of elevator/arm
     // also allows for manual intake/outtake
 
-    
-    
-    // scuffed code but this should be good
-    // should be refactored
-    // check the null value on here
+    // what i wrote last night was bad
+    // i have rewritten it
 
-    /* /////
+    /*
+    /////
     m_elevatorArmManualControlButton.whileTrue(
       Commands.parallel(
         m_arcadeElevator,
-        m_arcadeArm
+        m_arcadeArm,
+        m_manualSpinIndexerIntake, m_joystickOverrideSpinEndEffector // these two commands go together
       )
     );
-
-    // see https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/GenericHID.html#axisGreaterThan(int,double,edu.wpi.first.wpilibj.event.EventLoop)
-
-    m_elevatorArmManualControlButton.and(m_secondJoystick.axisGreaterThan(2, 0, null)).whileTrue(m_manualOuttakeIndexerIntake);
-    m_elevatorArmManualControlButton.and(m_secondJoystick.axisGreaterThan(3, 0, null)).whileTrue(
-      Commands.parallel(
-        m_manualIntakeIndexerIntake,
-        m_joystickOverrideSpinEndEffector
-      ));
     */
-   
-    
-    
+
 
     // button id 8 (back right button) allows manual control of arm/pivot
     /* /////
@@ -330,18 +324,13 @@ public class RobotContainer {
       Commands.parallel(
         m_arcadePivot,
         m_arcadeArm,
-        m_manualIntakeIndexerIntake,
+        m_manualSpinIndexerIntake,
         m_joystickOverrideSpinEndEffector
       )
     );
-
-    m_pivotArmManualControlButton.and(m_secondJoystick.axisGreaterThan(2, kIntakeIndexerSpeed, null)).whileTrue(m_manualOuttakeIndexerIntake);
-    m_pivotArmManualControlButton.and(m_secondJoystick.axisGreaterThan(3, 0, null)).whileTrue(
-      Commands.parallel(
-        m_manualIntakeIndexerIntake,
-        m_joystickOverrideSpinEndEffector
-      ));
     */
+
+
 
     // L1-4 scoring
     // gonna assume it takes <1.5s to score that piece
