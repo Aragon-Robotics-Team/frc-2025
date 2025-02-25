@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.SparkLimitSwitch;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -12,13 +13,24 @@ import frc.robot.constants.ArmConstants;
 
 public class EndEffector extends SubsystemBase {
   private SparkMax m_endEffectorMotor = new SparkMax(ArmConstants.kEndEffectorMotorDeviceID, MotorType.kBrushless);
-  // there will be a dumbass beam break here!!!!!!!!!!!!!
+  // note: the bream break, the green wire on the robot, is plugged into the FORWARD limit switch on the spark max
+  private SparkLimitSwitch m_beamBreak = m_endEffectorMotor.getForwardLimitSwitch();
 
   /** Creates a new EndEffector. */
   public EndEffector() {}
   
-  public void spinArmOuttakeMotor(double m_speed){
-    m_endEffectorMotor.set(m_speed);
+  public void spinArmOuttakeMotor(double speed){
+    // positive speed == spin inwards
+    // if we hit the limit, then don't spin coral even more forwards
+    if ((speed > 0) && (isBeamBreakTriggered())){
+      m_endEffectorMotor.set(0);
+    } else {
+      m_endEffectorMotor.set(speed);
+    }
+  }
+
+  public boolean isBeamBreakTriggered(){
+    return m_beamBreak.isPressed();
   }
 
 
