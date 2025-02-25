@@ -118,7 +118,7 @@ public class RobotContainer {
 
   private final EndEffector m_endEffector = new EndEffector();
   private SpinEndEffectorMotor m_spinEndEffector = new SpinEndEffectorMotor(m_endEffector, -0.7, false, m_secondJoystick); // spin out is probably a negative speed, and this just spins it out
-  private JoystickButton m_spinEndEffectorButton = new JoystickButton(m_secondJoystick, IOConstants.kEndEffectorOuttakeButtonID);
+  private JoystickButton m_spinEndEffectorButton = new JoystickButton(m_driverJoystick, IOConstants.kEndEffectorOuttakeButtonID);
 
   private SpinEndEffectorMotor m_joystickOverrideSpinEndEffector = new SpinEndEffectorMotor(m_endEffector, 0, true, m_secondJoystick); 
   // lowkey terrible coding practice
@@ -192,7 +192,7 @@ public class RobotContainer {
   // private JoystickButton m_indexerInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerInButtonID);
   // private JoystickButton m_indexerOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerOutButtonID);
 
-  private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_secondJoystick, IOConstants.kGroundIntakeCoralButtonID);
+  private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_driverJoystick, IOConstants.kGroundIntakeCoralButtonID);
   // end intake/indexer
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -216,12 +216,17 @@ public class RobotContainer {
   private void configureBindings() {
     // see discord channel for button bindings
 
+
+    // note:
+    // if a line is commented out using "/////" (5 in a row), that is for testing purposes (and has not been tested)
+    // if it has 6 in a row, that means the thing has been tested and works.
+
 ///////////////////////////////////////////////////////////
     // driver joystick bindings:
-    m_resetHeadingButton.onTrue(m_resetHeadingCommand); // button 4, y button
+    ///// m_resetHeadingButton.onTrue(m_resetHeadingCommand); // button 4, y button
     // to add - button 5 - left align to reef (vision)
     // to add - button 6 - right align to reef (vision)
-    m_spinEndEffectorButton.whileTrue(m_spinEndEffector); // button 7, spin arm outtake roller
+    ////// m_spinEndEffectorButton.whileTrue(m_spinEndEffector); // button 7, spin arm outtake roller
 
 
 
@@ -236,7 +241,6 @@ public class RobotContainer {
     // --> this might actually be a good idea if arm is manually moved
   
     // lowkey unsure if this code works
-    // TODO -- make sure arm/elevator end
 
 
     // the button that drops the intake and spins the roller
@@ -247,6 +251,9 @@ public class RobotContainer {
     // intake, indexer, and outtake will continue to spin for either 2 seconds or until beam break is triggered
     // then after,
     // the intake and the indexer will outtake for 2 seconds
+
+    
+    /* ///// -- elevator CANNOT GO DOWN -- elevator to ground doesnt work
     m_groundIntakeCoralButton.onTrue(
       Commands.parallel(
         m_elevatorToGround.until(m_elevatorToGround::atSetpoint), 
@@ -259,9 +266,13 @@ public class RobotContainer {
         )
       )
     );
+    */
+    
+    
 
-    // TODO: Change seconds
+
     // what it does is move the pivot up (only)
+    /* ////// (works!)
     m_groundIntakeCoralButton.onFalse(
       Commands.parallel(
         m_pivotPIDToStow,
@@ -271,6 +282,8 @@ public class RobotContainer {
         )
       )
     );
+    */
+    
 
     // end driver joystick bindings
 
@@ -283,15 +296,25 @@ public class RobotContainer {
     // NOTE: I may need to fix these commands (and/or other commands) so that the manual override can interrupt other commands
     // button id 7 (back left button), allows manual control of elevator/arm
     // also allows for manual intake/outtake
+
+    /////
+    // we'll split this up into two different so both can use the intake
+    // refactor this to be able to use BOTH buttons!!!!!!!
+    /* /////
     m_elevatorArmManualControlButton.whileTrue(
       Commands.parallel(
         m_arcadeElevator,
         m_arcadeArm,
-        m_manualOuttakeIndexerIntake
+        m_manualOuttakeIndexerIntake,
+        m_joystickOverrideSpinEndEffector,
+        m_manualIntakeIndexerIntake
       )
     );
+    */ 
+    
 
     // button id 8 (back right button) allows manual control of arm/pivot
+    /* /////
     m_pivotArmManualControlButton.whileTrue(
       Commands.parallel(
         m_arcadePivot,
@@ -300,6 +323,7 @@ public class RobotContainer {
         m_joystickOverrideSpinEndEffector
       )
     );
+    */
 
     // L1-4 scoring
     // gonna assume it takes <1.5s to score that piece
@@ -308,6 +332,7 @@ public class RobotContainer {
     // note: elevator should always be reset for correctness
 
     // NOTE: i do not use the .until here (or later) since the feedforward must be used to keep the elevator at the reasonable position
+    /* /////
     m_L1ScoringButton.onTrue(
       Commands.parallel(
         // m_armToL1.until(m_armToL1::atSetpoint),
@@ -315,6 +340,7 @@ public class RobotContainer {
         m_elevatorToGround.until(m_elevatorToGround::atSetpoint)
       )
     );
+    */
 
 
     //************************************************************** */
@@ -325,6 +351,7 @@ public class RobotContainer {
     // will also need to redo commands
     // btw arm to position might never end
 
+    /* /////
     m_L2ScoringButton.onTrue(
       Commands.parallel(
         // m_elevatorToL2.until(m_elevatorToL2::atSetpoint),
@@ -333,8 +360,10 @@ public class RobotContainer {
         m_armToL2
       )
     );
+    */
 
     // L3
+    /* /////
     m_L3ScoringButton.onTrue(
       Commands.parallel(
         // m_elevatorToL3.until(m_elevatorToL3::atSetpoint),
@@ -343,8 +372,10 @@ public class RobotContainer {
         m_armToL3
       )
     );
+    */
 
     // L4
+    /* /////
     m_L4ScoringButton.onTrue(
       Commands.parallel(
         // m_elevatorToL4.until(m_elevatorToL4::atSetpoint),
@@ -353,19 +384,23 @@ public class RobotContainer {
         m_armToL4
       )
     );
+    */
 
 
     // bind buttons 5, 6
+    /* /////
     m_stowButton.onTrue(Commands.parallel(
       m_armToGroundIntake,
       m_elevatorToGround.until(m_elevatorToGround::atSetpoint)
     )); // button 5 -- stow arm and elevator
+    */
 
 
     // button 6 -- move arm to substation intake position
     // will fix when beam break is added, but for now, this is when this thing is held.
 
     // the at setpoint is to move the command along
+    /* /////
     m_substationIntakeButton.whileTrue(Commands.parallel(
       m_armToSubstationIntake.until(m_armToSubstationIntake::atSetpoint),
       m_elevatorToSubstationIntake.until(m_elevatorToSubstationIntake::atSetpoint)
@@ -375,6 +410,7 @@ public class RobotContainer {
         m_elevatorToSubstationIntake
       )) // note: this command can maybe spin indefinitely
     ); 
+    */
   }
 
 
@@ -387,7 +423,7 @@ public class RobotContainer {
 
 
   private void bindSubsystemCommands() {
-    m_swerve.setDefaultCommand(m_swerveJoystick);
+    ////// m_swerve.setDefaultCommand(m_swerveJoystick);
 
 
     // note: there are really no default commands 
@@ -396,7 +432,7 @@ public class RobotContainer {
     // thus, see the button binding on true part for that
     // (note to self): I may get a watchdog error for this in which case I'll bind null or something
 
-    // m_arm.setDefaultCommand(m_arcadeArm);
+    m_arm.setDefaultCommand(m_arcadeArm);
     // m_pivot.setDefaultCommand(m_arcadePivot);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
