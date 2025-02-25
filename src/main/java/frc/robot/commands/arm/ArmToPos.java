@@ -52,10 +52,14 @@ public class ArmToPos extends Command {
     m_arm.setSpeed(0);
   }
 
+  public boolean atSetpoint(){
+    return m_pid.atSetpoint();
+  }
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return false; 
     // TODO
     // NEED THE FINISH PID THING
   }

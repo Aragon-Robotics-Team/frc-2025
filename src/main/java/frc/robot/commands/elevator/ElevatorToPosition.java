@@ -74,12 +74,16 @@ public class ElevatorToPosition extends Command {
     SmartDashboard.putNumber("Time", m_timer.get());
   }
 
+  public boolean atSetpoint(){
+    return m_pid.atSetpoint();
+  }
+
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
     // if(Math.abs(m_goal.position - m_elevator.getElevatorPosition()) < ElevatorConstants.kPositionDeadband && Math.abs(m_elevator.getSpeed()) < ElevatorConstants.kVelocityDeadband){
     //   return true;
-    // }
+    // } 
     return false;
   }
 }

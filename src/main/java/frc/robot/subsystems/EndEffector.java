@@ -12,6 +12,7 @@ import frc.robot.constants.ArmConstants;
 
 public class EndEffector extends SubsystemBase {
   private SparkMax m_endEffectorMotor = new SparkMax(ArmConstants.EndEffectorMotorDeviceID, MotorType.kBrushless);
+  // there will be a dumbass beam break here!!!!!!!!!!!!!
 
   /** Creates a new EndEffector. */
   public EndEffector() {}

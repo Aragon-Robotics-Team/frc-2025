@@ -35,5 +35,17 @@ public final class ArmConstants {
   public static final int kArmButtonID = 1;
 
   public static final int kEndEffectorMotorOverrideAxis = 4;
+
+
+  // ALL THESE HAVE TO BE CHANGED (TODO)
+  public static final double kL1ArmTickPosition = 0;
+  public static final double kL2ArmTickPosition = 0;
+  public static final double kL3ArmTickPosition = 0;
+  public static final double kL4ArmTickPosition = 0;
+
+  public static final double kSubstationTickPosition = 0;
+  public static final double kGroundIntakeTickPosition = 0.469; // this is verified by testing
+  
+  
 }
 // find in future!

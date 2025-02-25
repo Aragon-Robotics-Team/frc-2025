@@ -19,9 +19,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
  */
 public final class Constants {
 
-   public final class ElevatorConstants{
-    public static final int kElevatorManualControlAxis = 5; // todo: check that this is the right axis (via testing)
-
+   public final class ElevatorConstants {
     public static final int kElevatorTestButtonID = 5;
     public static final double kElevatorMultiplier = 0.1;
     public static final double kTicksPerFoot = 13.9285;
@@ -48,10 +46,18 @@ public final class Constants {
 
     public static final double kPositionDeadband  = 0.1;
     public static final double kVelocityDeadband = 0.05;
+
+
+
+    // joystick esque constants
+    public static final int kElevatorManualControlAxis = 5; 
+
+    public static final double kL2ElevatorHeight = 9.327; // units in inches
+    public static final double kL3ElevatorHeight = 25.013;
+    public static final double kL4ElevatorHeight = 51.094;
+
+    public static final double kSubstationIntakeElevatorHeight = 0; // TO CHANGE
    }  
-
-
-   // joystick constants removed -- see IOConstants.java (in constants folder)
 
 
     public static final class PivotConstants {
@@ -100,7 +106,7 @@ public final class Constants {
 
         // see IO Constants for exact button ID specifications (for the driver controller)
         /*
-        public static final int kIntakeInButtonID = 3; //TODO: Change these button IDs
+        public static final int kIntakeInButtonID = 3; 
         public static final int kIntakeOutButtonID = 4;
         public static final int kIndexerInButtonID = 5;
         public static final int kIndexerOutButtonID = 6;
