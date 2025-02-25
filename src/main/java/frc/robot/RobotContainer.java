@@ -297,20 +297,31 @@ public class RobotContainer {
     // button id 7 (back left button), allows manual control of elevator/arm
     // also allows for manual intake/outtake
 
-    /////
-    // we'll split this up into two different so both can use the intake
-    // refactor this to be able to use BOTH buttons!!!!!!!
+    
+    
+    // scuffed code but this should be good
+    // should be refactored
+    // check the null value on here
+
     /* /////
     m_elevatorArmManualControlButton.whileTrue(
       Commands.parallel(
         m_arcadeElevator,
-        m_arcadeArm,
-        m_manualOuttakeIndexerIntake,
-        m_joystickOverrideSpinEndEffector,
-        m_manualIntakeIndexerIntake
+        m_arcadeArm
       )
     );
-    */ 
+
+    // see https://github.wpilib.org/allwpilib/docs/release/java/edu/wpi/first/wpilibj/GenericHID.html#axisGreaterThan(int,double,edu.wpi.first.wpilibj.event.EventLoop)
+
+    m_elevatorArmManualControlButton.and(m_secondJoystick.axisGreaterThan(2, 0, null)).whileTrue(m_manualOuttakeIndexerIntake);
+    m_elevatorArmManualControlButton.and(m_secondJoystick.axisGreaterThan(3, 0, null)).whileTrue(
+      Commands.parallel(
+        m_manualIntakeIndexerIntake,
+        m_joystickOverrideSpinEndEffector
+      ));
+    */
+   
+    
     
 
     // button id 8 (back right button) allows manual control of arm/pivot
@@ -323,6 +334,13 @@ public class RobotContainer {
         m_joystickOverrideSpinEndEffector
       )
     );
+
+    m_pivotArmManualControlButton.and(m_secondJoystick.axisGreaterThan(2, kIntakeIndexerSpeed, null)).whileTrue(m_manualOuttakeIndexerIntake);
+    m_pivotArmManualControlButton.and(m_secondJoystick.axisGreaterThan(3, 0, null)).whileTrue(
+      Commands.parallel(
+        m_manualIntakeIndexerIntake,
+        m_joystickOverrideSpinEndEffector
+      ));
     */
 
     // L1-4 scoring
@@ -432,7 +450,7 @@ public class RobotContainer {
     // thus, see the button binding on true part for that
     // (note to self): I may get a watchdog error for this in which case I'll bind null or something
 
-    m_arm.setDefaultCommand(m_arcadeArm);
+    // m_arm.setDefaultCommand(m_arcadeArm);
     // m_pivot.setDefaultCommand(m_arcadePivot);
     // m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
