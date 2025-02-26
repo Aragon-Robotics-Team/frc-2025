@@ -27,7 +27,8 @@ public class ElevatorToPosition extends Command {
 
     //goal is inputted as inches on the elevator. The line below converts it to ticks.
 
-    m_goal = new TrapezoidProfile.State(goal*ElevatorConstants.kTicksPerFoot/12, 0);
+    // m_goal = new TrapezoidProfile.State(goal*ElevatorConstants.kTicksPerFoot/12, 0);
+    m_goal = new TrapezoidProfile.State(goal, 0); // this is now logged in ticks
 
     m_profile = new TrapezoidProfile(new TrapezoidProfile.Constraints(ElevatorConstants.kMaxSpeed*ElevatorConstants.kTicksPerSecondPerSpeed, ElevatorConstants.kMaxAcceleration));
 
@@ -44,6 +45,8 @@ public class ElevatorToPosition extends Command {
     m_start = new TrapezoidProfile.State(m_elevator.getElevatorPosition(), m_elevator.getSpeed());
     m_timer.restart();
     SmartDashboard.putNumber("Time", m_timer.get());
+    SmartDashboard.putNumber("Goal", m_goal.position);
+    System.out.println(m_goal.position);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -64,7 +67,7 @@ public class ElevatorToPosition extends Command {
     SmartDashboard.putNumber("Elevator/position (ticks)", m_elevator.getElevatorPosition());
     SmartDashboard.putNumber("Elevator/position command", idealState.position);
     SmartDashboard.putNumber("Elevator/position error", m_elevator.getElevatorPosition() - idealState.position);
-    SmartDashboard.putNumber("Goal", m_goal.position);
+    // SmartDashboard.putNumber("Goal", m_goal.position);
     SmartDashboard.putNumber("Time", m_timer.get());
   }
 
