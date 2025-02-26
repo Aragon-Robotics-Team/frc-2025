@@ -30,7 +30,8 @@ public final class IOConstants {
     // button constants for robot operator:
     public static final int kElevatorArmManualOverrideButtonID = 7;
     public static final int kPivotArmManualOverrideButtonID = 8;
-    
+    public static final int kElevatorResetButtonID = 6;
+
     // L1-4 scoring
     public static final int kL1ScoringButtonID = 1;
     public static final int kL2ScoringButtonID = 3;

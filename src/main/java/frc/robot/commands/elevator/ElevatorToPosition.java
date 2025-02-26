@@ -72,6 +72,7 @@ public class ElevatorToPosition extends Command {
   @Override
   public void end(boolean interrupted) {
     SmartDashboard.putNumber("Time", m_timer.get());
+    m_elevator.setSpeed(0); // reset
   }
 
   public boolean atSetpoint(){
