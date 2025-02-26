@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -31,6 +31,8 @@ import frc.robot.subsystems.Arm;
 import frc.robot.commands.arm.ArcadeArm;
 import frc.robot.commands.arm.ArmToPos;
 import frc.robot.commands.arm.SpinEndEffectorMotor;
+import frc.robot.commands.auto.DriveForwardAndPlace;
+import frc.robot.commands.auto.MoveForTime;
 import frc.robot.subsystems.EndEffector;
 
 // elevator imports
@@ -111,13 +113,20 @@ public class RobotContainer {
 
   private final ArmToPos m_armToSubstationIntake = new ArmToPos(m_arm, ArmConstants.kSubstationTickPosition);
   private final ArmToPos m_armToGroundIntake = new ArmToPos(m_arm, ArmConstants.kGroundIntakeTickPosition); // probably used in different command
+  private final ArmToPos m_armToGroundIntake1 = new ArmToPos(m_arm, ArmConstants.kGroundIntakeTickPosition); // probably used in different command
 
   private final JoystickButton m_stowButton = new JoystickButton(m_secondJoystick, IOConstants.kStowButtonID);
   private final JoystickButton m_substationIntakeButton = new JoystickButton(m_secondJoystick, IOConstants.kSubstationButtonID);
 
 
   private final EndEffector m_endEffector = new EndEffector();
-  private SpinEndEffectorMotor m_spinEndEffector = new SpinEndEffectorMotor(m_endEffector, -0.7, false, m_secondJoystick); // spin out is probably a negative speed, and this just spins it out
+  private SpinEndEffectorMotor m_intakeEndEffector = new SpinEndEffectorMotor(m_endEffector, 0.9, false, m_secondJoystick);
+  private SpinEndEffectorMotor m_intakeEndEffector1 = new SpinEndEffectorMotor(m_endEffector, 0.9, false, m_secondJoystick);
+  private SpinEndEffectorMotor m_outtakeEndEffector = new SpinEndEffectorMotor(m_endEffector, -0.9, false, m_secondJoystick); // spin out is probably a negative speed, and this just spins it out
+  private SpinEndEffectorMotor m_outtakeEndEffector1 = new SpinEndEffectorMotor(m_endEffector, -0.9, false, m_secondJoystick); // spin out is probably a negative speed, and this just spins it out
+  private SpinEndEffectorMotor m_outtakeEndEffectorAuto = new SpinEndEffectorMotor(m_endEffector, -0.9, false, m_secondJoystick); // spin out is probably a negative speed, and this just spins it out
+   
+
   private JoystickButton m_spinEndEffectorButton = new JoystickButton(m_driverJoystick, IOConstants.kEndEffectorOuttakeButtonID);
 
   private SpinEndEffectorMotor m_joystickOverrideSpinEndEffector = new SpinEndEffectorMotor(m_endEffector, 0, true, m_secondJoystick); 
@@ -134,14 +143,17 @@ public class RobotContainer {
   // this is a trapezoidal command!!
   // private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, ElevatorConstants.kElevatorTestButtonID);
   // private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 15);
-
+  private JoystickButton m_elevatorResetButton = new JoystickButton(m_driverJoystick, IOConstants.kElevatorResetButtonID);
 
   private ElevatorToPosition m_elevatorToL2 = new ElevatorToPosition(m_elevator, ElevatorConstants.kL2ElevatorHeight);
   private ElevatorToPosition m_elevatorToL3 = new ElevatorToPosition(m_elevator, ElevatorConstants.kL3ElevatorHeight);
   private ElevatorToPosition m_elevatorToL4 = new ElevatorToPosition(m_elevator, ElevatorConstants.kL4ElevatorHeight);
 
   private ElevatorToPosition m_elevatorToSubstationIntake = new ElevatorToPosition(m_elevator, ElevatorConstants.kSubstationIntakeElevatorHeight);
-  private ElevatorToPosition m_elevatorToGround = new ElevatorToPosition(m_elevator, 0); // reset elevator position
+  private ElevatorToPosition m_elevatorToGround = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
+  private ElevatorToPosition m_elevatorToGround2 = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
+  private ElevatorToPosition m_elevatorToGround3 = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
+  private ElevatorToPosition m_elevatorToGround4 = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
 
 
 
@@ -196,6 +208,8 @@ public class RobotContainer {
 
   private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_driverJoystick, IOConstants.kGroundIntakeCoralButtonID);
   // end intake/indexer
+  // private final MoveForTime m_moveForTime = new MoveForTime(m_swerve, 7, -0.5, 0, 0);
+  // private DriveForwardAndPlace m_driveForwardAndPlace = new DriveForwardAndPlace(m_armToL1, m_elevatorToGround, m_moveForTime, m_outtakeEndEffectorAuto);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -215,9 +229,20 @@ public class RobotContainer {
    * PS4} controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight
    * joysticks}.
    */
+
+  private JoystickButton m_testButton = new JoystickButton(m_driverJoystick, 1);
+  private JoystickButton m_test2Button = new JoystickButton(m_driverJoystick, 2);
   private void configureBindings() {
     // see discord channel for button bindings
 
+    // this is the testing section.
+    // everything here should only be testing thing
+
+
+    m_testButton.whileTrue(m_outtakeEndEffector);
+    m_test2Button.whileTrue(m_intakeEndEffector);
+    
+    m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
 
     // note:
     // if a line is commented out using "/////" (5 in a row), that is for testing purposes (and has not been tested)
@@ -228,7 +253,8 @@ public class RobotContainer {
     ///// m_resetHeadingButton.onTrue(m_resetHeadingCommand); // button 4, y button
     // to add - button 5 - left align to reef (vision)
     // to add - button 6 - right align to reef (vision)
-    ////// m_spinEndEffectorButton.whileTrue(m_spinEndEffector); // button 7, spin arm outtake roller
+    ////// 
+    // m_spinEndEffectorButton.whileTrue(m_outtakeEndEffector); // button 7, spin arm outtake roller
 
 
 
@@ -257,38 +283,36 @@ public class RobotContainer {
     
     // the .until is kept here as when the elevator/arm reach "ground", there is no ff needed to hold them up -- they are at the lowest position
     // ok i have been convinced by kaitlyn
-    /* ///// -- elevator CANNOT GO DOWN -- elevator to ground doesnt work
-    m_groundIntakeCoralButton.onTrue(
-      Commands.parallel(
-        m_elevatorToGround.until(m_elevatorToGround::atSetpoint), 
-        m_armToGroundIntake.until(m_armToGroundIntake::atSetpoint),
-        m_pivotPIDToIntake
-      ).andThen(
-        Commands.parallel(
-          m_elevatorToGround,
-          m_armToGroundIntake,
-          m_spinIntakeIndexerRollers,
-          m_spinEndEffector
-        )
-      )
-    );
-    */
+    // turns out the .until stops the elevator from going down
+
+    //////
+    
+    // m_groundIntakeCoralButton.whileTrue(
+    //   Commands.parallel(
+    //     m_elevatorToGround4, 
+    //     m_armToGroundIntake1,
+    //     m_pivotPIDToIntake, 
+    //     m_spinIntakeIndexerRollers, 
+    //     m_intakeEndEffector1
+    //   )
+    // );
+    
     
     
 
 
     // what it does is move the pivot up (only)
-    /* ////// (works!)
-    m_groundIntakeCoralButton.onFalse(
-      Commands.parallel(
-        m_pivotPIDToStow,
-        m_spinEndEffector.withTimeout(2),
-        Commands.sequence( // todo: put a beam break thing
-          m_spinIntakeIndexerRollers.withTimeout(2), m_outtakeIntakeIndexerRollers.withTimeout(2)
-        )
-      )
-    );
-    */
+    ////// (works!)
+    // m_groundIntakeCoralButton.onFalse(
+    //   Commands.parallel(
+    //     m_pivotPIDToStow,
+    //     m_intakeEndEffector.withTimeout(2),
+    //     Commands.sequence( // todo: put a beam break thing
+    //       m_spinIntakeIndexerRollers.withTimeout(2), m_outtakeIntakeIndexerRollers.withTimeout(2)
+    //     )
+    //   )
+    // );
+  
     
 
     // end driver joystick bindings
@@ -339,85 +363,94 @@ public class RobotContainer {
     // note: elevator should always be reset for correctness
 
     // NOTE: i do not use the .until here (or later) since the feedforward must be used to keep the elevator at the reasonable position
-    /*]] /////
+    
+    
+    //////
+    
     m_L1ScoringButton.onTrue(
       Commands.parallel(
         // m_armToL1.until(m_armToL1::atSetpoint),
         m_armToL1,
-        m_elevatorToGround.until(m_elevatorToGround::atSetpoint)
+        m_elevatorToGround3
       )
     );
-    */
+    
+    
 
 
     //************************************************************** */
     // MASSIVE TODO - make sure that this works and doesnt break metal
     //************************************************************** */
+    // it works!
 
     // note: may need to continue arm ff for later
     // will also need to redo commands
     // btw arm to position might never end
 
-    /* /////
+
+    // -- L2, L3, L4 works.
+    //////
     m_L2ScoringButton.onTrue(
       Commands.parallel(
         // m_elevatorToL2.until(m_elevatorToL2::atSetpoint),
         // m_armToL2.until(m_armToL2::atSetpoint)
         m_elevatorToL2,
-        m_armToL2
+        Commands.sequence(new WaitCommand(0.2), m_armToL2)
       )
     );
-    */
+    
 
     // L3
-    /* /////
+    //////
     m_L3ScoringButton.onTrue(
       Commands.parallel(
         // m_elevatorToL3.until(m_elevatorToL3::atSetpoint),
         // m_armToL3.until(m_armToL3::atSetpoint)
         m_elevatorToL3,
-        m_armToL3
+        Commands.sequence(new WaitCommand(0.2), m_armToL3)
       )
     );
-    */
+    
 
     // L4
-    /* /////
+    //////
     m_L4ScoringButton.onTrue(
       Commands.parallel(
         // m_elevatorToL4.until(m_elevatorToL4::atSetpoint),
         // m_armToL4.until(m_armToL4::atSetpoint)
         m_elevatorToL4,
-        m_armToL4
+        Commands.sequence(new WaitCommand(0.2), m_armToL4)
       )
     );
-    */
+    
 
 
     // bind buttons 5, 6
-    /* /////
+    //////
     m_stowButton.onTrue(Commands.parallel(
       m_armToGroundIntake,
-      m_elevatorToGround.until(m_elevatorToGround::atSetpoint)
+      m_elevatorToGround2
     )); // button 5 -- stow arm and elevator
-    */
 
+    
+    
+     
 
     // button 6 -- move arm to substation intake position
     // will fix when beam break is added, but for now, this is when this thing is held.
 
     // the at setpoint is to move the command along
-    /* /////
-    m_substationIntakeButton.whileTrue(Commands.parallel(
-      m_armToSubstationIntake.until(m_armToSubstationIntake::atSetpoint),
-      m_elevatorToSubstationIntake.until(m_elevatorToSubstationIntake::atSetpoint)
-      ).andThen(Commands.parallel(
-        m_spinEndEffector,
-        m_armToSubstationIntake,
-        m_elevatorToSubstationIntake
-      )) // note: this command can maybe spin indefinitely
+    /////
+    
+    m_substationIntakeButton.onTrue(
+      Commands.parallel(
+        m_elevatorToSubstationIntake,
+        Commands.sequence(new WaitCommand(0.5), m_armToSubstationIntake),
+        // m_spinEndEffector
+        m_intakeEndEffector) // note: this command can maybe spin indefinitely
     ); 
-    */
+    
+    
   }
 
 
@@ -425,12 +458,14 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return m_autoChooser.getSelected();
+    // return m_driveForwardAndPlace;
   }
 
 
 
   private void bindSubsystemCommands() {
-    ////// m_swerve.setDefaultCommand(m_swerveJoystick);
+    ////// 
+    // m_swerve.setDefaultCommand(m_swerveJoystick);
 
 
     // note: there are really no default commands 
@@ -439,9 +474,9 @@ public class RobotContainer {
     // thus, see the button binding on true part for that
     // (note to self): I may get a watchdog error for this in which case I'll bind null or something
 
-    // m_arm.setDefaultCommand(m_arcadeArm);
+    m_arm.setDefaultCommand(m_arcadeArm);
     // m_pivot.setDefaultCommand(m_arcadePivot);
-    // m_elevator.setDefaultCommand(m_arcadeElevator);
+    m_elevator.setDefaultCommand(m_arcadeElevator);
     // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }

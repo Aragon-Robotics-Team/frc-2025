@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import com.revrobotics.spark.SparkBase;
@@ -63,7 +64,16 @@ public class Elevator extends SubsystemBase {
   }
   
   public boolean getLimitSwitch(){
-    return bottomLimitSwitch.get();
+    return !bottomLimitSwitch.get();
+  }
+
+  public void resetElevatorPosition(){
+    System.out.println("Resetting");
+    m_neo1.getEncoder().setPosition(0);
+  }
+
+  public InstantCommand resetElevatorEncoder(){
+    return new InstantCommand(this::resetElevatorPosition, this);
   }
 
   public void setElevatorPosition(double position) {
@@ -78,6 +88,10 @@ public class Elevator extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Encoder ticks", getElevatorPosition());
     SmartDashboard.putNumber("elevator speed", getSpeed());
+    SmartDashboard.putBoolean("Limit switch", getLimitSwitch());
+    // if (getLimitSwitch()){
+    //   setElevatorPosition(0);
+    // }
   }
   public void addRequirements(){}
 }
