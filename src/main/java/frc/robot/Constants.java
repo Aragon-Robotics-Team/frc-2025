@@ -52,11 +52,11 @@ public final class Constants {
     // joystick esque constants
     public static final int kElevatorManualControlAxis = 5; 
 
-    public static final double kL2ElevatorHeight = 15.452376365661621; // units in inches
+    public static final double kL2ElevatorHeight = 16.3; // units in inches
     public static final double kL3ElevatorHeight = 33.30923080444336;
-    public static final double kL4ElevatorHeight = 51.094;
+    public static final double kL4ElevatorHeight = 51.094*13.9285/12;
 
-    public static final double kSubstationIntakeElevatorHeight = 25.25; 
+    public static final double kSubstationIntakeElevatorHeight = 28.5; 
    } 
 
 

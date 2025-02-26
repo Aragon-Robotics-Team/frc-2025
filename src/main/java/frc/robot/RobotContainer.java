@@ -447,7 +447,7 @@ public class RobotContainer {
         m_elevatorToSubstationIntake,
         Commands.sequence(new WaitCommand(0.5), m_armToSubstationIntake),
         // m_spinEndEffector
-        m_intakeEndEffector) // note: this command can maybe spin indefinitely
+        Commands.sequence(new WaitCommand(0.2), m_intakeEndEffector)) // note: this command can maybe spin indefinitely
     ); 
     
     
