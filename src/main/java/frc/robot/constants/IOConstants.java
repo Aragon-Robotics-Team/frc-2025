@@ -16,7 +16,8 @@ public final class IOConstants {
     // note: these are button constants for the joystick for the robot driver (port 0)
     public static final int kResetHeadingButtonID = 4; // y button
     public static final int kVisionLeftAlignButtonID = 5; // top left button
-    public static final int kVisionRightAlignButtonID = 6; // top right button
+    public static final int kVisionRightAlignButtonID = 6; // top right button    
+    public static final int kElevatorResetButtonID = 6;
     
     // this is for both indexer/intake mechanism outtake (spinning out)
     public static final int kEndEffectorOuttakeButtonID = 7;
@@ -30,7 +31,6 @@ public final class IOConstants {
     // button constants for robot operator:
     public static final int kElevatorArmManualOverrideButtonID = 7;
     public static final int kPivotArmManualOverrideButtonID = 8;
-    public static final int kElevatorResetButtonID = 6;
 
     // L1-4 scoring
     public static final int kL1ScoringButtonID = 1;
