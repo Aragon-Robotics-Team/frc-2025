@@ -10,7 +10,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.SwerveJoystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -31,7 +31,7 @@ import frc.robot.subsystems.Arm;
 import frc.robot.commands.arm.ArcadeArm;
 import frc.robot.commands.arm.ArmToPos;
 import frc.robot.commands.arm.SpinEndEffectorMotor;
-import frc.robot.commands.auto.DriveForwardAndPlace;
+import frc.robot.commands.auto.DriveForwardL4;
 import frc.robot.commands.auto.MoveForTime;
 import frc.robot.subsystems.EndEffector;
 
@@ -71,7 +71,7 @@ public class RobotContainer {
 
 
   private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  private SendableChooser<Command> m_autoChooser;
+  private SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
 
   private final InstantCommand m_resetHeadingCommand = m_swerve.resetHeadingCommand();
@@ -208,14 +208,13 @@ public class RobotContainer {
 
   private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_driverJoystick, IOConstants.kGroundIntakeCoralButtonID);
   // end intake/indexer
-  // private final MoveForTime m_moveForTime = new MoveForTime(m_swerve, 7, -0.5, 0, 0);
-  // private DriveForwardAndPlace m_driveForwardAndPlace = new DriveForwardAndPlace(m_armToL1, m_elevatorToGround, m_moveForTime, m_outtakeEndEffectorAuto);
-
+  private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     bindSubsystemCommands();
-    m_autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
+    // m_autoChooser = AutoBuilder.buildAutoChooser();
+    m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
+    SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
     // Configure the trigger bindings
     configureBindings();
   }
