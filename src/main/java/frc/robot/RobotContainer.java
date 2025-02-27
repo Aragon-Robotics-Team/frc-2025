@@ -215,6 +215,7 @@ public class RobotContainer {
     // m_autoChooser = AutoBuilder.buildAutoChooser();
     m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
     SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
+    // SmartDashboard.putData("Driving/Odo/Reset_Heading", m_swerve.resetHeadingCommand());
     // Configure the trigger bindings
     configureBindings();
   }
@@ -286,15 +287,15 @@ public class RobotContainer {
 
     //////
     
-    // m_groundIntakeCoralButton.whileTrue(
-    //   Commands.parallel(
-    //     m_elevatorToGround4, 
-    //     m_armToGroundIntake1,
-    //     m_pivotPIDToIntake, 
-    //     m_spinIntakeIndexerRollers, 
-    //     m_intakeEndEffector1
-    //   )
-    // );
+    m_groundIntakeCoralButton.whileTrue(
+      Commands.parallel(
+        m_elevatorToGround4, 
+        m_armToGroundIntake1,
+        m_pivotPIDToIntake, 
+        m_spinIntakeIndexerRollers, 
+        m_intakeEndEffector1
+      )
+    );
     
     
     
@@ -446,7 +447,7 @@ public class RobotContainer {
         m_elevatorToSubstationIntake,
         Commands.sequence(new WaitCommand(0.5), m_armToSubstationIntake),
         // m_spinEndEffector
-        Commands.sequence(new WaitCommand(0.2), m_intakeEndEffector)) // note: this command can maybe spin indefinitely
+        Commands.sequence(new WaitCommand(0.5), m_intakeEndEffector)) // note: this command can maybe spin indefinitely
     ); 
     
     
