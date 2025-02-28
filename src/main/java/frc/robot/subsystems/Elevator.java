@@ -47,6 +47,9 @@ public class Elevator extends SubsystemBase {
   }
   
   public void setSpeed(double speed) {
+    if (speed < 0 && getLimitSwitch()){
+      speed = 0;
+    }
     m_neo1.set(speed);
     m_neo2.set(-speed);
     SmartDashboard.putNumber("setSpeed", speed);
@@ -68,8 +71,8 @@ public class Elevator extends SubsystemBase {
   }
 
   public void resetElevatorPosition(){
-    System.out.println("Resetting");
     m_neo1.getEncoder().setPosition(0);
+    System.out.println(getElevatorPosition());
   }
 
   public InstantCommand resetElevatorEncoder(){

@@ -14,16 +14,20 @@ public final class IOConstants {
     public static int kJoystickRotAxis = 4;
 
     // note: these are button constants for the joystick for the robot driver (port 0)
+    public static final int kEndEffectorOuttakeButtonID = 1;
+    public static final int kEndEffectorIntakeButtonID = 2;
+    public static final int kL2DealgaeButtonID = 3;
+    public static final int kL3DealgaeButtonID = 4;
     public static final int kResetHeadingButtonID = 4; // y button
     public static final int kVisionLeftAlignButtonID = 5; // top left button
     public static final int kVisionRightAlignButtonID = 6; // top right button    
     public static final int kElevatorResetButtonID = 6;
     
     // this is for both indexer/intake mechanism outtake (spinning out)
-    public static final int kEndEffectorOuttakeButtonID = 7;
+    // public static final int kEndEffectorOuttakeButtonID = 7;
 
     // this is for ground intaking coral (see exact specs)
-    public static final int kGroundIntakeCoralButtonID = 8;
+    public static final int kGroundIntakeCoralButtonID = 5;
 
 
 

@@ -29,10 +29,11 @@ public class DriveForwardL4 extends ParallelCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ElevatorToPosition(elevator, ElevatorConstants.kL4ElevatorHeight),
-      new SequentialCommandGroup(new WaitCommand(0.2), new ArmToPos(arm, ArmConstants.kL4ArmTickPosition)),
-      new SequentialCommandGroup(new WaitCommand(1), new MoveForTime(swerve, 8, 0.3, 0, 0)),
-      new SequentialCommandGroup(new WaitCommand(8.5), (new SpinEndEffectorMotor(endEffector, -0.9, isScheduled(), secondJoystick)).withTimeout(1)) // 7s move for time so add an extra half second for buffer
+      // new ElevatorToPosition(elevator, ElevatorConstants.kL4ElevatorHeight),
+      // new SequentialCommandGroup(new WaitCommand(0.2), new ArmToPos(arm, ArmConstants.kL4ArmTickPosition)),
+      // new MoveForTime(swerve, 8, 0, 0.5, 0)
+      // new SequentialCommandGroup(new WaitCommand(1), new MoveForTime(swerve, 8, 0.3, 0, 0)),
+      // new SequentialCommandGroup(new WaitCommand(8.5), (new SpinEndEffectorMotor(endEffector, -0.9, isScheduled(), secondJoystick)).withTimeout(1)) // 7s move for time so add an extra half second for buffer
       // add an extra second so that the end effector doesn't outtake forever
     );
   }

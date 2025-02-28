@@ -174,6 +174,7 @@ public class SwerveDrive extends SubsystemBase
   public Rotation2d getAngle() {
     double angle = m_imu.getYaw();
     angle *= 360;
+    angle += 90;
     return Rotation2d.fromDegrees(angle);
   }
 
@@ -181,7 +182,7 @@ public class SwerveDrive extends SubsystemBase
 
   public double getAngleDegrees()
   {
-    return Math.IEEEremainder(-m_imu.getYaw() * 360, 360);
+    return Math.IEEEremainder(-m_imu.getYaw() * 360 + 90, 360);
   }
 
   public ChassisSpeeds getChassisSpeeds() { 
