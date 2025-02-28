@@ -27,7 +27,7 @@ public final class IOConstants {
     // public static final int kEndEffectorOuttakeButtonID = 7;
 
     // this is for ground intaking coral (see exact specs)
-    public static final int kGroundIntakeCoralButtonID = 5;
+    
 
 
 
@@ -36,15 +36,16 @@ public final class IOConstants {
     public static final int kElevatorArmManualOverrideButtonID = 7;
     public static final int kPivotArmManualOverrideButtonID = 8;
 
+
+    public static final int kGroundIntakeCoralButtonID = 6;
+
     // L1-4 scoring
     public static final int kL1ScoringButtonID = 1;
     public static final int kL2ScoringButtonID = 3;
-    public static final int kL3ScoringButtonID = 4;
-    public static final int kL4ScoringButtonID = 2;
+    public static final int kL3ScoringButtonID = 2;
+    public static final int kL4ScoringButtonID = 4;
 
     // button 5: stow arm
     public static final int kStowButtonID = 5;
-    // button 6: move arm to substation intake position
-    public static final int kSubstationButtonID = 6;
 
 }
