@@ -58,6 +58,7 @@ public final class Constants {
     public static final double kL4ElevatorHeight = 60;
     public static final double kL2DealgaeElevatorHeight = 21.38;
     public static final double kL3DealgaeElevatorHeight = 35.85;
+    public static final double kDealgaeThreshold = 5;
 
     public static final double kSubstationIntakeElevatorHeight = 28.5; 
    } 

@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.Constants.ElevatorConstants;
@@ -38,6 +39,7 @@ import frc.robot.subsystems.EndEffector;
 // elevator imports
 import frc.robot.subsystems.Elevator;
 import frc.robot.commands.elevator.ArcadeElevator;
+import frc.robot.commands.elevator.ElevatorDealgae;
 import frc.robot.commands.elevator.ElevatorToPosition;
 
 // intake/indexer
@@ -90,8 +92,13 @@ public class RobotContainer {
   private final JoystickButton m_L3ScoringButton = new JoystickButton(m_secondJoystick, IOConstants.kL3ScoringButtonID);
   private final JoystickButton m_L4ScoringButton = new JoystickButton(m_secondJoystick, IOConstants.kL4ScoringButtonID);
 
-  private final JoystickButton m_L2DealgaeButton = new JoystickButton(m_driverJoystick, IOConstants.kL2DealgaeButtonID);
-  private final JoystickButton m_L3DealgaeButton = new JoystickButton(m_driverJoystick, IOConstants.kL3DealgaeButtonID);
+  // private final JoystickButton m_L2DealgaeButton = new JoystickButton(m_driverJoystick, IOConstants.kL2DealgaeButtonID);
+  // private final JoystickButton m_L3DealgaeButton = new JoystickButton(m_driverJoystick, IOConstants.kL3DealgaeButtonID);
+
+  // private final POVButton m_dealgaeButton = new POVButton(m_driverJoystick, 0);
+
+  private final POVButton m_L2DealgaeButton = new POVButton(m_secondJoystick, 270);
+  private final POVButton m_L3DealgaeButton = new POVButton(m_secondJoystick, 90);
 
   private final Arm m_arm = new Arm(); 
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
@@ -156,7 +163,8 @@ public class RobotContainer {
   // this is a trapezoidal command!!
   // private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, ElevatorConstants.kElevatorTestButtonID);
   // private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 15);
-  private JoystickButton m_elevatorResetButton = new JoystickButton(m_driverJoystick, IOConstants.kElevatorResetButtonID);
+  // private JoystickButton m_elevatorResetButton = new JoystickButton(m_driverJoystick, IOConstants.kElevatorResetButtonID);
+  private POVButton m_elevatorResetButton = new POVButton(m_secondJoystick, 180);
 
   private ElevatorToPosition m_elevatorToL2 = new ElevatorToPosition(m_elevator, ElevatorConstants.kL2ElevatorHeight);
   private ElevatorToPosition m_elevatorToL3 = new ElevatorToPosition(m_elevator, ElevatorConstants.kL3ElevatorHeight);
@@ -164,7 +172,8 @@ public class RobotContainer {
 
   private ElevatorToPosition m_elevatorToL2Dealgae = new ElevatorToPosition(m_elevator, ElevatorConstants.kL2DealgaeElevatorHeight);
   private ElevatorToPosition m_elevatorToL3Dealgae = new ElevatorToPosition(m_elevator, ElevatorConstants.kL3DealgaeElevatorHeight);
-  
+  private ElevatorDealgae m_elevatorDealgae = new ElevatorDealgae(m_elevator);
+
   private ElevatorToPosition m_elevatorToGround = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
   private ElevatorToPosition m_elevatorToGround2 = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
   private ElevatorToPosition m_elevatorToGround3 = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
@@ -262,7 +271,7 @@ public class RobotContainer {
     // m_outtakeEndEffectorButton.whileTrue(m_outtakeEndEffector);
     // m_intakeEndEffectorButton.whileTrue(m_intakeEndEffector);
     
-    // m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
+    m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
 
     // note:
     // if a line is commented out using "/////" (5 in a row), that is for testing purposes (and has not been tested)
@@ -315,21 +324,41 @@ public class RobotContainer {
     // need to redo these -- dpad commands
     // use povUp to do the thing
 
-    // m_L2DealgaeButton.onTrue(
+    m_L2DealgaeButton.onTrue(
+      Commands.parallel(
+        m_armToL2Dealgae,
+        m_elevatorToL2Dealgae
+      )
+    );
+    
+    m_L3DealgaeButton.onTrue(
+      Commands.parallel(
+        m_armToL3Dealgae,
+        m_elevatorToL3Dealgae
+      )
+    );
+
+
+    
+    // m_dealgaeButton.onTrue(
+    //   Commands.parallel(
+    //   m_armToL2Dealgae,
+    //   m_elevatorDealgae)
+    // );
+
+    // m_dealgaeButton.onTrue(
     //   Commands.parallel(
     //     m_armToL2Dealgae,
-    //     m_elevatorToL2Dealgae
+    //     () -> {
+    //       if (Math.abs(m_elevator.getElevatorPosition() - ElevatorConstants.kL3ElevatorHeight) <= ElevatorConstants.kDealgaeThreshold) {
+    //         return m_elevatorToL3Dealgae;
+    //       } else if (Math.abs(m_elevator.getElevatorPosition() - ElevatorConstants.kL2ElevatorHeight) <= ElevatorConstants.kDealgaeThreshold) {
+    //         return m_elevatorToL2Dealgae;
+    //       }
+    //     }.get();
     //   )
-    // );
+    // )
     
-    // m_L3DealgaeButton.onTrue(
-    //   Commands.parallel(
-    //     m_armToL3Dealgae,
-    //     m_elevatorToL3Dealgae
-    //   )
-    // );
-
-
 
 
     // L1-4 scoring
@@ -367,7 +396,6 @@ public class RobotContainer {
         m_pivotPIDToIntake2
       )
     );
-    
 
     // L4
     // also move the pivot down
