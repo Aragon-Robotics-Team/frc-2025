@@ -65,7 +65,7 @@ public final class Constants {
 
 
     public static final class PivotConstants {
-        public static final int kManualPivotControlAxis = 4;
+        public static final int kManualPivotControlAxis = 1;
 
         public static final int kPivotMotorID = 14;
         public static final int kPivotEncoderChannel = 7;
@@ -118,7 +118,7 @@ public final class Constants {
         */
 
         public static final int kManualOuttakeTriggerAxis = 2;
-        public static final int kManualIntakeTriggerAxis = 3;
+        public static final int kManualIntakeTriggerAxis = 5;
     }
 } 
 

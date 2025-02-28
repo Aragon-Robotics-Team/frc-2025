@@ -41,13 +41,14 @@ public class RunIntakeWithIndexerJoystick extends Command {
   public void execute() {
     // the outtake command takes precedent over intake
     // with this command both can run at the same time
-    if (m_joystick.getRawAxis(IntakeConstants.kManualOuttakeTriggerAxis) >= IOConstants.kDeadband){
-      m_intake.setIntakeSpeed(m_joystick.getRawAxis(IntakeConstants.kManualOuttakeTriggerAxis));
-      m_indexer.setIndexerSpeed(m_joystick.getRawAxis(IntakeConstants.kManualOuttakeTriggerAxis));
-    } else if (m_joystick.getRawAxis(IntakeConstants.kManualIntakeTriggerAxis) >= IOConstants.kDeadband){
-      m_intake.setIntakeSpeed(-m_joystick.getRawAxis(IntakeConstants.kManualIntakeTriggerAxis));
-      m_indexer.setIndexerSpeed(-m_joystick.getRawAxis(IntakeConstants.kManualIntakeTriggerAxis));
-    }
+    if (Math.abs(m_joystick.getRawAxis(IntakeConstants.kManualIntakeTriggerAxis)) >= IOConstants.kDeadband){
+      m_intake.setIntakeSpeed(m_joystick.getRawAxis(-IntakeConstants.kManualOuttakeTriggerAxis));
+      m_indexer.setIndexerSpeed(m_joystick.getRawAxis(-IntakeConstants.kManualOuttakeTriggerAxis));
+    } 
+    // else if (m_joystick.getRawAxis(IntakeConstants.kManualIntakeTriggerAxis) >= IOConstants.kDeadband){
+    //   m_intake.setIntakeSpeed(-m_joystick.getRawAxis(IntakeConstants.kManualIntakeTriggerAxis));
+    //   m_indexer.setIndexerSpeed(-m_joystick.getRawAxis(IntakeConstants.kManualIntakeTriggerAxis));
+    // }
   }
 
   // Called once the command ends or is interrupted.
