@@ -16,6 +16,10 @@ public class ArmToPos extends Command {
   private double m_pos;
   private Arm m_arm;
   private double m_speed;
+
+  private double ffc = 0.035; 
+  private double ff;
+  private double currentPos;
   
   // Creates a PIDController with gains kP, kI, and kD
   PIDController m_pid = new PIDController(ArmConstants.kP, ArmConstants.kI, ArmConstants.kD);
@@ -27,6 +31,9 @@ public class ArmToPos extends Command {
   public ArmToPos(Arm arm, double pos) {
     m_pos = pos;
     m_arm = arm;
+
+
+    m_pid.setIZone(ArmConstants.kIZone);
     addRequirements(m_arm); 
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -38,7 +45,22 @@ public class ArmToPos extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_speed = -m_pid.calculate(m_arm.getEncoderPosition(), m_pos);
+    
+    currentPos = m_arm.getEncoderPosition();
+    System.out.println(currentPos);
+
+    // this is assuming ticks == rotations
+    // 0.727 == when torque = 0
+    ff = 0;
+
+    // logic: if we're past the 0 torque position and we're still trying to go up
+    if ((m_arm.getEncoderPosition() > 0.726) && (m_pos > 0.726)){
+      ff = ffc*Math.sin((currentPos - 0.727)*2*Math.PI);
+    }
+
+    SmartDashboard.putNumber("Feed Forward Arm Constant", ff);
+
+    m_speed = -m_pid.calculate(m_arm.getEncoderPosition(), m_pos) + ff;
     m_arm.setSpeed(m_speed);
     SmartDashboard.putNumber("Real Arm Position", m_arm.getEncoderPosition());
     SmartDashboard.putNumber("Arm Set Position", m_pos);

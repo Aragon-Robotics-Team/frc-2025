@@ -47,14 +47,17 @@ public final class Constants {
     public static final double kPositionDeadband  = 0.1;
     public static final double kVelocityDeadband = 0.05;
 
-
+// 35.85 l3 algae
+// 21.38 l2 algae
 
     // joystick esque constants
     public static final int kElevatorManualControlAxis = 5; 
 
-    public static final double kL2ElevatorHeight = 16.3; // units in inches
-    public static final double kL3ElevatorHeight = 33.30923080444336;
-    public static final double kL4ElevatorHeight = 51.094*13.9285/12;
+    public static final double kL2ElevatorHeight = 11.5; // units in inches
+    public static final double kL3ElevatorHeight = 29.6;
+    public static final double kL4ElevatorHeight = 60;
+    public static final double kL2DealgaeElevatorHeight = 21.38;
+    public static final double kL3DealgaeElevatorHeight = 35.85;
 
     public static final double kSubstationIntakeElevatorHeight = 28.5; 
    } 

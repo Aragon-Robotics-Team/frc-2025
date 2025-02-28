@@ -41,7 +41,7 @@ public class SwerveJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
+    double xSpeed = -m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
     double ySpeed = m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
     double turningSpeed = m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
 
@@ -65,9 +65,9 @@ public class SwerveJoystick extends Command {
     xSpeed = m_xSlewRateLimiter.calculate(xSpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
     ySpeed = m_ySlewRateLimiter.calculate(ySpeed) * DriveConstants.kMaxTranslationalMetersPerSecond;
     turningSpeed = turningSpeed * DriveConstants.kMaxTurningRadiansPerSecond;
-    // SmartDashboard.putNumber("Joystick/xSpeedCommanded", xSpeed);
-    // SmartDashboard.putNumber("Joystick/ySpeedCommanded", ySpeed);
-    // SmartDashboard.putNumber("Joystick/turningSpeedCommanded", turningSpeed);
+    SmartDashboard.putNumber("Joystick/xSpeedCommanded", xSpeed);
+    SmartDashboard.putNumber("Joystick/ySpeedCommanded", ySpeed);
+    SmartDashboard.putNumber("Joystick/turningSpeedCommanded", turningSpeed);
     //Logger.recordOutput(getName(), desiredSwerveModuleStates);
 
     m_swerveDrive.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed,ySpeed,turningSpeed, m_swerveDrive.getAngle()));

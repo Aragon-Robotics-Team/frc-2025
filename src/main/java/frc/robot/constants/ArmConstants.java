@@ -22,6 +22,7 @@ public final class ArmConstants {
   public static final double kP = 1;
   public static final double kI = 0.01;
   public static final double kD = 0;
+  public static final double kIZone = 0.05;
 
   public static final int kEncoderChannel = 5; 
   public static final int kEndEffectorMotorDeviceID = 18;
@@ -38,10 +39,13 @@ public final class ArmConstants {
 
 
   // ALL THESE HAVE TO BE CHANGED (TODO)
-  public static final double kL1ArmTickPosition = 0.890;
-  public static final double kL2ArmTickPosition = 0.890;
-  public static final double kL3ArmTickPosition = 0.890; 
+  public static final double kL1ArmTickPosition = 0.872;
+  public static final double kL2ArmTickPosition = 0.872;
+  public static final double kL3ArmTickPosition = 0.872; 
   public static final double kL4ArmTickPosition = 0.785;
+
+  public static final double kL2DealgaeArmTickPosition = 0.872;
+  public static final double kL3DealgaeArmTickPosition = 0.872;
 
   public static final double kSubstationTickPosition = 0.420;
   public static final double kGroundIntakeTickPosition = 0.473; // this is verified by testing
