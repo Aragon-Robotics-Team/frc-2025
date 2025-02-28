@@ -66,7 +66,7 @@ public class Elevator extends SubsystemBase {
     return m_neo1.getEncoder().getPosition();
   }
   
-  public boolean getLimitSwitch(){
+  public boolean getLimitSwitch(){ //if hitting the limit switch
     return !bottomLimitSwitch.get();
   }
 

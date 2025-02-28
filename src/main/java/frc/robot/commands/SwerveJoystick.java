@@ -23,6 +23,7 @@ public class SwerveJoystick extends Command {
   private final SlewRateLimiter m_xSlewRateLimiter;
   private final SlewRateLimiter m_ySlewRateLimiter;
   private final SwerveDrive m_swerveDrive;
+  public int m_driveMode = 0;
 
   public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick) {
     
@@ -45,14 +46,32 @@ public class SwerveJoystick extends Command {
     double ySpeed = m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
     double turningSpeed = m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
 
-    //Makes the speed response exponential in relation to the joystick input.
-    //That way, the first little bit of joystick input gives more control.  
-    xSpeed = Math.signum(xSpeed) * (Math.pow(2, Math.abs(xSpeed)) -1) * -1;
-    ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -1;
-    turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -1;
-    //xSpeed = Math.pow(xSpeed, 5);
-    // ySpeed = Math.pow(ySpeed, 5);
-    // turningSpeed = Math.pow(turningSpeed, 5);
+
+    // if (m_driveMode == 0) { //standard mode;
+    // //Makes the speed response exponential in relation to the joystick input.
+    // //That way, the first little bit of joystick input gives more control.  
+    // xSpeed = Math.signum(xSpeed) * (Math.pow(2, Math.abs(xSpeed)) -1) * -1;
+    // ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -1;
+    // turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -1;
+    // //xSpeed = Math.pow(xSpeed, 5);
+    // // ySpeed = Math.pow(ySpeed, 5);
+    // // turningSpeed = Math.pow(turningSpeed, 5);
+    // }
+    // else if(m_driveMode == 1)
+    // {
+    //   xSpeed = Math.signum(xSpeed) * (Math.pow(2, Math.abs(xSpeed)) -1) * -0.1;
+    //   ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -0.1;
+    //   turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -0.1;
+    // }
+
+      //Makes the speed response exponential in relation to the joystick input.
+      //That way, the first little bit of joystick input gives more control.  
+      xSpeed = Math.signum(xSpeed) * (Math.pow(2, Math.abs(xSpeed)) -1) * -1;
+      ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -1;
+      turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -1;
+      //xSpeed = Math.pow(xSpeed, 5);
+      // ySpeed = Math.pow(ySpeed, 5);
+      // turningSpeed = Math.pow(turningSpeed, 5);
     
     
 

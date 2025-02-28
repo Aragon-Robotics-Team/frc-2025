@@ -104,7 +104,17 @@ public class Robot extends LoggedRobot {
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    if(m_robotContainer.m_elevator.getLimitSwitch())
+    {
+      m_robotContainer.m_swerveJoystick.m_driveMode = 0;
+    }
+    else if(m_robotContainer.m_elevator.getLimitSwitch() == false)
+    {
+      m_robotContainer.m_swerveJoystick.m_driveMode = 1;
+    }
+
+  }
 
   @Override
   public void testInit() {
