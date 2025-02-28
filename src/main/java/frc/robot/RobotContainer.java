@@ -79,7 +79,7 @@ public class RobotContainer {
 
 
   private final JoystickButton m_elevatorArmManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kElevatorArmManualOverrideButtonID); // 7
-  private final JoystickButton m_pivotArmManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kPivotArmManualOverrideButtonID); // 8 (i think)
+  private final JoystickButton m_pivotRollerManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kPivotArmManualOverrideButtonID); // 8 (i think)
 
 
 
@@ -123,7 +123,6 @@ public class RobotContainer {
   private final ArmToPos m_armToGroundIntake1 = new ArmToPos(m_arm, ArmConstants.kGroundIntakeTickPosition); // probably used in different command
 
   private final JoystickButton m_stowButton = new JoystickButton(m_secondJoystick, IOConstants.kStowButtonID);
-  private final JoystickButton m_substationIntakeButton = new JoystickButton(m_secondJoystick, IOConstants.kSubstationButtonID);
 
 
   private final EndEffector m_endEffector = new EndEffector();
@@ -187,7 +186,10 @@ public class RobotContainer {
 
   private PIDForPivot m_pivotPIDToStow = new PIDForPivot(m_pivot, PivotConstants.kPivotStowPosition);
   private PIDForPivot m_pivotPIDToStow1 = new PIDForPivot(m_pivot, PivotConstants.kPivotStowPosition);
+  private PIDForPivot m_pivotPIDToStow2 = new PIDForPivot(m_pivot, PivotConstants.kPivotStowPosition);
   private PIDForPivot m_pivotPIDToIntake = new PIDForPivot(m_pivot, PivotConstants.kPivotIntakePosition);
+  private PIDForPivot m_pivotPIDToIntake2 = new PIDForPivot(m_pivot, PivotConstants.kPivotIntakePosition);
+  private PIDForPivot m_pivotPIDToIntake3 = new PIDForPivot(m_pivot, PivotConstants.kPivotIntakePosition);
   // private JoystickButton m_pivotButtonToStow = new JoystickButton(m_secondJoystick, PivotConstants.kPivotStowButtonID);
   // private JoystickButton m_pivotButtonToIntake = new JoystickButton(m_secondJoystick, PivotConstants.kPivotIntakeButtonID);
 
@@ -227,7 +229,7 @@ public class RobotContainer {
   // private JoystickButton m_indexerInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerInButtonID);
   // private JoystickButton m_indexerOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerOutButtonID);
 
-  private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_driverJoystick, IOConstants.kGroundIntakeCoralButtonID);
+  private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_secondJoystick, IOConstants.kGroundIntakeCoralButtonID);
   // end intake/indexer
   private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -276,62 +278,9 @@ public class RobotContainer {
     // m_spinEndEffectorButton.whileTrue(m_outtakeEndEffector); // button 7, spin arm outtake roller
 
 
-
-    // button 8 -- ground intake coral
-    // to my knowledge, this button, when pressed, is supposed to 
-    // 1. make the pivot go down, arm in pickup position, and move the elevator down as well
-    // 2. indefinitely spin the intake/indexer wheels + the end effector wheels
-
-    // when released, this command is to move the pivot up, and stop spinning everything.
-    // NOTE this command (as of now) DOES NOT move the arm to the desired location to ground intake coral
-
-    // --> this might actually be a good idea if arm is manually moved
   
-    // lowkey unsure if this code works
-
-
-    // the button that drops the intake and spins the roller
-    // when it goes down, everything is spinning inwards (intake, indexer, end effector)
-    // then
-    // when the button is released
-    // intake will go back up
-    // intake, indexer, and outtake will continue to spin for either 2 seconds or until beam break is triggered
-    // then after,
-    // the intake and the indexer will outtake for 2 seconds
 
     
-    // the .until is kept here as when the elevator/arm reach "ground", there is no ff needed to hold them up -- they are at the lowest position
-    // ok i have been convinced by kaitlyn
-    // turns out the .until stops the elevator from going down
-
-    //////
-    // button 8
-    
-    m_groundIntakeCoralButton.whileTrue(
-      Commands.parallel(
-        m_elevatorToGround4, 
-        m_armToGroundIntake1,
-        m_pivotPIDToIntake, 
-        m_spinIntakeIndexerRollers, 
-        m_intakeEndEffector1
-      )
-    );
-    
-    
-    
-
-
-    // what it does is move the pivot up (only)
-    ////// (works!)
-    m_groundIntakeCoralButton.onFalse(
-      Commands.parallel(
-        m_pivotPIDToStow1,
-        m_intakeEndEffector3.withTimeout(1),
-        Commands.sequence( // todo: put a beam break thing
-          m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1)
-        )
-      )
-    );
   
     
 
@@ -339,54 +288,47 @@ public class RobotContainer {
 
 /////////////////////////////////////////////////////////////
 
-    // start operator joystick bindings
-    // for the joystick axes, once buttons 7/8 are pressed, manual arm control happens
-    // same with pivot/elevator override
+// 02/28 -- reprogramming George's joystick
 
-    // NOTE: I may need to fix these commands (and/or other commands) so that the manual override can interrupt other commands
-    // button id 7 (back left button), allows manual control of elevator/arm
-    // also allows for manual intake/outtake
 
-    // what i wrote last night was bad
-    // i have rewritten it
-
-    
-    /////
+    // button 7 -- the middle button
     m_elevatorArmManualControlButton.whileTrue(
       Commands.parallel(
         m_arcadeElevator1,
-        m_arcadeArm1,
-        m_manualSpinIndexerIntake, m_joystickOverrideSpinEndEffector // these two commands go together
+        m_arcadeArm1
       )
     );
     
 
 
     // button id 8 (back right button) allows manual control of arm/pivot
-    /////
-    m_pivotArmManualControlButton.whileTrue(
+    // no end effector
+    m_pivotRollerManualControlButton.whileTrue(
       Commands.parallel(
         m_arcadePivot,
-        m_arcadeArm2,
-        m_manualSpinIndexerIntake1,
-        m_joystickOverrideSpinEndEffector1
+        m_manualSpinIndexerIntake1
       )
     );
     
 
-    m_L2DealgaeButton.onTrue(
-      Commands.parallel(
-        m_armToL2Dealgae,
-        m_elevatorToL2Dealgae
-      )
-    );
+
+    // need to redo these -- dpad commands
+    // use povUp to do the thing
+
+    // m_L2DealgaeButton.onTrue(
+    //   Commands.parallel(
+    //     m_armToL2Dealgae,
+    //     m_elevatorToL2Dealgae
+    //   )
+    // );
     
-    m_L3DealgaeButton.onTrue(
-      Commands.parallel(
-        m_armToL3Dealgae,
-        m_elevatorToL3Dealgae
-      )
-    );
+    // m_L3DealgaeButton.onTrue(
+    //   Commands.parallel(
+    //     m_armToL3Dealgae,
+    //     m_elevatorToL3Dealgae
+    //   )
+    // );
+
 
 
 
@@ -395,11 +337,6 @@ public class RobotContainer {
     // finally, reset position by going back to ArmToGroundIntake position
 
     // note: elevator should always be reset for correctness
-
-    // NOTE: i do not use the .until here (or later) since the feedforward must be used to keep the elevator at the reasonable position
-    
-    
-    //////
     
     m_L1ScoringButton.onTrue(
       Commands.parallel(
@@ -409,21 +346,6 @@ public class RobotContainer {
       )
     );
     
-    
-
-
-    //************************************************************** */
-    // MASSIVE TODO - make sure that this works and doesnt break metal
-    //************************************************************** */
-    // it works!
-
-    // note: may need to continue arm ff for later
-    // will also need to redo commands
-    // btw arm to position might never end
-
-
-    // -- L2, L3, L4 works.
-    //////
     m_L2ScoringButton.onTrue(
       Commands.parallel(
         // m_elevatorToL2.until(m_elevatorToL2::atSetpoint),
@@ -435,55 +357,64 @@ public class RobotContainer {
     
 
     // L3
-    //////
+    // add pivot pid to balance out the cog
     m_L3ScoringButton.onTrue(
       Commands.parallel(
         // m_elevatorToL3.until(m_elevatorToL3::atSetpoint),
         // m_armToL3.until(m_armToL3::atSetpoint)
         m_elevatorToL3,
-        Commands.sequence(new WaitCommand(0.2), m_armToL3)
+        Commands.sequence(new WaitCommand(0.2), m_armToL3),
+        m_pivotPIDToIntake2
       )
     );
     
 
     // L4
-    //////
+    // also move the pivot down
     m_L4ScoringButton.onTrue(
       Commands.parallel(
         // m_elevatorToL4.until(m_elevatorToL4::atSetpoint),
         // m_armToL4.until(m_armToL4::atSetpoint)
         m_elevatorToL4,
-        Commands.sequence(new WaitCommand(0.2), m_armToL4)
+        Commands.sequence(new WaitCommand(0.2), m_armToL4),
+        m_pivotPIDToIntake3
       )
     );
     
 
 
-    // bind buttons 5, 6
-    //////
+    // bind button 5 (left trigger)
+    // move pivot up for simplicity
     m_stowButton.onTrue(Commands.parallel(
       m_armToGroundIntake,
-      m_elevatorToGround2
+      m_elevatorToGround2,
+      m_pivotPIDToStow2
     )); // button 5 -- stow arm and elevator
 
     
-    
+    // button 6 -- do the intake thing
+
      
-
-    // button 6 -- move arm to substation intake position
-    // will fix when beam break is added, but for now, this is when this thing is held.
-
-    // the at setpoint is to move the command along
-    /////
-    
-    m_substationIntakeButton.onTrue(
+    m_groundIntakeCoralButton.whileTrue(
       Commands.parallel(
-        m_elevatorToSubstationIntake,
-        Commands.sequence(new WaitCommand(0.5), m_armToSubstationIntake),
-        // m_spinEndEffector
-        Commands.sequence(new WaitCommand(0.5), m_intakeEndEffector2)) // note: this command can maybe spin indefinitely
-    ); 
-    
+        m_elevatorToGround4, 
+        m_armToGroundIntake1,
+        m_pivotPIDToIntake, 
+        m_spinIntakeIndexerRollers, 
+        m_intakeEndEffector1
+      )
+    );
+
+    // what it does is move the pivot up (only)
+    m_groundIntakeCoralButton.onFalse(
+      Commands.parallel(
+        m_pivotPIDToStow1,
+        m_intakeEndEffector3.withTimeout(1),
+        Commands.sequence( // todo: put a beam break thing
+          m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1)
+        )
+      )
+    );
     
   }
 
@@ -500,18 +431,6 @@ public class RobotContainer {
   private void bindSubsystemCommands() {
     ////// 
     m_swerve.setDefaultCommand(m_swerveJoystick);
-
-
-    // note: there are really no default commands 
-    // instead, the code should do everything for us
-    // when a manual override is needed, a button is already pressed
-    // thus, see the button binding on true part for that
-    // (note to self): I may get a watchdog error for this in which case I'll bind null or something
-
-    m_arm.setDefaultCommand(m_arcadeArm);
-    // m_pivot.setDefaultCommand(m_arcadePivot);
-    m_elevator.setDefaultCommand(m_arcadeElevator);
-    // m_elevator.setDefaultCommand(m_elevatorPosition);
   }
 }
   
