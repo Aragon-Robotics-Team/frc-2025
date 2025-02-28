@@ -16,6 +16,7 @@ public class MoveForTime extends Command {
   private double m_xSpeed;
   private double m_ySpeed;
   private double m_turningSpeed;
+  private Timer timer;
 
   /** Creates a new MoveForTime. */
   public MoveForTime(SwerveDrive swerve, double goalTime, double xSpeed, double ySpeed, double turningSpeed) {
@@ -24,29 +25,35 @@ public class MoveForTime extends Command {
     m_xSpeed = xSpeed;
     m_ySpeed = ySpeed;
     m_turningSpeed = turningSpeed;
+
+    timer = new Timer();
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(m_swerve);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    timer.stop();
+    timer.restart();
+    timer.start();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_swerve.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(m_xSpeed, m_ySpeed, m_turningSpeed, null));
+    m_swerve.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(m_xSpeed, m_ySpeed, m_turningSpeed, m_swerve.getAngle()));
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_swerve.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, null));
+    m_swerve.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(0, 0, 0, m_swerve.getAngle()));
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return Timer.getFPGATimestamp() >= m_goalTime;
+    return timer.get() >= m_goalTime;
   }
 }
