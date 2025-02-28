@@ -172,7 +172,7 @@ public class RobotContainer {
 
   private ElevatorToPosition m_elevatorToL2Dealgae = new ElevatorToPosition(m_elevator, ElevatorConstants.kL2DealgaeElevatorHeight);
   private ElevatorToPosition m_elevatorToL3Dealgae = new ElevatorToPosition(m_elevator, ElevatorConstants.kL3DealgaeElevatorHeight);
-  private ElevatorDealgae m_elevatorDealgae = new ElevatorDealgae(m_elevator);
+  // private ElevatorDealgae m_elevatorDealgae = new ElevatorDealgae(m_elevator);
 
   private ElevatorToPosition m_elevatorToGround = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
   private ElevatorToPosition m_elevatorToGround2 = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
@@ -268,7 +268,7 @@ public class RobotContainer {
     // everything here should only be testing thing
 
 
-    // m_outtakeEndEffectorButton.whileTrue(m_outtakeEndEffector);
+    m_outtakeEndEffectorButton.whileTrue(m_outtakeEndEffector);
     // m_intakeEndEffectorButton.whileTrue(m_intakeEndEffector);
     
     m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
@@ -281,7 +281,7 @@ public class RobotContainer {
     // driver joystick bindings:
 
     // swerve joystick binded below
-    m_resetHeadingButton.onTrue(m_resetHeadingCommand); // button 4, y button
+    m_resetHeadingButton.whileTrue(m_resetHeadingCommand); // button 4, y button
     // to add - button 5 - left align to reef (vision)
     // to add - button 6 - right align to reef (vision)
     m_spinEndEffectorButton.whileTrue(m_outtakeEndEffector); // button 5, spin arm outtake roller
@@ -301,7 +301,7 @@ public class RobotContainer {
 
 
     // button 7 -- the middle button
-    m_elevatorArmManualControlButton.whileTrue(
+    m_elevatorArmManualControlButton.onTrue(
       Commands.parallel(
         m_arcadeElevator1,
         m_arcadeArm1
@@ -312,7 +312,7 @@ public class RobotContainer {
 
     // button id 8 (back right button) allows manual control of arm/pivot
     // no end effector
-    m_pivotRollerManualControlButton.whileTrue(
+    m_pivotRollerManualControlButton.onTrue(
       Commands.parallel(
         m_arcadePivot,
         m_manualSpinIndexerIntake1
@@ -343,7 +343,7 @@ public class RobotContainer {
     // m_dealgaeButton.onTrue(
     //   Commands.parallel(
     //   m_armToL2Dealgae,
-    //   m_elevatorDealgae)
+      // m_elevatorDealgae)
     // );
 
     // m_dealgaeButton.onTrue(
@@ -437,7 +437,7 @@ public class RobotContainer {
     m_groundIntakeCoralButton.onFalse(
       Commands.parallel(
         m_pivotPIDToStow1,
-        m_intakeEndEffector3.withTimeout(1),
+        m_intakeEndEffector3.withTimeout(2),
         Commands.sequence( // todo: put a beam break thing
           m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1)
         )

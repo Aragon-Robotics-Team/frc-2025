@@ -48,6 +48,17 @@ public class PIDForPivot extends Command {
     SmartDashboard.putNumber("Pivot Rotations Error", Math.max(m_goal, m_pivot.getPivotPosition()) - Math.min(m_pivot.getPivotPosition(), m_goal));
   }
 
+
+
+
+
+
+
+
+
+
+
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
