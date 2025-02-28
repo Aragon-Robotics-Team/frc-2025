@@ -246,7 +246,7 @@ public class RobotContainer {
     // m_autoChooser = AutoBuilder.buildAutoChooser();
     m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
-    SmartDashboard.putData("Reset_Heading", m_swerve.resetHeadingCommand());
+    // SmartDashboard.putData("Reset_Heading", m_swerve.resetHeadingCommand());
     // Configure the trigger bindings
     configureBindings();
   }
@@ -269,9 +269,9 @@ public class RobotContainer {
 
 
     m_outtakeEndEffectorButton.whileTrue(m_outtakeEndEffector);
-    // m_intakeEndEffectorButton.whileTrue(m_intakeEndEffector);
+    m_intakeEndEffectorButton.whileTrue(m_intakeEndEffector);
     
-    m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
+    // m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
 
     // note:
     // if a line is commented out using "/////" (5 in a row), that is for testing purposes (and has not been tested)
@@ -310,8 +310,8 @@ public class RobotContainer {
     
 
 
-    // button id 8 (back right button) allows manual control of arm/pivot
-    // no end effector
+    // button id 8 allows manual roller + pivot to move 
+    // changed from arm/intake rollers
     m_pivotRollerManualControlButton.onTrue(
       Commands.parallel(
         m_arcadePivot,
@@ -422,7 +422,7 @@ public class RobotContainer {
     
     // button 6 -- do the intake thing
 
-     
+    
     m_groundIntakeCoralButton.whileTrue(
       Commands.parallel(
         m_elevatorToGround4, 
@@ -443,6 +443,7 @@ public class RobotContainer {
         )
       )
     );
+    
     
   }
 

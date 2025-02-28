@@ -15,7 +15,7 @@ public final class IOConstants {
 
     // note: these are button constants for the joystick for the robot driver (port 0)
     public static final int kEndEffectorOuttakeButtonID = 5;
-    public static final int kEndEffectorIntakeButtonID = 2;
+    public static final int kEndEffectorIntakeButtonID = 6; // right trigger
     public static final int kL2DealgaeButtonID = 3;
     public static final int kL3DealgaeButtonID = 4;
     public static final int kResetHeadingButtonID = 4; // y button
