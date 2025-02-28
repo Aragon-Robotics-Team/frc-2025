@@ -215,8 +215,8 @@ public class SwerveDrive extends SubsystemBase
   }
 
   public void driveRobotRelative(ChassisSpeeds speeds) { 
-    ChassisSpeeds dis = ChassisSpeeds.discretize(speeds, 0.02); //needed to correct skew whilst rotating and translating simultaneously.
-    SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(dis);
+    //ChassisSpeeds dis = ChassisSpeeds.discretize(speeds, 0.02); //needed to correct skew whilst rotating and translating simultaneously.
+    SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
     setModuleStates(states);
   }
 
@@ -231,6 +231,7 @@ public class SwerveDrive extends SubsystemBase
 
   public SwerveDrive() 
   {
+    SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
     CanandEventLoop.getInstance();
     // Leaving one here so I can remember how to do this later;
     // NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
@@ -403,6 +404,6 @@ public class SwerveDrive extends SubsystemBase
     SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Angle", getAngle().getDegrees());
     
-    SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
+    // SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
   }
 }
