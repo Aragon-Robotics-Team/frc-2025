@@ -295,8 +295,6 @@ public class SwerveDrive extends SubsystemBase
     {
       System.out.println("RobotConfig GUI Settings error");
     }
-
-    SmartDashboard.putData("ResetHeading", new InstantCommand(this::resetHeadingCommand));
   }
   
   
@@ -401,9 +399,10 @@ public class SwerveDrive extends SubsystemBase
 
     // SmartDashboard.putNumber("X", getPoseMeters().getX());
     // SmartDashboard.putNumber("Y", getPoseMeters().getY());
-
     Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Angle", getAngle().getDegrees());
+    
+    SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
   }
 }
