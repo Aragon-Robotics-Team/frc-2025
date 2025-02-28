@@ -164,8 +164,7 @@ public class RobotContainer {
 
   private ElevatorToPosition m_elevatorToL2Dealgae = new ElevatorToPosition(m_elevator, ElevatorConstants.kL2DealgaeElevatorHeight);
   private ElevatorToPosition m_elevatorToL3Dealgae = new ElevatorToPosition(m_elevator, ElevatorConstants.kL3DealgaeElevatorHeight);
-
-  private ElevatorToPosition m_elevatorToSubstationIntake = new ElevatorToPosition(m_elevator, ElevatorConstants.kSubstationIntakeElevatorHeight);
+  
   private ElevatorToPosition m_elevatorToGround = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
   private ElevatorToPosition m_elevatorToGround2 = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
   private ElevatorToPosition m_elevatorToGround3 = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
@@ -260,10 +259,10 @@ public class RobotContainer {
     // everything here should only be testing thing
 
 
-    m_outtakeEndEffectorButton.whileTrue(m_outtakeEndEffector);
-    m_intakeEndEffectorButton.whileTrue(m_intakeEndEffector);
+    // m_outtakeEndEffectorButton.whileTrue(m_outtakeEndEffector);
+    // m_intakeEndEffectorButton.whileTrue(m_intakeEndEffector);
     
-    m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
+    // m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
 
     // note:
     // if a line is commented out using "/////" (5 in a row), that is for testing purposes (and has not been tested)
@@ -271,11 +270,12 @@ public class RobotContainer {
 
 ///////////////////////////////////////////////////////////
     // driver joystick bindings:
-    ///// m_resetHeadingButton.onTrue(m_resetHeadingCommand); // button 4, y button
+
+    // swerve joystick binded below
+    m_resetHeadingButton.onTrue(m_resetHeadingCommand); // button 4, y button
     // to add - button 5 - left align to reef (vision)
     // to add - button 6 - right align to reef (vision)
-    ////// 
-    // m_spinEndEffectorButton.whileTrue(m_outtakeEndEffector); // button 7, spin arm outtake roller
+    m_spinEndEffectorButton.whileTrue(m_outtakeEndEffector); // button 5, spin arm outtake roller
 
 
   

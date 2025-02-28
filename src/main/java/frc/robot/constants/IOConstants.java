@@ -14,7 +14,7 @@ public final class IOConstants {
     public static int kJoystickRotAxis = 4;
 
     // note: these are button constants for the joystick for the robot driver (port 0)
-    public static final int kEndEffectorOuttakeButtonID = 1;
+    public static final int kEndEffectorOuttakeButtonID = 5;
     public static final int kEndEffectorIntakeButtonID = 2;
     public static final int kL2DealgaeButtonID = 3;
     public static final int kL3DealgaeButtonID = 4;
