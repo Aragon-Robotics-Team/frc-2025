@@ -42,7 +42,7 @@ public final class ArmConstants {
   public static final double kL1ArmTickPosition = 0.872;
   public static final double kL2ArmTickPosition = 0.872;
   public static final double kL3ArmTickPosition = 0.872; 
-  public static final double kL4ArmTickPosition = 0.785;
+  public static final double kL4ArmTickPosition = 0.805;
 
   public static final double kL2DealgaeArmTickPosition = 0.872;
   public static final double kL3DealgaeArmTickPosition = 0.872;

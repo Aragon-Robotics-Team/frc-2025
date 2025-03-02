@@ -54,7 +54,8 @@ public class ArmToPos extends Command {
     ff = 0;
 
     // logic: if we're past the 0 torque position and we're still trying to go up
-    if ((m_arm.getEncoderPosition() > 0.726) && (m_pos > 0.726)){
+    if ((m_arm.getEncoderPosition() > 0.8
+    ) && (m_pos > 0.8)){
       ff = ffc*Math.sin((currentPos - 0.727)*2*Math.PI);
     }
 

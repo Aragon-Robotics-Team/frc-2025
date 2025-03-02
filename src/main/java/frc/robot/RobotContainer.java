@@ -183,21 +183,21 @@ public class RobotContainer {
 
 
   
-
-  private Pivot m_pivot = new Pivot();
+  // chat our spark max fell off
+  // private Pivot m_pivot = new Pivot();
 
   // we actually only have 2 pivot positions -- the intake from the ground, and the stow upwards
   // intake from the ground is at approximately 0.1385 rotations
   // pivot stow is at approximately 0.8069 rotations
 
-  private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_secondJoystick);
+  // private ArcadePivot m_arcadePivot = new ArcadePivot(m_pivot, m_secondJoystick);
 
-  private PIDForPivot m_pivotPIDToStow = new PIDForPivot(m_pivot, PivotConstants.kPivotStowPosition);
-  private PIDForPivot m_pivotPIDToStow1 = new PIDForPivot(m_pivot, PivotConstants.kPivotStowPosition);
-  private PIDForPivot m_pivotPIDToStow2 = new PIDForPivot(m_pivot, PivotConstants.kPivotStowPosition);
-  private PIDForPivot m_pivotPIDToIntake = new PIDForPivot(m_pivot, PivotConstants.kPivotIntakePosition);
-  private PIDForPivot m_pivotPIDToIntake2 = new PIDForPivot(m_pivot, PivotConstants.kPivotIntakePosition);
-  private PIDForPivot m_pivotPIDToIntake3 = new PIDForPivot(m_pivot, PivotConstants.kPivotIntakePosition);
+  // private PIDForPivot m_pivotPIDToStow = new PIDForPivot(m_pivot, PivotConstants.kPivotStowPosition);
+  // private PIDForPivot m_pivotPIDToStow1 = new PIDForPivot(m_pivot, PivotConstants.kPivotStowPosition);
+  // private PIDForPivot m_pivotPIDToStow2 = new PIDForPivot(m_pivot, PivotConstants.kPivotStowPosition);
+  // private PIDForPivot m_pivotPIDToIntake = new PIDForPivot(m_pivot, PivotConstants.kPivotIntakePosition);
+  // private PIDForPivot m_pivotPIDToIntake2 = new PIDForPivot(m_pivot, PivotConstants.kPivotIntakePosition);
+  // private PIDForPivot m_pivotPIDToIntake3 = new PIDForPivot(m_pivot, PivotConstants.kPivotIntakePosition);
   // private JoystickButton m_pivotButtonToStow = new JoystickButton(m_secondJoystick, PivotConstants.kPivotStowButtonID);
   // private JoystickButton m_pivotButtonToIntake = new JoystickButton(m_secondJoystick, PivotConstants.kPivotIntakeButtonID);
 
@@ -239,12 +239,15 @@ public class RobotContainer {
 
   private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_secondJoystick, IOConstants.kGroundIntakeCoralButtonID);
   // end intake/indexer
+  private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, 0, -0.6, 0);
   private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     bindSubsystemCommands();
     // m_autoChooser = AutoBuilder.buildAutoChooser();
     m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
+    m_autoChooser.addOption("Move Auto", m_leaveAuto);
+    
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
     // SmartDashboard.putData("Reset_Heading", m_swerve.resetHeadingCommand());
     // Configure the trigger bindings
@@ -314,7 +317,7 @@ public class RobotContainer {
     // changed from arm/intake rollers
     m_pivotRollerManualControlButton.onTrue(
       Commands.parallel(
-        m_arcadePivot,
+        // m_arcadePivot,
         m_manualSpinIndexerIntake1
       )
     );
@@ -392,8 +395,8 @@ public class RobotContainer {
         // m_elevatorToL3.until(m_elevatorToL3::atSetpoint),
         // m_armToL3.until(m_armToL3::atSetpoint)
         m_elevatorToL3,
-        Commands.sequence(new WaitCommand(0.2), m_armToL3),
-        m_pivotPIDToIntake2
+        Commands.sequence(new WaitCommand(0.2), m_armToL3)
+        // m_pivotPIDToIntake2
       )
     );
 
@@ -404,8 +407,8 @@ public class RobotContainer {
         // m_elevatorToL4.until(m_elevatorToL4::atSetpoint),
         // m_armToL4.until(m_armToL4::atSetpoint)
         m_elevatorToL4,
-        Commands.sequence(new WaitCommand(0.2), m_armToL4),
-        m_pivotPIDToIntake3
+        Commands.sequence(new WaitCommand(0.2), m_armToL4)
+        // m_pivotPIDToIntake3
       )
     );
     
@@ -415,8 +418,8 @@ public class RobotContainer {
     // move pivot up for simplicity
     m_stowButton.onTrue(Commands.parallel(
       m_armToGroundIntake,
-      m_elevatorToGround2,
-      m_pivotPIDToStow2
+      m_elevatorToGround2
+      // m_pivotPIDToStow2
     )); // button 5 -- stow arm and elevator
 
     
@@ -427,7 +430,7 @@ public class RobotContainer {
       Commands.parallel(
         m_elevatorToGround4, 
         m_armToGroundIntake1,
-        m_pivotPIDToIntake, 
+        // m_pivotPIDToIntake, 
         m_spinIntakeIndexerRollers, 
         m_intakeEndEffector1
       )
@@ -436,8 +439,8 @@ public class RobotContainer {
     // what it does is move the pivot up (only)
     m_groundIntakeCoralButton.onFalse(
       Commands.parallel(
-        m_pivotPIDToStow1,
-        m_intakeEndEffector3.withTimeout(2),
+        // m_pivotPIDToStow1,
+        m_intakeEndEffector3.withTimeout(1),
         Commands.sequence( // todo: put a beam break thing
           m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1)
         )
@@ -460,6 +463,7 @@ public class RobotContainer {
   private void bindSubsystemCommands() {
     ////// 
     m_swerve.setDefaultCommand(m_swerveJoystick);
+    // m_pivot.setDefaultCommand(m_arcadePivot);
   }
 }
   
