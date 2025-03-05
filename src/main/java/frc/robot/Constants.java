@@ -93,8 +93,8 @@ public final class Constants {
 
         public static final double kRotationTolerance = 0.02;
 
-    // This is the max speed tolerated by trapezoidal. The unit is the speed that is put into setSpeed() (goes from -1 to 1)
-        public static final double kMaxSpeed = 0.1;
+        // This is the max speed tolerated by trapezoidal. Units are in ticks/s
+        public static final double kMaxSpeed = 1;
 
         // This is the max acceleration tolerated by trapezoidal. Units are in ticks/s^2
         public static final double kMaxAcceleration = 10;

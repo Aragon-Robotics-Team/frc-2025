@@ -87,6 +87,11 @@ public class Pivot extends SubsystemBase {
     return m_encoder.get();
   }
 
+  //Speed in rotations per second
+  public double getSpeed(){
+    return m_pivotMotor.getEncoder().getVelocity()/60;
+  }
+
   /*public DCMotorSim getPivotSim() {
     return m_pivotSim;
   }*/
