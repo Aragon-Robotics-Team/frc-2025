@@ -47,7 +47,6 @@ public class Arm extends SubsystemBase {
     return m_encoder.get();
   }
 
-
   public Boolean getTopLimitSwitch(){
     return !m_topLimitSwitch.get();
   }

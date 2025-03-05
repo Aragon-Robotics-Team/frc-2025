@@ -19,10 +19,19 @@ public final class ArmConstants {
   public static final int kArmManualControlAxis = 1;
   public static final double kArmMultiplier = 0.5;
 
-  public static final double kP = 1;
-  public static final double kI = 0.01;
-  public static final double kD = 0;
+  // This is the max speed tolerated by trapezoidal. Units are in ticks/s
+  public static final double kMaxSpeed = 1;
+
+  // This is the max acceleration tolerated by trapezoidal. Units are in ticks/s^2
+  public static final double kMaxAcceleration = 10;
+
+  public static final double kP = 0.05;
+  public static final double kI = 0.007;
+  public static final double kD = 0.0;
   public static final double kIZone = 0.05;
+
+  public static final double kPositionDeadband  = 0.1;
+  public static final double kVelocityDeadband = 0.05;
 
   public static final int kEncoderChannel = 5; 
   public static final int kEndEffectorMotorDeviceID = 18;

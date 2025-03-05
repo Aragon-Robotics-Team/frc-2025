@@ -93,10 +93,19 @@ public final class Constants {
 
         public static final double kRotationTolerance = 0.02;
 
-        // sim constants -- kp = 0.7, ki = 0.001, kd = 0.001
-        public static final double kP = 3;
-        public static final double kD = 0;
-        public static final double kI = 1;
+    // This is the max speed tolerated by trapezoidal. The unit is the speed that is put into setSpeed() (goes from -1 to 1)
+        public static final double kMaxSpeed = 0.1;
+
+        // This is the max acceleration tolerated by trapezoidal. Units are in ticks/s^2
+        public static final double kMaxAcceleration = 10;
+
+        public static final double kP = 0.05;
+        public static final double kI = 0.007;
+        public static final double kD = 0.0;
+        //public static final double kffConstant = 0.1;
+
+        public static final double kPositionDeadband  = 0.1;
+        public static final double kVelocityDeadband = 0.05;
 
         public static final double kPivotPIDErrorTolerance = 0.001;
         public static final double kPivotDerivativeTolerance = 0.001;
