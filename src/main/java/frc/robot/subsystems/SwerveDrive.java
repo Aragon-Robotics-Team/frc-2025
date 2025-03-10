@@ -22,6 +22,7 @@ import com.pathplanner.lib.config.RobotConfig;
 import com.pathplanner.lib.controllers.PPHolonomicDriveController;
 //import com.pathplanner.lib.util.swerve.*;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -97,12 +98,7 @@ public class SwerveDrive extends SubsystemBase
 
   private final Canandgyro m_imu = new Canandgyro(DriveConstants.kIMUCanID);
 
-  private final SwerveDriveOdometry m_odo = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getAngle(), new SwerveModulePosition[] {
-    m_frontLeft.getPosition(),
-    m_frontRight.getPosition(),
-    m_backLeft.getPosition(),
-    m_backRight.getPosition()
-  });
+  private final SwerveDrivePoseEstimator m_poseEstimator; 
 
   private final Field2d m_field = new Field2d();
 
@@ -110,6 +106,8 @@ public class SwerveDrive extends SubsystemBase
   private double m_yStartPose;
 
   private double m_turningSpeed;
+
+  private Vision m_vision;
 
   public void resetHeading() {
     m_imu.setYaw(0.0);
@@ -124,7 +122,7 @@ public class SwerveDrive extends SubsystemBase
   }
 
   public void resetOdo(Pose2d pose) {
-    m_odo.resetPosition(getAngle(), new SwerveModulePosition[] {
+    m_poseEstimator.resetPosition(getAngle(), new SwerveModulePosition[] {
       m_frontLeft.getPosition(),
       m_frontRight.getPosition(),
       m_backLeft.getPosition(),
@@ -132,8 +130,8 @@ public class SwerveDrive extends SubsystemBase
     }, pose);
   }
 
-  public Pose2d getPoseMeters(){
-    return m_odo.getPoseMeters();
+  public Pose2d getEstimatedPosition(){
+    return m_poseEstimator.getEstimatedPosition();
   }
 
   public SwerveDriveKinematics getSwerveKinematics(){
@@ -224,7 +222,7 @@ public class SwerveDrive extends SubsystemBase
   }
 
   public void resetOdoToPose(){
-    m_odo.resetPosition(getAngle(), new SwerveModulePosition[] {
+    m_poseEstimator.resetPosition(getAngle(), new SwerveModulePosition[] {
         m_frontLeft.getPosition(), m_frontRight.getPosition(),
         m_backLeft.getPosition(), m_backRight.getPosition()
       }, new Pose2d(m_xStartPose, m_yStartPose, getAngle()));
@@ -232,9 +230,24 @@ public class SwerveDrive extends SubsystemBase
 
   
 
-  public SwerveDrive() 
+  public SwerveDrive(Vision vision) 
   {
+<<<<<<< HEAD
     SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
+=======
+    m_vision = vision;
+    m_poseEstimator = new SwerveDrivePoseEstimator(
+      DriveConstants.kDriveKinematics, 
+      getAngle(),
+      new SwerveModulePosition[] {
+        m_frontLeft.getPosition(),
+        m_frontRight.getPosition(),
+        m_backLeft.getPosition(),
+        m_backRight.getPosition()
+      },
+      new Pose2d());
+
+>>>>>>> e97c98c (Added basic pose estimation)
     CanandEventLoop.getInstance();
     // Leaving one here so I can remember how to do this later;
     // NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
@@ -255,7 +268,7 @@ public class SwerveDrive extends SubsystemBase
       
       AutoBuilder.configure
       (
-        this::getPoseMeters,
+        this::getEstimatedPosition,
         this::resetOdo,
         this::getChassisSpeeds, 
         this::driveRobotRelative, 
@@ -391,14 +404,30 @@ public class SwerveDrive extends SubsystemBase
   {
     m_modulePositions = getModulePositions();
     m_moduleStates = getModuleStates();
-    m_odo.update(getAngle(), m_modulePositions);
+    m_poseEstimator.update(getAngle(), m_modulePositions);
+    if (m_vision.getRobotPose() != null) {
+    m_poseEstimator.addVisionMeasurement(m_vision.getRobotPose().toPose2d(), Timer.getFPGATimestamp());
+    }
+    // System.out.println(m_vision.getEstimatedGlobalPose());
+    // if (m_vision.getEstimatedGlobalPose().isPresent()) {
+    //   m_poseEstimator.addVisionMeasurement(m_vision.getEstimatedGlobalPose().get().estimatedPose.toPose2d(), Timer.getFPGATimestamp());
+    // }
 
+    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
+    SmartDashboard.putData("Field", m_field);
 
+<<<<<<< HEAD
     m_field.setRobotPose(m_odo.getPoseMeters());
     // SmartDashboard.putData("Swerve/Odo/Field", m_field);
 
     // SmartDashboard.putNumber("X", getPoseMeters().getX());
     // SmartDashboard.putNumber("Y", getPoseMeters().getY());
+=======
+    SmartDashboard.putNumber("X", getEstimatedPosition().getX());
+    SmartDashboard.putNumber("Y", getEstimatedPosition().getY());
+    System.out.println(getEstimatedPosition().getX() + ", " + getEstimatedPosition().getY());
+
+>>>>>>> e97c98c (Added basic pose estimation)
     Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Angle", getAngle().getDegrees());
