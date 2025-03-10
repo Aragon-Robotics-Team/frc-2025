@@ -31,7 +31,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Vision extends SubsystemBase {
 
   private PhotonCamera m_cam = new PhotonCamera("Arducam_OV9281_USB_Camera"); //TODO: Change to actual camera name
-  private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.5, 0.0, 0.5), new Rotation3d(0,0,0)); //TODO: Change this later!
+  private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.0, 0.0, 0.084), new Rotation3d(0,0,0)); //TODO: Change this later!
   
   private PhotonPipelineResult m_result;
   private boolean m_hasTargets;
@@ -66,9 +66,9 @@ public class Vision extends SubsystemBase {
   private int m_ID;
   private double m_poseAmbiguity;
 
-  private AprilTagFieldLayout m_aprilTagFieldLayout = AprilTagFields.k2024Crescendo.loadAprilTagLayoutField();
+  private AprilTagFieldLayout m_aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
   private Pose3d m_robotPose;
-  private PhotonPoseEstimator m_poseEstimator;
+  private PhotonPoseEstimator m_poseEstimator = new PhotonPoseEstimator(m_aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, m_robotToCam);
   /** Creates a new Vision. */
   public Vision() {
     
@@ -130,18 +130,29 @@ public class Vision extends SubsystemBase {
     return m_targetID;
   }
 
-  public Optional<EstimatedRobotPose> getEstimatedGlobalPose(){
-    Optional<EstimatedRobotPose> m_visionEst = Optional.empty();
-    for (var change : m_cam.getAllUnreadResults()) {
-        m_visionEst = m_poseEstimator.update(change);
-    }
-    return m_visionEst;
+  // public Optional<EstimatedRobotPose> getEstimatedGlobalPose(){
+  //   Optional<EstimatedRobotPose> m_visionEst = Optional.empty();
+  //   for (var change : m_cam.getAllUnreadResults()) {
+  //       System.out.println(m_cam.getAllUnreadResults());
+  //       m_visionEst = m_poseEstimator.update(change);
+  //   }
+  //   return m_visionEst;
+  // }
+
+  // public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+  //   // m_poseEstimator.setReferencePose(prevEstimatedRobotPose);
+  //   return m_poseEstimator.update(m_result);
+  // }
+
+  public Pose3d getRobotPose(){
+    return m_robotPose;
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     m_result = m_cam.getLatestResult();
+    
     m_hasTargets = m_result.hasTargets();
     if (m_hasTargets){
       m_targets = m_result.getTargets();
@@ -159,6 +170,7 @@ public class Vision extends SubsystemBase {
     }
 
     if(m_bestTarget != null){
+      System.out.println("Best target is not null");
       //m_vision = m_bestTarget.getCam();
        m_yaw = m_bestTarget.getYaw();
        m_pitch = m_bestTarget.getPitch();
@@ -169,8 +181,7 @@ public class Vision extends SubsystemBase {
        m_ID = m_bestTarget.getFiducialId();
        m_poseAmbiguity = m_bestTarget.getPoseAmbiguity();
        m_robotPose = PhotonUtils.estimateFieldToRobotAprilTag(m_camToTarget, m_aprilTagFieldLayout.getTagPose(m_ID).get(), m_robotToCam);
-       m_poseEstimator = new PhotonPoseEstimator(m_aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, m_robotToCam);
-    }
+      }
    
   }
 }
