@@ -29,11 +29,11 @@ import frc.robot.subsystems.Vision;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  public final DriftSwerveDrive m_swerve = new DriftSwerveDrive();
-  // public final SwerveDrive m_swerve = new SwerveDrive();
+  // public final DriftSwerveDrive m_swerve = new DriftSwerveDrive();
+  private final Vision m_vision = new Vision();
+  public final SwerveDrive m_swerve = new SwerveDrive(m_vision);
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-  private final Vision m_vision = new Vision();
 
   private final JoystickButton m_1stTagButton = new JoystickButton(m_driverJoystick, 1);
   private final JoystickButton m_2ndTagButton = new JoystickButton(m_driverJoystick, 2);
@@ -43,8 +43,8 @@ public class RobotContainer {
   private final JoystickButton m_6thTagButton = new JoystickButton(m_driverJoystick, 6);
   private final JoystickButton m_centerToTagButton = new JoystickButton(m_driverJoystick, 7);
 
-  // private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick, m_vision, m_1stTagButton, m_2ndTagButton, m_3rdTagButton, m_4thTagButton, m_5thTagButton, m_6thTagButton, m_centerToTagButton);
-  private final DriftSwerveJoystick m_swerveJoystick = new DriftSwerveJoystick(m_swerve, m_driverJoystick, m_vision, m_6thTagButton, m_5thTagButton, m_4thTagButton, m_3rdTagButton, m_2ndTagButton, m_1stTagButton, m_centerToTagButton);
+  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick, m_vision, m_1stTagButton, m_2ndTagButton, m_3rdTagButton, m_4thTagButton, m_5thTagButton, m_6thTagButton, m_centerToTagButton);
+  // private final DriftSwerveJoystick m_swerveJoystick = new DriftSwerveJoystick(m_swerve, m_driverJoystick, m_vision, m_6thTagButton, m_5thTagButton, m_4thTagButton, m_3rdTagButton, m_2ndTagButton, m_1stTagButton, m_centerToTagButton);
   private SendableChooser<Command> m_autoChooser;
   // private final TurnToTagAngle m_turnToTagAngle = new TurnToTagAngle(m_swerve, 6);
   // private final JoystickButton m_turnToTag6Button = new JoystickButton(m_driverJoystick, 1);
