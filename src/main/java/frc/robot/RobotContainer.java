@@ -62,7 +62,7 @@ import frc.robot.commands.pivot.PIDForPivot;
 
 import frc.robot.subsystems.Climb;
 import frc.robot.commands.climb.ServoMovement;
-import frc.robot.commands.climb.SpinVortex;
+import frc.robot.commands.climb.SpinVortexRotations;
 
 @SuppressWarnings("unused") // thanks 254
 
@@ -249,21 +249,24 @@ public class RobotContainer {
 
 
   private Climb m_climb = new Climb();
-  private SpinVortex m_retractCage = new SpinVortex(m_climb, -0.8); // second command
-  private SpinVortex m_getCage = new SpinVortex(m_climb, 0.8); // first command
+  // check these speeds and rotations
+  private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 3); // first command
+  private SpinVortexRotations m_retractCage = new SpinVortexRotations(m_climb, -0.8, 5); // second command
+
   private ServoMovement m_moveServo = new ServoMovement(m_climb, 1.0); // move from 0.0 to 1.0???
 
 
   private JoystickButton m_climbButton = new JoystickButton(m_driverJoystick, 0); // to fix
 
-  private RunCommand m_climbCommand = new RunCommand(
-    () -> (new WaitUntilCommand(() -> !m_climbButton.getAsBoolean()))
-    .andThen(() -> m_getCage.schedule())
-    .until(() -> m_climbButton.getAsBoolean())
-    .andThen(() -> m_moveServo.schedule())
-    .andThen(() -> m_retractCage.schedule()), 
-    m_climb
-  );
+  // see below (bindings) for the actual command being run
+  // private RunCommand m_climbCommand = new RunCommand(
+  //   () -> (new WaitUntilCommand(() -> !m_climbButton.getAsBoolean()))
+  //   .andThen(() -> m_getCage.schedule())
+  //   .until(() -> m_climbButton.getAsBoolean())
+  //   .andThen(() -> m_moveServo.schedule())
+  //   .andThen(() -> m_retractCage.schedule()), 
+  //   m_climb
+  // );
 
   
 
@@ -344,6 +347,23 @@ public class RobotContainer {
 
 // 02/28 -- reprogramming George's joystick
 
+
+    // climb command
+    m_climbButton.onTrue(
+      Commands.sequence(
+        // new WaitCommand(0.1), would be here to unpress but there's another wait command down there
+        Commands.parallel(
+          m_armToL1,
+          Commands.sequence( new WaitCommand(0.5), m_getCage) // need to wait (0.5s) to make sure the arm is mostly out of the way
+        ).until(() -> m_climbButton.getAsBoolean()), 
+
+        Commands.parallel(
+          m_moveServo,
+          m_retractCage
+        )
+        
+      )
+    );
 
     // button 7 -- the middle button
     m_elevatorArmManualControlButton.onTrue(
