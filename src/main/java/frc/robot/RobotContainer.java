@@ -208,7 +208,7 @@ public class RobotContainer {
 
   // begin intake/indexer
   private Intake m_intake = new Intake();
-  private final double kIntakeIndexerSpeed = 0.6;
+  private final double kIntakeIndexerSpeed = 0.9;
   // private RunIntake m_intakeIn = new RunIntake(m_intake, kIntakeIndexerSpeed); // positive speed == intake in
   // private RunIntake m_intakeOut = new RunIntake(m_intake, -kIntakeIndexerSpeed);
 
