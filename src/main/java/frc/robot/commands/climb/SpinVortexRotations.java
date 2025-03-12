@@ -6,17 +6,20 @@ package frc.robot.commands.climb;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climb;
+import frc.robot.Constants.ClimbConstants; // capital constants
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class SpinVortex extends Command {
+public class SpinVortexRotations extends Command {
   /** Creates a new SpinVortex. */
   private Climb m_climb;
   private double m_speed; 
+  private double m_rotations; // amount of rotations to spin
 
-  public SpinVortex(Climb climb, double speed) {
+  public SpinVortexRotations(Climb climb, double speed, double rotations) {
 
     m_climb = climb;
     m_speed = speed;
+    m_rotations = rotations;
     addRequirements(climb);
   }
 
@@ -39,6 +42,9 @@ public class SpinVortex extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return (
+      (m_climb.getMotorRotations() - m_rotations < ClimbConstants.kVortexRotationsTolerance) ||
+      (m_rotations - m_climb.getMotorRotations() < ClimbConstants.kVortexRotationsTolerance)
+    );
   }
 }
