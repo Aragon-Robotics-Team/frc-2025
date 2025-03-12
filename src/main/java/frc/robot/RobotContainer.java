@@ -15,11 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.PivotConstants;
@@ -35,6 +38,7 @@ import frc.robot.commands.arm.ArmToPos;
 import frc.robot.commands.arm.SpinEndEffectorMotor;
 import frc.robot.commands.auto.DriveForwardL4;
 import frc.robot.commands.auto.MoveForTime;
+
 import frc.robot.subsystems.EndEffector;
 
 // elevator imports
@@ -48,7 +52,6 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.intake_indexer.RunIndexer;
 import frc.robot.commands.intake_indexer.RunIntake;
-// import frc.robot.commands.intake_indexer.RunIntake;
 import frc.robot.commands.intake_indexer.RunIntakeWithIndexer;
 import frc.robot.commands.intake_indexer.RunIntakeWithIndexerJoystick;
 
@@ -57,7 +60,11 @@ import frc.robot.subsystems.Pivot;
 import frc.robot.commands.pivot.ArcadePivot;
 import frc.robot.commands.pivot.PIDForPivot;
 
-@SuppressWarnings("unused")
+import frc.robot.subsystems.Climb;
+import frc.robot.commands.climb.ServoMovement;
+import frc.robot.commands.climb.SpinVortex;
+
+@SuppressWarnings("unused") // thanks 254
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -233,23 +240,26 @@ public class RobotContainer {
 
   private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_secondJoystick, IOConstants.kGroundIntakeCoralButtonID);
   // end intake/indexer
-  // private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, 0, -0.6, 0);
-  // private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
 
-  public final SwerveDrive m_swerve = new SwerveDrive(m_elevatorToGround, m_elevatorToL4, m_armToGroundIntake, m_armToL4, m_intakeEndEffector, m_outtakeEndEffector, m_spinIntakeIndexerRollers, m_outtakeIntakeIndexerRollers);
 
+  private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, 0, -0.6, 0);
+  private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
+
+
+
+
+  private Climb m_climb = new Climb();
+  private SpinVortex m_retractCage = new SpinVortex(m_climb, -0.8); // second command
+  private SpinVortex m_getCage = new SpinVortex(m_climb, 0.8); // first command
+  private ServoMovement m_moveServo = new ServoMovement(m_climb, 1.0); // move from 0.0 to 1.0???
+
+
+  private JoystickButton m_climbButton = new JoystickButton(m_driverJoystick, 0); // to fix
+
+  private RunCommand m_climbCommand = new RunCommand(() -> (new WaitUntilCommand(() -> !m_climbButton.getAsBoolean())).andThen(() -> m_getCage.schedule()).until(() -> m_climbButton.getAsBoolean()).andThen(() -> m_moveServo.schedule()).andThen(() -> m_retractCage.schedule()), m_climb);
 
   
-  private SendableChooser<Command> m_autoChooser;
-  
 
-
-  
-  private final InstantCommand m_resetHeadingCommand = m_swerve.resetHeadingCommand();
-  private final JoystickButton m_resetHeadingButton = new JoystickButton(m_driverJoystick, IOConstants.kResetHeadingButtonID);
-
-
-  public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
