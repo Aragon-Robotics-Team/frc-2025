@@ -4,10 +4,6 @@
 
 package frc.robot;
 
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
-
-import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
@@ -119,6 +115,16 @@ public final class Constants {
 
         public static final int kManualOuttakeTriggerAxis = 2;
         public static final int kManualIntakeTriggerAxis = 5;
+    }
+
+
+
+
+    public static final class ClimbConstants{
+        // climb motor is a neo vortex hooked up to a spark flex
+        public static final int kClimbMotorID = 31; // dummy 31
+        public static final int kServoPort = 11; // pwm port (probably on the navx)
+        public static final double kServoTolerance = 0.01; // 1% tolerance
     }
 } 
 

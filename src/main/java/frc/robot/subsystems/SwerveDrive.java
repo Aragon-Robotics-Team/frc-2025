@@ -48,6 +48,8 @@ import frc.robot.commands.intake_indexer.RunIntakeWithIndexer;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.IOConstants;
 
+@SuppressWarnings("unused")
+
 public class SwerveDrive extends SubsystemBase 
 {
   private final SwerveModule m_frontLeft = new SwerveModule(
