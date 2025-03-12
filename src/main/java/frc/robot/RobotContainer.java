@@ -256,7 +256,14 @@ public class RobotContainer {
 
   private JoystickButton m_climbButton = new JoystickButton(m_driverJoystick, 0); // to fix
 
-  private RunCommand m_climbCommand = new RunCommand(() -> (new WaitUntilCommand(() -> !m_climbButton.getAsBoolean())).andThen(() -> m_getCage.schedule()).until(() -> m_climbButton.getAsBoolean()).andThen(() -> m_moveServo.schedule()).andThen(() -> m_retractCage.schedule()), m_climb);
+  private RunCommand m_climbCommand = new RunCommand(
+    () -> (new WaitUntilCommand(() -> !m_climbButton.getAsBoolean()))
+    .andThen(() -> m_getCage.schedule())
+    .until(() -> m_climbButton.getAsBoolean())
+    .andThen(() -> m_moveServo.schedule())
+    .andThen(() -> m_retractCage.schedule()), 
+    m_climb
+  );
 
   
 
