@@ -5,10 +5,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.subsystems.Elevator;
 
@@ -17,6 +15,7 @@ public class ArcadeElevator extends Command {
   
     private Joystick m_joystick;
     private Elevator m_elevator;
+    private double m_speed;
   /** Creates a new ArcadeElevator. */
   public ArcadeElevator(Joystick m_joystick2, Elevator elevator) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -33,17 +32,9 @@ public class ArcadeElevator extends Command {
   @Override
   public void execute() {
     //if we are going down the speed is negative and we are going to make our speed 0.
-    SmartDashboard.putNumber("Elevator Joystick speed", m_joystick.getRawAxis(ElevatorConstants.kElevatorYAxis));
-    if(m_joystick.getRawAxis(ElevatorConstants.kElevatorYAxis) * ElevatorConstants.kElevatorMultiplier<0 && (!(m_elevator.getLimitSwitch()))){
-       m_elevator.setSpeed(0);
-       SmartDashboard.putNumber("Elevator speed", 0);
-
-    }
-    else{
-    m_elevator.setSpeed(m_joystick.getRawAxis(ElevatorConstants.kElevatorYAxis) * ElevatorConstants.kElevatorMultiplier);
-      SmartDashboard.putNumber("Elevator speed", m_joystick.getRawAxis(0)*ElevatorConstants.kElevatorMultiplier);
-      
-    }
+    m_speed = m_joystick.getRawAxis(ElevatorConstants.kElevatorManualControlAxis)*0.7;
+    SmartDashboard.putNumber("Elevator Joystick speed", m_speed);
+    m_elevator.setSpeed(m_speed);
     
   }
 

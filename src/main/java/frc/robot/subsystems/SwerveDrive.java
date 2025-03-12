@@ -17,6 +17,7 @@ import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.Utils;
+import frc.robot.subsystems.OdometryThread;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.config.ModuleConfig;
@@ -93,9 +94,8 @@ public class SwerveDrive extends SubsystemBase
   public String[] m_moduleNames = {"frontLeft", "frontRight", "backLeft", "backRight"};
   int kUpdateFrequency = 50;
   protected final ReentrantReadWriteLock m_stateLock = new ReentrantReadWriteLock();
-  //protected OdometryThread m_odometryThread;
-  private final OdometryThread m_odoThread = new OdometryThread();
-
+  // protected OdometryThread m_odometryThread;
+  private final OdometryThread m_odoThread;
   private final Field2d m_field = new Field2d();
 
   private double m_xStartPose;
@@ -180,12 +180,14 @@ public class SwerveDrive extends SubsystemBase
   }  
 
   public SwerveDrive() {
+    m_odoThread = new OdometryThread(m_frontLeft, m_frontRight, m_backLeft, m_backRight);
+
     odometryThreadInit();
-    CanandEventLoop.getInstance();
+    m_odoThread.run();
+    // CanandEventLoop.getInstance();
     // Leaving one here so I can remember how to do this later;
     // NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
 
-    // m_odometryThread = new OdometryThread();
     // m_odometryThread.start();
 
     try 
@@ -199,8 +201,7 @@ public class SwerveDrive extends SubsystemBase
       ModuleConfig config3 = new ModuleConfig(1, 1, 1, motor, 1, 2);
       RobotConfig config2 = new RobotConfig(50, 1, config3, t);
       
-      AutoBuilder.configure
-      (
+      AutoBuilder.configure(
         this::getPoseMeters,
         this::resetOdo,
         this::getChassisSpeeds, 
@@ -221,8 +222,6 @@ public class SwerveDrive extends SubsystemBase
         },
       this
       );
-      System.out.println("KD;kjfasd");
-
 
       SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
       double m_angle = SmartDashboard.getNumber("Driving/Adjust angle", 0);
@@ -339,8 +338,10 @@ public class SwerveDrive extends SubsystemBase
 
   @Override
   public void periodic() {
+    System.out.println("Pose meters: " + getPoseMeters());
+
     m_field.setRobotPose(m_odoThread.getPoseMeters());
-    SmartDashboard.putData("Swerve/Odo/Field", m_field);
+    SmartDashboard.putData("Field", m_field);
 
     SmartDashboard.putNumber("X", getPoseMeters().getX());
     SmartDashboard.putNumber("Y", getPoseMeters().getY());

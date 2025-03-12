@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.constants.DriveConstants;
 
 public class OdometryThread implements Runnable {
@@ -18,47 +19,21 @@ public class OdometryThread implements Runnable {
     private SwerveModule m_frontRight;
     private SwerveModule m_backLeft;
     private SwerveModule m_backRight;
-    private SwerveModule[] m_swerveModules = {m_frontLeft, m_frontRight, m_backLeft, m_backRight};
+    private SwerveModule[] m_swerveModules = new SwerveModule[4]; 
 
     private SwerveDriveOdometry m_odometry;
 
-    public OdometryThread(){
-      m_frontLeft = new SwerveModule(
-        DriveConstants.kFrontLeftDriveId, 
-        DriveConstants.kFrontLeftTurnId,
-        DriveConstants.kFrontLeftTurnEncoderPort, 
-        DriveConstants.kFrontLeftTurnEncoderOffset, 
-        DriveConstants.kFrontLeftDriveReversed,
-        DriveConstants.kFrontLeftTurningReversed, 
-        "FrontLeft"
-      );
-      m_frontRight = new SwerveModule(
-        DriveConstants.kFrontRightDriveId, 
-        DriveConstants.kFrontRightTurnId,
-        DriveConstants.kFrontRightTurnEncoderPort, 
-        DriveConstants.kFrontRightTurnEncoderOffset,
-        DriveConstants.kFrontRightDriveReversed,
-        DriveConstants.kFrontRightTurningReversed, 
-        "FrontRight"
-      );
-      m_backLeft = new SwerveModule(
-        DriveConstants.kBackLeftDriveId, 
-        DriveConstants.kBackLeftTurnId,
-        DriveConstants.kBackLeftTurnEncoderPort,
-        DriveConstants.kBackLeftTurnEncoderOffset, 
-        DriveConstants.kBackLeftDriveReversed,
-        DriveConstants.kBackLeftTurningReversed, 
-        "BackLeft"
-      );
-      m_backRight = new SwerveModule(
-        DriveConstants.kBackRightDriveId, 
-        DriveConstants.kBackRightTurnId,
-        DriveConstants.kBackRightTurnEncoderPort, 
-        DriveConstants.kBackRightTurnEncoderOffset, 
-        DriveConstants.kBackRightDriveReversed, 
-        DriveConstants.kBackRightTurningReversed, 
-        "BackRight"
-      );
+    public OdometryThread(SwerveModule frontLeft, SwerveModule frontRight, SwerveModule backLeft, SwerveModule backRight){
+      m_frontLeft = frontLeft;
+      m_frontRight = frontRight;
+      m_backLeft = backLeft;
+      m_backRight = backRight;
+
+      m_swerveModules[0] = m_frontLeft;
+      m_swerveModules[1] = m_frontRight;
+      m_swerveModules[2] = m_backLeft;
+      m_swerveModules[3] = m_backRight;
+
       m_odometry = new SwerveDriveOdometry(DriveConstants.kDriveKinematics, getAngle(), new SwerveModulePosition[] {
         m_frontLeft.getPosition(),
         m_frontRight.getPosition(),
@@ -138,6 +113,10 @@ public class OdometryThread implements Runnable {
     @Override
     public void run(){
       m_odometry.update(getAngle(), getModulePositions());
+      System.out.println("Running odometry thread");
+      SmartDashboard.putNumber("Angle", getAngleDegrees());
+      SmartDashboard.putNumber("Pose X", getPoseMeters().getX());
+      SmartDashboard.putNumber("Pose Y", getPoseMeters().getY());
     }
 
 }

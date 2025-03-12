@@ -40,11 +40,14 @@ public class RobotContainer {
   private Elevator m_elevator = new Elevator();
   private ArcadeElevator m_arcadeElevator = new ArcadeElevator(m_secondJoystick, m_elevator);
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
+
+
   public RobotContainer() {
     getTeleopCommand();
-    // m_autoChooser = AutoBuilder.buildAutoChooser();
-    // SmartDashboard.putData("Driving/Auto Chooser", m_autoChooser);
-    // Configure the trigger bindings
+    m_autoChooser = AutoBuilder.buildAutoChooser();
+    SmartDashboard.putData("Auto Chooser", m_autoChooser);
+    SmartDashboard.putData("Reset Heading", m_swerve.resetHeadingCommand());
+    //Configure the trigger bindings
     configureBindings();
   }
 
@@ -68,8 +71,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    //return m_autoChooser.getSelected();
-    return null;
+    System.out.println(m_autoChooser.getSelected());
+    return m_autoChooser.getSelected();
   }
 
   private void getTeleopCommand() {
