@@ -44,6 +44,10 @@ public class Climb extends SubsystemBase {
     m_climbMotor.set(speed);
   }
 
+  public double getMotorRotations(){
+    return m_climbMotor.getEncoder().getPosition(); // i think this works -- TODO check what kind of encoder the spark flex has
+  }
+
   public void setServoPosition(double pos){
     // pos should be between 0 and 1 where 0 corresponds with min position and 1 with max position
     m_servo.setPosition(pos);
