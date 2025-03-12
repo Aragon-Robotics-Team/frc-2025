@@ -53,25 +53,31 @@ public class RobotContainer {
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
 
-  private final JoystickButton m_1stTagButton = new JoystickButton(m_driverJoystick, 1);
-  private final JoystickButton m_2ndTagButton = new JoystickButton(m_driverJoystick, 2);
-  private final JoystickButton m_3rdTagButton = new JoystickButton(m_driverJoystick, 3);
-  private final JoystickButton m_4thTagButton = new JoystickButton(m_driverJoystick, 4);
-  private final JoystickButton m_5thTagButton = new JoystickButton(m_driverJoystick, 5);
-  private final JoystickButton m_6thTagButton = new JoystickButton(m_driverJoystick, 6);
-  private final JoystickButton m_centerToTagButton = new JoystickButton(m_driverJoystick, 7);
+  // private final JoystickButton m_1stTagButton = new JoystickButton(m_driverJoystick, 1);
+  // private final JoystickButton m_2ndTagButton = new JoystickButton(m_driverJoystick, 2);
+  // private final JoystickButton m_3rdTagButton = new JoystickButton(m_driverJoystick, 3);
+  // private final JoystickButton m_4thTagButton = new JoystickButton(m_driverJoystick, 4);
+  // private final JoystickButton m_5thTagButton = new JoystickButton(m_driverJoystick, 5);
+  // private final JoystickButton m_6thTagButton = new JoystickButton(m_driverJoystick, 6);
+  // private final JoystickButton m_centerToTagButton = new JoystickButton(m_driverJoystick, 7);
 
-  private final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick, m_vision, m_1stTagButton, m_2ndTagButton, m_3rdTagButton, m_4thTagButton, m_5thTagButton, m_6thTagButton, m_centerToTagButton);
+  private final JoystickButton m_selectTagButton = new JoystickButton(m_driverJoystick, IOConstants.kVisionSnapToAngleButtonID);
+  private final JoystickButton m_centerToLeftPoleButton = new JoystickButton(m_driverJoystick, IOConstants.kVisionLeftAlignButtonID);
+  private final JoystickButton m_centerToRightPoleButton = new JoystickButton(m_driverJoystick, IOConstants.kVisionRightAlignButtonID);
+
+  // public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick, m_vision, m_1stTagButton, m_2ndTagButton, m_3rdTagButton, m_4thTagButton, m_5thTagButton, m_6thTagButton, m_centerToTagButton);
+  // public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick, m_vision, m_selectTagButton, m_centerToLeftPoleButton, m_centerToRightPoleButton);
+  public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick, m_vision);
   private final InstantCommand m_resetHeadingCommand = m_swerve.resetHeadingCommand();
   private final JoystickButton m_resetHeadingButton = new JoystickButton(m_driverJoystick, IOConstants.kResetHeadingButtonID);
 
 
   private final JoystickButton m_elevatorArmManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kElevatorArmManualOverrideButtonID); // 7
   private final JoystickButton m_pivotRollerManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kPivotArmManualOverrideButtonID); // 8 (i think)
-  private final TurnToTagAngle m_turnToTagAngle = new TurnToTagAngle(m_swerve, 6);
-  private final JoystickButton m_turnToTag6Button = new JoystickButton(m_driverJoystick, 1);
+  // private final TurnToTagAngle m_turnToTagAngle = new TurnToTagAngle(m_swerve, 6);
+  // private final JoystickButton m_turnToTag6Button = new JoystickButton(m_driverJoystick, 1);
   // private final DriftSwerveJoystick m_swerveJoystick = new DriftSwerveJoystick(m_swerve, m_driverJoystick, m_vision, m_6thTagButton, m_5thTagButton, m_4thTagButton, m_3rdTagButton, m_2ndTagButton, m_1stTagButton, m_centerToTagButton);
-  private SendableChooser<Command> m_autoChooser;
+  private SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
 
 
@@ -416,27 +422,39 @@ public class RobotContainer {
     
     // button 6 -- do the intake thing
 
-    
+    // New ground intake button actions!
     m_groundIntakeCoralButton.whileTrue(
       Commands.parallel(
-        m_elevatorToGround4, 
+        m_elevatorToGround4,
         m_armToGroundIntake1,
-        // m_pivotPIDToIntake, 
-        m_spinIntakeIndexerRollers, 
-        m_intakeEndEffector1
-      )
-    );
-
-    // what it does is move the pivot up (only)
-    m_groundIntakeCoralButton.onFalse(
-      Commands.parallel(
-        // m_pivotPIDToStow1,
-        m_intakeEndEffector3.withTimeout(1),
-        Commands.sequence( // todo: put a beam break thing
-          m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1)
+        // m_pivotPIDToIntake,
+        Commands.sequence(
+          Commands.deadline(m_intakeEndEffector1, m_spinIntakeIndexerRollers),
+          Commands.sequence(m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1))
         )
       )
     );
+    
+    // m_groundIntakeCoralButton.whileTrue(
+    //   Commands.parallel(
+    //     m_elevatorToGround4, 
+    //     m_armToGroundIntake1,
+    //     // m_pivotPIDToIntake, 
+    //     m_spinIntakeIndexerRollers, 
+    //     m_intakeEndEffector1
+    //   )
+    // );
+
+    // // what it does is move the pivot up (only)
+    // m_groundIntakeCoralButton.onFalse(
+    //   Commands.parallel(
+    //     // m_pivotPIDToStow1,
+    //     m_intakeEndEffector3.withTimeout(1),
+    //     Commands.sequence( // todo: put a beam break thing
+    //       m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1)
+    //     )
+    //   )
+    // );
     
     
   }

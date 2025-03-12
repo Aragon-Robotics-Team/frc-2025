@@ -31,8 +31,10 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class Vision extends SubsystemBase {
 
   private PhotonCamera m_cam = new PhotonCamera("Arducam_OV9281_USB_Camera"); //TODO: Change to actual camera name
-  private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.0, 0.0, 0.084), new Rotation3d(0,0,0)); //TODO: Change this later!
-  
+  // private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.305, 0.305, 0.211), new Rotation3d(0,1.222,3.578)); //TODO: Change this later!
+  private Transform3d m_robotToCam = new Transform3d(new Translation3d(-0.308, 0.307, 0.211), new Rotation3d(0, Math.toRadians(25), Math.toRadians(155.75)));
+  // private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.305, 0.305, 0.211), new Rotation3d(0, 0, 0));
+
   private PhotonPipelineResult m_result;
   private boolean m_hasTargets;
   private List<PhotonTrackedTarget> m_targets;
@@ -48,30 +50,21 @@ public class Vision extends SubsystemBase {
   private boolean m_targetInView;
   private int m_targetID = 0;
 
-  private boolean m_tag6InView;
-  private boolean m_tag7InView;
-  private boolean m_tag8InView;
-  private boolean m_tag9InView;
-  private boolean m_tag10InView;
-  private boolean m_tag11InView;
-  private boolean m_tag17InView;
-  private boolean m_tag18InView;
-  private boolean m_tag19InView;
-  private boolean m_tag20InView;
-  private boolean m_tag21InView;
-  private boolean m_tag22InView;
-
   private Transform3d m_camToTarget;
   private List<TargetCorner> m_corners;
   private int m_ID;
   private double m_poseAmbiguity;
 
-  private AprilTagFieldLayout m_aprilTagFieldLayout = AprilTagFields.k2025Reefscape.loadAprilTagLayoutField();
+  private AprilTagFieldLayout m_aprilTagFieldLayout = AprilTagFields.k2025ReefscapeWelded.loadAprilTagLayoutField();
   private Pose3d m_robotPose;
   private PhotonPoseEstimator m_poseEstimator = new PhotonPoseEstimator(m_aprilTagFieldLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, m_robotToCam);
   /** Creates a new Vision. */
   public Vision() {
     
+  }
+
+  public boolean hasTargets() {
+    return m_hasTargets;
   }
 
   public PhotonCamera getCam(){

@@ -167,15 +167,21 @@ public class SwerveDrive extends SubsystemBase
 
   public Rotation2d getAngle() {
     double angle = m_imu.getYaw();
+    // double angle = m_imu.getMultiturnYaw();
     angle *= 360;
-    angle += 90;
+    if (angle < 0) {
+      angle += 360;
+    }
+    //angle += 90;
     return Rotation2d.fromDegrees(angle);
   }
   
 
   public double getAngleDegrees()
   {
-    return Math.IEEEremainder(-m_imu.getYaw() * 360 + 90, 360);
+    //return Math.IEEEremainder(-m_imu.getYaw() * 360 + 90, 360);
+    return Math.IEEEremainder(-m_imu.getMultiturnYaw() * 360, 360);
+    // return getAngle().getDegrees();
   }
 
   public void setTurningSpeed(double speed) {
@@ -232,22 +238,9 @@ public class SwerveDrive extends SubsystemBase
 
   public SwerveDrive(Vision vision) 
   {
-<<<<<<< HEAD
     SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
-=======
     m_vision = vision;
-    m_poseEstimator = new SwerveDrivePoseEstimator(
-      DriveConstants.kDriveKinematics, 
-      getAngle(),
-      new SwerveModulePosition[] {
-        m_frontLeft.getPosition(),
-        m_frontRight.getPosition(),
-        m_backLeft.getPosition(),
-        m_backRight.getPosition()
-      },
-      new Pose2d());
 
->>>>>>> e97c98c (Added basic pose estimation)
     CanandEventLoop.getInstance();
     // Leaving one here so I can remember how to do this later;
     // NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
@@ -308,6 +301,18 @@ public class SwerveDrive extends SubsystemBase
     {
       System.out.println("RobotConfig GUI Settings error");
     }
+
+    m_poseEstimator = new SwerveDrivePoseEstimator(
+      DriveConstants.kDriveKinematics, 
+      getAngle(),
+      new SwerveModulePosition[] {
+        m_frontLeft.getPosition(),
+        m_frontRight.getPosition(),
+        m_backLeft.getPosition(),
+        m_backRight.getPosition()
+      },
+      new Pose2d());
+
   }
   
   
@@ -406,7 +411,8 @@ public class SwerveDrive extends SubsystemBase
     m_moduleStates = getModuleStates();
     m_poseEstimator.update(getAngle(), m_modulePositions);
     if (m_vision.getRobotPose() != null) {
-    m_poseEstimator.addVisionMeasurement(m_vision.getRobotPose().toPose2d(), Timer.getFPGATimestamp());
+      System.out.println("Pose estimated rotation degrees: " + m_vision.getRobotPose().toPose2d().getRotation().getDegrees());
+      m_poseEstimator.addVisionMeasurement(m_vision.getRobotPose().toPose2d(), Timer.getFPGATimestamp());
     }
     // System.out.println(m_vision.getEstimatedGlobalPose());
     // if (m_vision.getEstimatedGlobalPose().isPresent()) {
@@ -416,21 +422,15 @@ public class SwerveDrive extends SubsystemBase
     m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
     SmartDashboard.putData("Field", m_field);
 
-<<<<<<< HEAD
-    m_field.setRobotPose(m_odo.getPoseMeters());
-    // SmartDashboard.putData("Swerve/Odo/Field", m_field);
-
-    // SmartDashboard.putNumber("X", getPoseMeters().getX());
-    // SmartDashboard.putNumber("Y", getPoseMeters().getY());
-=======
     SmartDashboard.putNumber("X", getEstimatedPosition().getX());
     SmartDashboard.putNumber("Y", getEstimatedPosition().getY());
+    SmartDashboard.putNumber("Pose Rotation", getEstimatedPosition().getRotation().getDegrees());
     System.out.println(getEstimatedPosition().getX() + ", " + getEstimatedPosition().getY());
 
->>>>>>> e97c98c (Added basic pose estimation)
     Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Angle", getAngle().getDegrees());
+    SmartDashboard.putNumber("Angle by Degrees", getAngleDegrees());
     System.out.println(getAngle());
   }
 }
