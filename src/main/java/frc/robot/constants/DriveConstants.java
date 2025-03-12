@@ -76,4 +76,12 @@ public final class DriveConstants {
     public static final double kTurnToAngleP = 0.1;
     public static final double kTurnToAngleI = 0.0;
     public static final double kTurnToAngleD = 0.0;
+    
+    public static final double kDriveToXP = 0.1;
+    public static final double kDriveToXI = 0.0;
+    public static final double kDriveToXD = 0.0;
+
+    public static final double kDriveToYP = 0.1;
+    public static final double kDriveToYI = 0.0;
+    public static final double kDriveToYD = 0.0;
 }

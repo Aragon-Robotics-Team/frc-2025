@@ -176,14 +176,21 @@ public class SwerveDrive extends SubsystemBase
 
   public Rotation2d getAngle() {
     double angle = m_imu.getYaw();
+    // double angle = m_imu.getMultiturnYaw();
     angle *= 360;
+    if (angle < 0) {
+      angle += 360;
+    }
+    //angle += 90;
     return Rotation2d.fromDegrees(angle);
   }
   
 
   public double getAngleDegrees()
   {
-    return Math.IEEEremainder(-m_imu.getYaw() * 360 + 90, 360);
+    //return Math.IEEEremainder(-m_imu.getYaw() * 360 + 90, 360);
+    return Math.IEEEremainder(-m_imu.getMultiturnYaw() * 360, 360);
+    // return getAngle().getDegrees();
   }
 
   public void setTurningSpeed(double speed) {
@@ -241,21 +248,8 @@ public class SwerveDrive extends SubsystemBase
 
   public SwerveDrive(Vision vision) 
   {
-
     SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
-
     m_vision = vision;
-    m_poseEstimator = new SwerveDrivePoseEstimator(
-      DriveConstants.kDriveKinematics, 
-      getAngle(),
-      new SwerveModulePosition[] {
-        m_frontLeft.getPosition(),
-        m_frontRight.getPosition(),
-        m_backLeft.getPosition(),
-        m_backRight.getPosition()
-      },
-      new Pose2d());
-
 
     CanandEventLoop.getInstance();
     // Leaving one here so I can remember how to do this later;
@@ -323,16 +317,22 @@ public class SwerveDrive extends SubsystemBase
             System.out.println("ERROR in sleep thread: " + e);
           }
         }).start();
-    // }
-    // catch(Exception e)
-    // {
-    //   System.out.println("RobotConfig GUI Settings error");
-    // }
-      } catch (Exception e) {
-        
-      }
+    }
+    catch(Exception e)
+    {
+      System.out.println("RobotConfig GUI Settings error");
+    }
 
-
+    m_poseEstimator = new SwerveDrivePoseEstimator(
+      DriveConstants.kDriveKinematics, 
+      getAngle(),
+      new SwerveModulePosition[] {
+        m_frontLeft.getPosition(),
+        m_frontRight.getPosition(),
+        m_backLeft.getPosition(),
+        m_backRight.getPosition()
+      },
+      new Pose2d());
 
   }
   
@@ -433,7 +433,8 @@ public class SwerveDrive extends SubsystemBase
     m_odo.update(getAngle(), m_modulePositions);
 
     if (m_vision.getRobotPose() != null) {
-    m_poseEstimator.addVisionMeasurement(m_vision.getRobotPose().toPose2d(), Timer.getFPGATimestamp());
+      System.out.println("Pose estimated rotation degrees: " + m_vision.getRobotPose().toPose2d().getRotation().getDegrees());
+      m_poseEstimator.addVisionMeasurement(m_vision.getRobotPose().toPose2d(), Timer.getFPGATimestamp());
     }
     // System.out.println(m_vision.getEstimatedGlobalPose());
     // if (m_vision.getEstimatedGlobalPose().isPresent()) {
@@ -452,10 +453,12 @@ public class SwerveDrive extends SubsystemBase
 
     SmartDashboard.putNumber("X", getEstimatedPosition().getX());
     SmartDashboard.putNumber("Y", getEstimatedPosition().getY());
+    SmartDashboard.putNumber("Pose Rotation", getEstimatedPosition().getRotation().getDegrees());
     System.out.println(getEstimatedPosition().getX() + ", " + getEstimatedPosition().getY());
 
     Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Angle", getAngle().getDegrees());
+
   }
 }

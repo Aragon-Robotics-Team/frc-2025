@@ -4,12 +4,14 @@
 
 package frc.robot.commands;
 
+import java.util.HashMap;
 import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -37,28 +39,91 @@ public class SwerveJoystick extends Command {
 
   private double m_xSpeed, m_ySpeed, m_turningSpeed, m_xySpeed;
 
-  private final JoystickButton m_turnTo1stTag, m_turnTo2ndTag, m_turnTo3rdTag, m_turnTo4thTag, m_turnTo5thTag, m_turnTo6thTag, m_centerToTag;
-  private PIDController m_pid = new PIDController(DriveConstants.kTurnToAngleP, DriveConstants.kTurnToAngleI, DriveConstants.kTurnToAngleD);
-  private double m_targetAngle;
+  // private final JoystickButton m_turnTo1stTag, m_turnTo2ndTag, m_turnTo3rdTag, m_turnTo4thTag, m_turnTo5thTag, m_turnTo6thTag, m_centerToTag;
+  // private final JoystickButton m_selectBestTag, m_centerToLeftPole, m_centerToRightPole;
+  // private final JoystickButton m_turnToTag6Left, m_turnToTag6Right, m_turnToTag7Left, m_turnToTag7Right, m_turnToTag8Left, m_turnToTag8Right, m_turnToTag9Left, m_turnToTag9Right, m_turnToTag10Left, m_turnToTag10Right, m_turnToTag11Left, m_turnToTag11Right, m_turnToTag17Left, m_turnToTag17Right, m_turnToTag18Left, m_turnToTag18Right, m_turnToTag19Left, m_turnToTag19Right, m_turnToTag20Left, m_turnToTag20Right, m_turnToTag21Left, m_turnToTag21Right, m_turnToTag22Left, m_turnToTag22Right;
+  private PIDController m_turningPID = new PIDController(DriveConstants.kTurnToAngleP, DriveConstants.kTurnToAngleI, DriveConstants.kTurnToAngleD);
+  private PIDController m_xPID = new PIDController(DriveConstants.kDriveToXP, DriveConstants.kDriveToXI, DriveConstants.kDriveToXD);
+  private PIDController m_yPID = new PIDController(DriveConstants.kDriveToYP, DriveConstants.kDriveToYI, DriveConstants.kDriveToYD);
+  private double m_targetAngle, m_targetX, m_targetY;
   private double m_currentYaw;
   private double m_currentAngle;
   private int m_targetID;
-  private final Optional<Alliance> m_alliance = DriverStation.getAlliance(); 
-
-  public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick, Vision vision, JoystickButton turnTo1stTag, JoystickButton turnTo2ndTag, JoystickButton turnTo3rdTag, JoystickButton turnTo4thTag, JoystickButton turnTo5thTag, JoystickButton turnTo6thTag, JoystickButton centerToTag) {
+  private final Optional<Alliance> m_alliance = DriverStation.getAlliance();
+  // // Tag ID --> Left/ Right --> Pose 2d with x, y, rotation
+  private HashMap<Integer, HashMap<String, Pose2d>> m_polePoses = new HashMap<Integer, HashMap<String, Pose2d>>();
+  // Button ID --> Red/ Blue --> Left/ Right --> Pose 2d with x, y, rotation
+  // private HashMap<Integer, HashMap<String, HashMap<String, Pose2d>>> m_polePoses = new HashMap<Integer, HashMap<String, HashMap<String, Pose2d>>>();
+  // public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick, Vision vision, JoystickButton turnTo1stTag, JoystickButton turnTo2ndTag, JoystickButton turnTo3rdTag, JoystickButton turnTo4thTag, JoystickButton turnTo5thTag, JoystickButton turnTo6thTag, JoystickButton centerToTag) {
+  // public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick, Vision vision, JoystickButton selectBestTag, JoystickButton centerToLeftPole, JoystickButton centerToRightPole) {
+  public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick, Vision vision) {
     m_xSlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
     m_ySlewRateLimiter = new SlewRateLimiter(DriveConstants.kMaxTranslationalMetersPerSecond);
     m_joystick = joystick;
     m_swerveDrive = swerveDrive;
     m_vision = vision;
 
-    m_turnTo1stTag = turnTo1stTag;
-    m_turnTo2ndTag = turnTo2ndTag;
-    m_turnTo3rdTag = turnTo3rdTag;
-    m_turnTo4thTag = turnTo4thTag;
-    m_turnTo5thTag = turnTo5thTag;
-    m_turnTo6thTag = turnTo6thTag;
-    m_centerToTag = centerToTag;
+    // m_selectBestTag = selectBestTag;
+    // m_centerToLeftPole = centerToLeftPole;
+    // m_centerToRightPole = centerToRightPole;
+
+    m_polePoses.put(6, new HashMap<String, Pose2d>());
+    m_polePoses.get(6).put("Left", VisionConstants.kTag6Left);
+    m_polePoses.get(6).put("Right", VisionConstants.kTag6Right);
+    
+    m_polePoses.put(7, new HashMap<String, Pose2d>());
+    m_polePoses.get(7).put("Left", VisionConstants.kTag7Left);
+    m_polePoses.get(7).put("Right", VisionConstants.kTag7Right);
+    
+    m_polePoses.put(8, new HashMap<String, Pose2d>());
+    m_polePoses.get(8).put("Left", VisionConstants.kTag8Left);
+    m_polePoses.get(8).put("Right", VisionConstants.kTag8Right);
+
+    m_polePoses.put(9, new HashMap<String, Pose2d>());
+    m_polePoses.get(9).put("Left", VisionConstants.kTag9Left);
+    m_polePoses.get(9).put("Right", VisionConstants.kTag9Right);
+
+    m_polePoses.put(10, new HashMap<String, Pose2d>());
+    m_polePoses.get(10).put("Left", VisionConstants.kTag10Left);
+    m_polePoses.get(10).put("Right", VisionConstants.kTag10Right);
+
+    m_polePoses.put(11, new HashMap<String, Pose2d>());
+    m_polePoses.get(11).put("Left", VisionConstants.kTag11Left);
+    m_polePoses.get(11).put("Right", VisionConstants.kTag11Right);
+
+    m_polePoses.put(17, new HashMap<String, Pose2d>());
+    m_polePoses.get(17).put("Left", VisionConstants.kTag17Left);
+    m_polePoses.get(17).put("Right", VisionConstants.kTag17Right);
+
+    m_polePoses.put(18, new HashMap<String, Pose2d>());
+    m_polePoses.get(18).put("Left", VisionConstants.kTag18Left);
+    m_polePoses.get(18).put("Right", VisionConstants.kTag18Right);
+
+    m_polePoses.put(19, new HashMap<String, Pose2d>());
+    m_polePoses.get(19).put("Left", VisionConstants.kTag19Left);
+    m_polePoses.get(19).put("Right", VisionConstants.kTag19Right);
+
+    m_polePoses.put(20, new HashMap<String, Pose2d>());
+    m_polePoses.get(20).put("Left", VisionConstants.kTag20Left);
+    m_polePoses.get(20).put("Right", VisionConstants.kTag20Right);
+
+    m_polePoses.put(21, new HashMap<String, Pose2d>());
+    m_polePoses.get(21).put("Left", VisionConstants.kTag21Left);
+    m_polePoses.get(21).put("Right", VisionConstants.kTag21Right);
+
+    m_polePoses.put(22, new HashMap<String, Pose2d>());
+    m_polePoses.get(22).put("Left", VisionConstants.kTag22Left);
+    m_polePoses.get(22).put("Right", VisionConstants.kTag22Right);
+
+    
+
+    // m_turnTo1stTag = turnTo1stTag;
+    // m_turnTo2ndTag = turnTo2ndTag;
+    // m_turnTo3rdTag = turnTo3rdTag;
+    // m_turnTo4thTag = turnTo4thTag;
+    // m_turnTo5thTag = turnTo5thTag;
+    // m_turnTo6thTag = turnTo6thTag;
+    // m_centerToTag = centerToTag;
 
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(swerveDrive, vision);
@@ -124,100 +189,114 @@ public class SwerveJoystick extends Command {
     SmartDashboard.putNumber("Joystick/turningSpeedCommanded", m_turningSpeed);
     //Logger.recordOutput(getName(), desiredSwerveModuleStates);
 
-    m_currentAngle = m_swerveDrive.getAngleDegrees();
-    SmartDashboard.putNumber("Current angle", m_currentAngle);
-    if (m_turnTo1stTag.getAsBoolean()){
-      m_targetAngle = VisionConstants.kTag10Angle;
-      m_targetID = 8; // change to tag 8 as that is the test tag
-      m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
+    
+    switch (DriverStation.getStickButtons(2)) {
+      case 1: // Button A on joystick
+        switch (m_alliance.get()) {
+          case Red:
+            m_targetID = 10;
+          case Blue:
+            m_targetID = 21;
+        }
+      case 2: // Button B on joystick
+        switch (m_alliance.get()) {
+          case Red:
+            m_targetID = 9;
+          case Blue:
+            m_targetID = 22;
+        }
+      case 4: // Button X on Joystick
+        switch (m_alliance.get()) {
+          case Red:
+            m_targetID = 8;
+          case Blue:
+            m_targetID = 17;
+        }
+      case 8: // Button Y on Joystick
+        switch (m_alliance.get()) {
+          case Red:
+            m_targetID = 7;
+          case Blue:
+            m_targetID = 18;
+        }
+      case 16: // Left bumper on Joystick
+        switch (m_alliance.get()) {
+          case Red:
+            m_targetID = 6;
+          case Blue:
+            m_targetID = 19;
+        }
+      case 32: // Right bumper on Joystick
+        switch (m_alliance.get()) {
+          case Red:
+            m_targetID = 11;
+          case Blue:
+            m_targetID = 20;
+        }
     }
-    if (m_turnTo1stTag.getAsBoolean()){
-      if (m_alliance.isPresent()) {
-        System.out.println("True");
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag10Angle;
-          m_targetID = 10;
-        } else if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag21Angle;
-          m_targetID = 21;
-        }
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_turnTo2ndTag.getAsBoolean()) {
-      if (m_alliance.isPresent()) {
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag9Angle;
-          m_targetID = 9;
-        } else if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag22Angle;
-          m_targetID = 22;
-        }
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_turnTo3rdTag.getAsBoolean()) {
-      if (m_alliance.isPresent()) {
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag8Angle;
-          m_targetID = 8;
-        } else if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag17Angle;
-          m_targetID = 17;
-        }
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_turnTo4thTag.getAsBoolean()) {
-      if (m_alliance.isPresent()) {
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag7Angle;  
-          m_targetID = 7;
-        } else 
-        if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag18Angle;  
-          m_targetID = 18;
-        } 
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_turnTo5thTag.getAsBoolean()) {
-      if (m_alliance.isPresent()) {
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag6Angle;
-          m_targetID = 6;
-        } else 
-        if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag19Angle;
-          m_targetID = 19;
-        } 
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_turnTo6thTag.getAsBoolean()) {
-      if (m_alliance.isPresent()) {
-        if (m_alliance.get() == Alliance.Red) {
-          m_targetAngle = VisionConstants.kTag11Angle;
-          m_targetID = 11;
-        } else if (m_alliance.get() == Alliance.Blue) {
-          m_targetAngle = VisionConstants.kTag20Angle;
-          m_targetID = 20;
-        } 
-        m_turningSpeed = m_pid.calculate(m_currentAngle, m_targetAngle);
-      }
-    } else if (m_centerToTag.getAsBoolean()) {
-      m_currentYaw = m_vision.getTargetYaw();
-      m_xySpeed = m_pid.calculate(m_currentYaw, 0);
-      m_xSpeed = m_xySpeed*Math.cos(Math.toRadians(VisionConstants.kTagAngles[m_targetID - 6]));
-      m_ySpeed = m_xySpeed*Math.sin(Math.toRadians(VisionConstants.kTagAngles[m_targetID - 6]));
-    } 
+
+    m_currentAngle = m_swerveDrive.getAngle().getDegrees();
+    SmartDashboard.putNumber("Current angle", m_currentAngle);
+    if (m_joystick.getRawButtonPressed(IOConstants.kVisionSnapToAngleButtonID)) {
+      m_targetAngle = m_polePoses.get(m_targetID).get("Left").getRotation().getDegrees();
+
+      m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+    } else if (m_joystick.getRawButtonPressed(IOConstants.kVisionLeftAlignButtonID)) {
+      m_targetX = m_polePoses.get(m_targetID).get("Left").getX();
+      m_targetY = m_polePoses.get(m_targetID).get("Left").getY();
+
+      m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+      m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
+      m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
+    } else if (m_joystick.getRawButtonPressed(IOConstants.kVisionRightAlignButtonID)) {
+      m_targetX = m_polePoses.get(m_targetID).get("Right").getX();
+      m_targetY = m_polePoses.get(m_targetID).get("Right").getY();
+
+      m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+      m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
+      m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
+    }
+    // if (m_selectBestTag.getAsBoolean()) {
+    //   // if (m_vision.hasTargets()) { 
+    //     m_targetID = m_vision.getID();
+    //     m_targetAngle = m_polePoses.get(m_targetID).get("Left").getRotation().getDegrees();
+
+    //     m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+    //   // }
+    // } else if (m_centerToLeftPole.getAsBoolean()) { 
+    //   // if (m_vision.hasTargets()) {     
+    //     m_targetX = m_polePoses.get(m_targetID).get("Left").getX();
+    //     m_targetY = m_polePoses.get(m_targetID).get("Left").getY();
+
+    //     m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+    //     m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
+    //     m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
+    //   // }
+    // } else if (m_centerToRightPole.getAsBoolean()) {
+    //   // if (m_vision.hasTargets()) {
+    //     m_targetX = m_polePoses.get(m_targetID).get("Right").getX();
+    //     m_targetY = m_polePoses.get(m_targetID).get("Right").getY();
+
+    //     m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+    //     m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
+    //     m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
+    //   // }
+    // }
 
     m_vision.setTargetID(m_targetID);
         
     if (m_turningSpeed > DriveConstants.kMaxTurningRadiansPerSecond){
       m_turningSpeed = DriveConstants.kMaxTurningRadiansPerSecond;
+    } else if (m_xSpeed > DriveConstants.kMaxTranslationalMetersPerSecond) {
+      m_xSpeed = DriveConstants.kMaxTranslationalMetersPerSecond;
+    } else if (m_ySpeed > DriveConstants.kMaxTranslationalMetersPerSecond) {
+      m_ySpeed = DriveConstants.kMaxTranslationalMetersPerSecond;
     }
 
     SmartDashboard.putNumber("X speed", m_xSpeed);
     SmartDashboard.putNumber("Y speed", m_ySpeed);
     SmartDashboard.putNumber("Turning speed", m_turningSpeed);
     System.out.println("Turning to " + m_targetID + "Degrees: " + m_targetAngle);
-    System.out.println("Turning speed (-1 to 1): " + m_turningSpeed);
 
     m_swerveDrive.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(m_xSpeed, m_ySpeed, m_turningSpeed, m_swerveDrive.getAngle()));
   }

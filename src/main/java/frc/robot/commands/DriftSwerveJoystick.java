@@ -73,8 +73,8 @@ public class DriftSwerveJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_xSpeed = m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
-    m_ySpeed = m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
+    m_xSpeed = -m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
+    m_ySpeed = -m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
     m_turningSpeed = m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
     //Makes the speed response exponential in relation to the joystick input.
     //That way, the first little bit of joystick input gives more control.  

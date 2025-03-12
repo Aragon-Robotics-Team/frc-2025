@@ -51,6 +51,10 @@ public class SpinEndEffectorMotor extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (m_speed > 0 && m_endEffector.isBeamBreakTriggered()) {
+      return true;
+    } else {
     return false;
+    }
   }
 }
