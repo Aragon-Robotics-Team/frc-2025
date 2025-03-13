@@ -48,7 +48,7 @@ public class SwerveJoystick extends Command {
   private double m_targetAngle, m_targetX, m_targetY;
   private double m_currentYaw;
   private double m_currentAngle;
-  private int m_targetID;
+  private int m_targetID = 0;
   private final Optional<Alliance> m_alliance = DriverStation.getAlliance();
   // // Tag ID --> Left/ Right --> Pose 2d with x, y, rotation
   private HashMap<Integer, HashMap<String, Pose2d>> m_polePoses = new HashMap<Integer, HashMap<String, Pose2d>>();
@@ -195,37 +195,52 @@ public class SwerveJoystick extends Command {
         switch (m_alliance.get()) {
           case Red:
             m_targetID = 10;
+            break;
           case Blue:
             m_targetID = 21;
+            break;
         }
+        break;
       case 2: // Button B on joystick
         switch (m_alliance.get()) {
           case Red:
             m_targetID = 9;
+            break;
           case Blue:
             m_targetID = 22;
+            break;
         }
+        break;
       case 4: // Button X on Joystick
         switch (m_alliance.get()) {
           case Red:
             m_targetID = 8;
+            break;
           case Blue:
             m_targetID = 17;
+            break;
         }
+        break;
       case 8: // Button Y on Joystick
         switch (m_alliance.get()) {
           case Red:
             m_targetID = 7;
+            break;
           case Blue:
             m_targetID = 18;
+            break;
         }
+        break;
       case 16: // Left bumper on Joystick
         switch (m_alliance.get()) {
           case Red:
             m_targetID = 6;
+            break;
           case Blue:
             m_targetID = 19;
+            break;
         }
+        break;
       case 32: // Right bumper on Joystick
         switch (m_alliance.get()) {
           case Red:
@@ -233,28 +248,34 @@ public class SwerveJoystick extends Command {
           case Blue:
             m_targetID = 20;
         }
+        break;
     }
 
     m_currentAngle = m_swerveDrive.getAngle().getDegrees();
     SmartDashboard.putNumber("Current angle", m_currentAngle);
-    if (m_joystick.getRawButtonPressed(IOConstants.kVisionSnapToAngleButtonID)) {
-      m_targetAngle = m_polePoses.get(m_targetID).get("Left").getRotation().getDegrees();
+    System.out.println("Target ID: " + m_targetID);
+    System.out.println("Constants tag 8 angle: " + VisionConstants.kTag8Left.getRotation().getDegrees());
+    if (m_targetID != 0) {
+      if (m_joystick.getRawButton(IOConstants.kVisionSnapToAngleButtonID)) {
+        m_targetAngle = m_polePoses.get(m_targetID).get("Left").getRotation().getDegrees();
+        System.out.println("Target angle: " + m_targetAngle);
 
-      m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
-    } else if (m_joystick.getRawButtonPressed(IOConstants.kVisionLeftAlignButtonID)) {
-      m_targetX = m_polePoses.get(m_targetID).get("Left").getX();
-      m_targetY = m_polePoses.get(m_targetID).get("Left").getY();
+        m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+      } else if (m_joystick.getRawButton(IOConstants.kVisionLeftAlignButtonID)) {
+        m_targetX = m_polePoses.get(m_targetID).get("Left").getX();
+        m_targetY = m_polePoses.get(m_targetID).get("Left").getY();
 
-      m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
-      m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
-      m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
-    } else if (m_joystick.getRawButtonPressed(IOConstants.kVisionRightAlignButtonID)) {
-      m_targetX = m_polePoses.get(m_targetID).get("Right").getX();
-      m_targetY = m_polePoses.get(m_targetID).get("Right").getY();
+        m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+        m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
+        m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
+      } else if (m_joystick.getRawButton(IOConstants.kVisionRightAlignButtonID)) {
+        m_targetX = m_polePoses.get(m_targetID).get("Right").getX();
+        m_targetY = m_polePoses.get(m_targetID).get("Right").getY();
 
-      m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
-      m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
-      m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
+        m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+        m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
+        m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
+      }
     }
     // if (m_selectBestTag.getAsBoolean()) {
     //   // if (m_vision.hasTargets()) { 
@@ -296,7 +317,7 @@ public class SwerveJoystick extends Command {
     SmartDashboard.putNumber("X speed", m_xSpeed);
     SmartDashboard.putNumber("Y speed", m_ySpeed);
     SmartDashboard.putNumber("Turning speed", m_turningSpeed);
-    System.out.println("Turning to " + m_targetID + "Degrees: " + m_targetAngle);
+    System.out.println("Turning to " + m_targetID + " Degrees: " + m_targetAngle);
 
     m_swerveDrive.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(m_xSpeed, m_ySpeed, m_turningSpeed, m_swerveDrive.getAngle()));
   }

@@ -163,7 +163,7 @@ public class Vision extends SubsystemBase {
     }
 
     if(m_bestTarget != null){
-      System.out.println("Best target is not null");
+      // System.out.println("Best target is not null");
       //m_vision = m_bestTarget.getCam();
        m_yaw = m_bestTarget.getYaw();
        m_pitch = m_bestTarget.getPitch();
