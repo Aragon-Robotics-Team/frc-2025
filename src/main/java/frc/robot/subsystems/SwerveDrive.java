@@ -9,6 +9,9 @@ package frc.robot.subsystems;
 import com.reduxrobotics.sensors.canandgyro.Canandgyro;
 import com.reduxrobotics.canand.CanandEventLoop;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import org.littletonrobotics.junction.Logger;
 
@@ -96,9 +99,7 @@ public class SwerveDrive extends SubsystemBase
   protected SwerveModulePosition[] m_modulePositions;
   protected SwerveModuleState[] m_moduleStates;
 
-  private final Canandgyro m_imu = new Canandgyro(DriveConstants.kIMUCanID);
-
-  private final SwerveDrivePoseEstimator m_poseEstimator; 
+  private final PoseEstimatorThread m_poseEstimatorThread;
 
   private final Field2d m_field = new Field2d();
 
@@ -110,7 +111,7 @@ public class SwerveDrive extends SubsystemBase
   private Vision m_vision;
 
   public void resetHeading() {
-    m_imu.setYaw(0.0);
+    m_poseEstimatorThread.resetHeading();;
   }
 
   public InstantCommand resetHeadingCommand(){
@@ -118,20 +119,15 @@ public class SwerveDrive extends SubsystemBase
   }
 
   public void adjustAngle(double angle){
-    m_imu.setYaw(angle);
+    m_poseEstimatorThread.adjustAngle(angle);;
   }
 
   public void resetOdo(Pose2d pose) {
-    m_poseEstimator.resetPosition(getAngle(), new SwerveModulePosition[] {
-      m_frontLeft.getPosition(),
-      m_frontRight.getPosition(),
-      m_backLeft.getPosition(),
-      m_backRight.getPosition()
-    }, pose);
+    m_poseEstimatorThread.resetOdo(pose);
   }
 
   public Pose2d getEstimatedPosition(){
-    return m_poseEstimator.getEstimatedPosition();
+    return m_poseEstimatorThread.getEstimatedPosition();
   }
 
   public SwerveDriveKinematics getSwerveKinematics(){
@@ -139,12 +135,7 @@ public class SwerveDrive extends SubsystemBase
   }
 
   public void setModuleStates(SwerveModuleState[] states) {
-    SwerveDriveKinematics.desaturateWheelSpeeds(states, DriveConstants.kMaxTranslationalMetersPerSecond);
-
-    m_frontLeft.setDesiredState(states[0]);
-    m_frontRight.setDesiredState(states[1]);
-    m_backLeft.setDesiredState(states[2]);
-    m_backRight.setDesiredState(states[3]);
+    m_poseEstimatorThread.setModuleStates(states);
   }
 
   public void resetAllDistances() {
@@ -166,21 +157,15 @@ public class SwerveDrive extends SubsystemBase
   }
 
   public Rotation2d getAngle() {
-    double angle = m_imu.getYaw();
-    // double angle = m_imu.getMultiturnYaw();
-    angle *= 360;
-    if (angle < 0) {
-      angle += 360;
-    }
-    //angle += 90;
-    return Rotation2d.fromDegrees(angle);
+    return m_poseEstimatorThread.getAngle();
   }
   
 
   public double getAngleDegrees()
   {
-    //return Math.IEEEremainder(-m_imu.getYaw() * 360 + 90, 360);
-    return Math.IEEEremainder(-m_imu.getMultiturnYaw() * 360, 360);
+    return m_poseEstimatorThread.getAngleDegrees();
+    //return Math.IEEEremainder(-m_poseEstimatorThread.getYaw() * 360 + 90, 360);
+    // return Math.IEEEremainder(-m_poseEstimatorThread.getMultiturnYaw() * 360, 360);
     // return getAngle().getDegrees();
   }
 
@@ -227,19 +212,22 @@ public class SwerveDrive extends SubsystemBase
     setModuleStates(states);
   }
 
-  public void resetOdoToPose(){
-    m_poseEstimator.resetPosition(getAngle(), new SwerveModulePosition[] {
-        m_frontLeft.getPosition(), m_frontRight.getPosition(),
-        m_backLeft.getPosition(), m_backRight.getPosition()
-      }, new Pose2d(m_xStartPose, m_yStartPose, getAngle()));
+  public void resetOdoToPose(double xStartPose, double yStartPose){
+    m_poseEstimatorThread.resetOdoToPose(xStartPose, yStartPose);
   }
 
-  
+  private void poseEstimatorThreadInit(){
+    ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    scheduler.scheduleAtFixedRate(m_poseEstimatorThread, 4, 10, TimeUnit.MILLISECONDS);
+  }
 
-  public SwerveDrive(Vision vision) 
-  {
-    SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
+  public SwerveDrive(Vision vision) {
     m_vision = vision;
+    m_poseEstimatorThread = new PoseEstimatorThread(m_vision, m_frontLeft, m_frontRight, m_backLeft, m_backRight);
+
+    poseEstimatorThreadInit();
+    m_poseEstimatorThread.run();
+    SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
 
     CanandEventLoop.getInstance();
     // Leaving one here so I can remember how to do this later;
@@ -301,18 +289,6 @@ public class SwerveDrive extends SubsystemBase
     {
       System.out.println("RobotConfig GUI Settings error");
     }
-
-    m_poseEstimator = new SwerveDrivePoseEstimator(
-      DriveConstants.kDriveKinematics, 
-      getAngle(),
-      new SwerveModulePosition[] {
-        m_frontLeft.getPosition(),
-        m_frontRight.getPosition(),
-        m_backLeft.getPosition(),
-        m_backRight.getPosition()
-      },
-      new Pose2d());
-
   }
   
   
@@ -409,28 +385,22 @@ public class SwerveDrive extends SubsystemBase
   {
     m_modulePositions = getModulePositions();
     m_moduleStates = getModuleStates();
-    m_poseEstimator.update(getAngle(), m_modulePositions);
-    if (m_vision.getRobotPose() != null) {
-      System.out.println("Pose estimated rotation degrees: " + m_vision.getRobotPose().toPose2d().getRotation().getDegrees());
-      m_poseEstimator.addVisionMeasurement(m_vision.getRobotPose().toPose2d(), Timer.getFPGATimestamp());
-    }
+    
     // System.out.println(m_vision.getEstimatedGlobalPose());
     // if (m_vision.getEstimatedGlobalPose().isPresent()) {
     //   m_poseEstimator.addVisionMeasurement(m_vision.getEstimatedGlobalPose().get().estimatedPose.toPose2d(), Timer.getFPGATimestamp());
     // }
 
-    m_field.setRobotPose(m_poseEstimator.getEstimatedPosition());
+    m_field.setRobotPose(getEstimatedPosition());
     SmartDashboard.putData("Field", m_field);
 
     SmartDashboard.putNumber("X", getEstimatedPosition().getX());
     SmartDashboard.putNumber("Y", getEstimatedPosition().getY());
     SmartDashboard.putNumber("Pose Rotation", getEstimatedPosition().getRotation().getDegrees());
-    System.out.println(getEstimatedPosition().getX() + ", " + getEstimatedPosition().getY());
 
-    Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
-    SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
+    Logger.recordOutput("Omega", m_poseEstimatorThread.getAngularVelocityYaw() * 2 * Math.PI);
+    SmartDashboard.putNumber("Omega", m_poseEstimatorThread.getAngularVelocityYaw() * 2 * Math.PI);
     SmartDashboard.putNumber("Angle", getAngle().getDegrees());
     SmartDashboard.putNumber("Angle by Degrees", getAngleDegrees());
-    System.out.println(getAngle());
   }
 }
