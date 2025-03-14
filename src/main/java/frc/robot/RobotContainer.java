@@ -6,6 +6,7 @@ package frc.robot;
 
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.SwerveJoystick;
@@ -56,6 +57,7 @@ import frc.robot.subsystems.Pivot;
 import frc.robot.commands.pivot.ArcadePivot;
 import frc.robot.commands.pivot.PIDForPivot;
 
+@SuppressWarnings("unused")
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -241,8 +243,26 @@ public class RobotContainer {
   // end intake/indexer
   private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, 0, -0.6, 0);
   private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
+
+
+
+  
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // add the named button trigger command things that we need
+
+    NamedCommands.registerCommand("Stow Elevator", m_elevatorToGround);
+    NamedCommands.registerCommand("L4 Elevator", m_elevatorToL4);
+    NamedCommands.registerCommand("Stow Arm", m_armToGroundIntake);
+    NamedCommands.registerCommand("L4 Arm", m_armToL4);
+    NamedCommands.registerCommand("Outtake End Effector", m_outtakeEndEffector);
+    NamedCommands.registerCommand("Intake End Effector", m_intakeEndEffector);
+
+    NamedCommands.registerCommand("Intake/Indexer Intake", m_spinIntakeIndexerRollers);
+    NamedCommands.registerCommand("Intake/Indexer Outtake", m_outtakeIntakeIndexerRollers);
+    
+
     bindSubsystemCommands();
     // m_autoChooser = AutoBuilder.buildAutoChooser();
     m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);

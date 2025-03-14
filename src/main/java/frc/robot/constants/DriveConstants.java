@@ -20,7 +20,7 @@ public final class DriveConstants {
     public static final double kTranslationalDeadbandMetersPerSecond = 0.01;
 
     public static final PIDConstants kTranslationConstants = new PIDConstants(0.75); //PID constants for whole robot chassis speeds
-    public static final PIDConstants kRotationConstants = new PIDConstants(0.75);
+    public static final PIDConstants kRotationConstants = new PIDConstants(0.75); // TODO -- tune these to the right values
 
     public static int kIMUCanID = 0; //CAN
     
