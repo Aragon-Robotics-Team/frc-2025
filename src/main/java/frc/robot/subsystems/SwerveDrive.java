@@ -246,6 +246,8 @@ public class SwerveDrive extends SubsystemBase
         new Translation2d(-0.368 + 0.0667,  0.368 - 0.0667),
         new Translation2d(-0.368 + 0.0667, -0.368 + 0.0667)};
       //RobotConfig config = RobotConfig.fromGUISettings();
+
+      // i dont see any use for these guys but ok
       DCMotor motor = new DCMotor(kModuleCount, kModuleCount, m_yStartPose, m_xStartPose, kUpdateFrequency, kModuleCount);
       ModuleConfig config3 = new ModuleConfig(1, 1, 1, motor, 1, 2);
       RobotConfig config2 = new RobotConfig(50, 1, config3, t);
@@ -272,7 +274,6 @@ public class SwerveDrive extends SubsystemBase
         },
       this
       );
-      System.out.println("KD;kjfasd");
 
 
       SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
