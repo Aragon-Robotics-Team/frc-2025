@@ -56,6 +56,7 @@ import frc.robot.subsystems.Pivot;
 import frc.robot.commands.pivot.ArcadePivot;
 import frc.robot.commands.pivot.PIDForPivot;
 
+@SuppressWarnings("unused")
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -81,7 +82,7 @@ public class RobotContainer {
 
 
   private final JoystickButton m_elevatorArmManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kElevatorArmManualOverrideButtonID); // 7
-  private final JoystickButton m_pivotRollerManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kPivotArmManualOverrideButtonID); // 8 (i think)
+  // private final JoystickButton m_pivotRollerManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kPivotArmManualOverrideButtonID); // 8 (i think)
 
 
 
@@ -205,42 +206,46 @@ public class RobotContainer {
 
 
 
-  // begin intake/indexer
-  private Intake m_intake = new Intake();
-  private final double kIntakeIndexerSpeed = 0.6;
-  // private RunIntake m_intakeIn = new RunIntake(m_intake, kIntakeIndexerSpeed); // positive speed == intake in
-  // private RunIntake m_intakeOut = new RunIntake(m_intake, -kIntakeIndexerSpeed);
+  // // begin intake/indexer
+  // private Intake m_intake = new Intake();
+  // private final double kIntakeIndexerSpeed = 0.6;
+  // // private RunIntake m_intakeIn = new RunIntake(m_intake, kIntakeIndexerSpeed); // positive speed == intake in
+  // // private RunIntake m_intakeOut = new RunIntake(m_intake, -kIntakeIndexerSpeed);
 
-  private Indexer m_indexer = new Indexer();
-  private RunIndexer m_indexerIn = new RunIndexer(m_indexer, kIntakeIndexerSpeed);
-  private RunIndexer m_indexerOut = new RunIndexer(m_indexer, -kIntakeIndexerSpeed);
+  // private Indexer m_indexer = new Indexer();
+  // private RunIndexer m_indexerIn = new RunIndexer(m_indexer, kIntakeIndexerSpeed);
+  // private RunIndexer m_indexerOut = new RunIndexer(m_indexer, -kIntakeIndexerSpeed);
 
-  // Same speed:
-  // private RunIntakeWithIndexer m_intakeWithIndexer = new RunIntakeWithIndexer(m_intake, m_indexer, kIntakeIndexerSpeed);
-  // Different speed:
-  // private RunIntakeWithIndexer m_intakeWithIndexer = new RunIntakeWithIndexer(m_intake, m_indexer, 0.3, 0.5);
+  // // Same speed:
+  // // private RunIntakeWithIndexer m_intakeWithIndexer = new RunIntakeWithIndexer(m_intake, m_indexer, kIntakeIndexerSpeed);
+  // // Different speed:
+  // // private RunIntakeWithIndexer m_intakeWithIndexer = new RunIntakeWithIndexer(m_intake, m_indexer, 0.3, 0.5);
 
-  private RunIntakeWithIndexer m_spinIntakeIndexerRollers = new RunIntakeWithIndexer(m_intake, m_indexer, kIntakeIndexerSpeed); // used for ground intake coral
-  private RunIntakeWithIndexer m_outtakeIntakeIndexerRollers = new RunIntakeWithIndexer(m_intake, m_indexer, -kIntakeIndexerSpeed);
-  private RunIntakeWithIndexer m_spinIntakeIndexerRollers1 = new RunIntakeWithIndexer(m_intake, m_indexer, kIntakeIndexerSpeed); // used for ground intake coral
-  private RunIntakeWithIndexer m_outtakeIntakeIndexerRollers1 = new RunIntakeWithIndexer(m_intake, m_indexer, -kIntakeIndexerSpeed);
+  // private RunIntakeWithIndexer m_spinIntakeIndexerRollers = new RunIntakeWithIndexer(m_intake, m_indexer, kIntakeIndexerSpeed); // used for ground intake coral
+  // private RunIntakeWithIndexer m_outtakeIntakeIndexerRollers = new RunIntakeWithIndexer(m_intake, m_indexer, -kIntakeIndexerSpeed);
+  // private RunIntakeWithIndexer m_spinIntakeIndexerRollers1 = new RunIntakeWithIndexer(m_intake, m_indexer, kIntakeIndexerSpeed); // used for ground intake coral
+  // private RunIntakeWithIndexer m_outtakeIntakeIndexerRollers1 = new RunIntakeWithIndexer(m_intake, m_indexer, -kIntakeIndexerSpeed);
 
-  // combine these into one command
+  // // combine these into one command
   
-  private RunIntakeWithIndexerJoystick m_manualSpinIndexerIntake = new RunIntakeWithIndexerJoystick(m_secondJoystick, m_intake, m_indexer);
-  private RunIntakeWithIndexerJoystick m_manualSpinIndexerIntake1 = new RunIntakeWithIndexerJoystick(m_secondJoystick, m_intake, m_indexer);
+  // private RunIntakeWithIndexerJoystick m_manualSpinIndexerIntake = new RunIntakeWithIndexerJoystick(m_secondJoystick, m_intake, m_indexer);
+  // private RunIntakeWithIndexerJoystick m_manualSpinIndexerIntake1 = new RunIntakeWithIndexerJoystick(m_secondJoystick, m_intake, m_indexer);
   
   
-  // note: these buttons are both not assigned and also missing the right IDs
-  // private JoystickButton m_intakeInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeInButtonID);
-  // private JoystickButton m_intakeOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeOutButtonID);
-  // private JoystickButton m_indexerInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerInButtonID);
-  // private JoystickButton m_indexerOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerOutButtonID);
+  // // note: these buttons are both not assigned and also missing the right IDs
+  // // private JoystickButton m_intakeInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeInButtonID);
+  // // private JoystickButton m_intakeOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIntakeOutButtonID);
+  // // private JoystickButton m_indexerInButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerInButtonID);
+  // // private JoystickButton m_indexerOutButton = new JoystickButton(m_secondJoystick, IntakeConstants.kIndexerOutButtonID);
 
-  private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_secondJoystick, IOConstants.kGroundIntakeCoralButtonID);
-  // end intake/indexer
+  // private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_secondJoystick, IOConstants.kGroundIntakeCoralButtonID);
+  // // end intake/indexer
+
+  
   private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, 0, -0.6, 0);
   private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
+
+
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     bindSubsystemCommands();
@@ -313,14 +318,14 @@ public class RobotContainer {
     
 
 
-    // button id 8 allows manual roller + pivot to move 
-    // changed from arm/intake rollers
-    m_pivotRollerManualControlButton.onTrue(
-      Commands.parallel(
-        // m_arcadePivot,
-        m_manualSpinIndexerIntake1
-      )
-    );
+    // // button id 8 allows manual roller + pivot to move 
+    // // changed from arm/intake rollers
+    // m_pivotRollerManualControlButton.onTrue(
+    //   Commands.parallel(
+    //     // m_arcadePivot,
+    //     m_manualSpinIndexerIntake1
+    //   )
+    // );
     
 
 
@@ -423,29 +428,32 @@ public class RobotContainer {
     )); // button 5 -- stow arm and elevator
 
     
-    // button 6 -- do the intake thing
+
+
+
+    // // button 6 -- do the intake thing
 
     
-    m_groundIntakeCoralButton.whileTrue(
-      Commands.parallel(
-        m_elevatorToGround4, 
-        m_armToGroundIntake1,
-        // m_pivotPIDToIntake, 
-        m_spinIntakeIndexerRollers, 
-        m_intakeEndEffector1
-      )
-    );
+    // m_groundIntakeCoralButton.whileTrue(
+    //   Commands.parallel(
+    //     m_elevatorToGround4, 
+    //     m_armToGroundIntake1,
+    //     // m_pivotPIDToIntake, 
+    //     m_spinIntakeIndexerRollers, 
+    //     m_intakeEndEffector1
+    //   )
+    // );
 
-    // what it does is move the pivot up (only)
-    m_groundIntakeCoralButton.onFalse(
-      Commands.parallel(
-        // m_pivotPIDToStow1,
-        m_intakeEndEffector3.withTimeout(1),
-        Commands.sequence( // todo: put a beam break thing
-          m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1)
-        )
-      )
-    );
+    // // what it does is move the pivot up (only)
+    // m_groundIntakeCoralButton.onFalse(
+    //   Commands.parallel(
+    //     // m_pivotPIDToStow1,
+    //     m_intakeEndEffector3.withTimeout(1),
+    //     Commands.sequence( // todo: put a beam break thing
+    //       m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1)
+    //     )
+    //   )
+    // );
     
     
   }
