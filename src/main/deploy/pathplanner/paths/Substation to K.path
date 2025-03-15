@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.678,
+        "y": 7.376
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.3581074277971386,
+        "y": 5.771515947811993
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.955942622950819,
+        "y": 5.25373975409836
+      },
+      "prevControl": {
+        "x": 3.061487654265658,
+        "y": 6.10199258502509
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 120.51823067887521
+  },
+  "reversed": false,
+  "folder": "1 + 1 Substation Funnel",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 126.65
+  },
+  "useDefaultConstraints": true
+}

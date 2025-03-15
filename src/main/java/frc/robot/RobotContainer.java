@@ -5,7 +5,9 @@
 package frc.robot;
 
 
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.SwerveJoystick;
@@ -126,7 +128,9 @@ public class RobotContainer {
   private final ArmToPos m_armToL2Dealgae = new ArmToPos(m_arm, ArmConstants.kL2DealgaeArmTickPosition);
   private final ArmToPos m_armToL3Dealgae = new ArmToPos(m_arm, ArmConstants.kL3DealgaeArmTickPosition);
 
-  private final ArmToPos m_armToSubstationIntake = new ArmToPos(m_arm, ArmConstants.kSubstationTickPosition);
+  // don't use this guy for now 
+  // private final ArmToPos m_armToSubstationIntake = new ArmToPos(m_arm, ArmConstants.kSubstationTickPosition);
+  private final ArmToPos m_armToSubstationIntakeFunnel = new ArmToPos(m_arm, ArmConstants.kSubstationTickFunnelPosition);
   private final ArmToPos m_armToGroundIntake = new ArmToPos(m_arm, ArmConstants.kGroundIntakeTickPosition); // probably used in different command
   private final ArmToPos m_armToGroundIntake1 = new ArmToPos(m_arm, ArmConstants.kGroundIntakeTickPosition); // probably used in different command
 
@@ -180,6 +184,8 @@ public class RobotContainer {
   private ElevatorToPosition m_elevatorToGround3 = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
   private ElevatorToPosition m_elevatorToGround4 = new ElevatorToPosition(m_elevator, 0.01); // reset elevator position
 
+  private ElevatorToPosition m_elevatorToFunnelSubstation = new ElevatorToPosition(m_elevator, ElevatorConstants.kSubstationIntakeElevatorHeight); // reset elevator position
+  
 
 
 
@@ -248,6 +254,23 @@ public class RobotContainer {
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+
+
+    NamedCommands.registerCommand("Stow Elevator", m_elevatorToGround);
+    NamedCommands.registerCommand("L4 Elevator", m_elevatorToL4);
+    NamedCommands.registerCommand("Stow Arm", m_armToGroundIntake);
+    NamedCommands.registerCommand("L4 Arm", m_armToL4);
+    NamedCommands.registerCommand("Outtake End Effector", m_outtakeEndEffector);
+    NamedCommands.registerCommand("Intake End Effector", m_intakeEndEffector);
+
+    NamedCommands.registerCommand("Substation Elevator", m_elevatorToFunnelSubstation);
+    NamedCommands.registerCommand("Substation Arm", m_armToSubstationIntakeFunnel);
+
+
+
+
+
+
     bindSubsystemCommands();
     // m_autoChooser = AutoBuilder.buildAutoChooser();
     m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);

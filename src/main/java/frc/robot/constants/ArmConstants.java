@@ -47,8 +47,10 @@ public final class ArmConstants {
   public static final double kL2DealgaeArmTickPosition = 0.872;
   public static final double kL3DealgaeArmTickPosition = 0.872;
 
-  public static final double kSubstationTickPosition = 0.420;
+  public static final double kSubstationTickFunnelPosition = 0.420;
   public static final double kGroundIntakeTickPosition = 0.473; // this is verified by testing
+
+  public static final double kSubstationTickPosition = 0.555; // directly from substation intake, DO NOT USE FOR NOW
   
   
 }
