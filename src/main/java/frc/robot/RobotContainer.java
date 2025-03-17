@@ -69,17 +69,9 @@ public class RobotContainer {
  
   // The robot's subsystems and  are defined here...
 
-  public final SwerveDrive m_swerve = new SwerveDrive();
+
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
-
-
-  public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  private SendableChooser<Command> m_autoChooser = new SendableChooser<>();
-
-
-  private final InstantCommand m_resetHeadingCommand = m_swerve.resetHeadingCommand();
-  private final JoystickButton m_resetHeadingButton = new JoystickButton(m_driverJoystick, IOConstants.kResetHeadingButtonID);
 
 
   private final JoystickButton m_elevatorArmManualControlButton = new JoystickButton(m_secondJoystick, IOConstants.kElevatorArmManualOverrideButtonID); // 7
@@ -241,32 +233,45 @@ public class RobotContainer {
 
   private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_secondJoystick, IOConstants.kGroundIntakeCoralButtonID);
   // end intake/indexer
-  private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, 0, -0.6, 0);
-  private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
+  // private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, 0, -0.6, 0);
+  // private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
 
+  public final SwerveDrive m_swerve = new SwerveDrive(m_elevatorToGround, m_elevatorToL4, m_armToGroundIntake, m_armToL4, m_intakeEndEffector, m_outtakeEndEffector, m_spinIntakeIndexerRollers, m_outtakeIntakeIndexerRollers);
 
 
   
+  private SendableChooser<Command> m_autoChooser = AutoBuilder.buildAutoChooser();
+  
+
+
+  
+  private final InstantCommand m_resetHeadingCommand = m_swerve.resetHeadingCommand();
+  private final JoystickButton m_resetHeadingButton = new JoystickButton(m_driverJoystick, IOConstants.kResetHeadingButtonID);
+
+
+  public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
     // add the named button trigger command things that we need
 
-    NamedCommands.registerCommand("Stow Elevator", m_elevatorToGround);
-    NamedCommands.registerCommand("L4 Elevator", m_elevatorToL4);
-    NamedCommands.registerCommand("Stow Arm", m_armToGroundIntake);
-    NamedCommands.registerCommand("L4 Arm", m_armToL4);
-    NamedCommands.registerCommand("Outtake End Effector", m_outtakeEndEffector);
-    NamedCommands.registerCommand("Intake End Effector", m_intakeEndEffector);
+    // NamedCommands.registerCommand("Stow Elevator", m_elevatorToGround);
+    // NamedCommands.registerCommand("L4 Elevator", m_elevatorToL4);
+    // NamedCommands.registerCommand("Stow Arm", m_armToGroundIntake);
+    // NamedCommands.registerCommand("L4 Arm", m_armToL4);
+    // NamedCommands.registerCommand("Outtake End Effector", m_outtakeEndEffector);
+    // NamedCommands.registerCommand("Intake End Effector", m_intakeEndEffector);
 
-    NamedCommands.registerCommand("Intake/Indexer Intake", m_spinIntakeIndexerRollers);
-    NamedCommands.registerCommand("Intake/Indexer Outtake", m_outtakeIntakeIndexerRollers);
+    // NamedCommands.registerCommand("Intake/Indexer Intake", m_spinIntakeIndexerRollers);
+    // NamedCommands.registerCommand("Intake/Indexer Outtake", m_outtakeIntakeIndexerRollers);
     
 
     bindSubsystemCommands();
     // m_autoChooser = AutoBuilder.buildAutoChooser();
-    m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
-    m_autoChooser.addOption("Move Auto", m_leaveAuto);
+
+    // non path planner autos
+    // m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
+    // m_autoChooser.addOption("Move Auto", m_leaveAuto);
     
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
     // SmartDashboard.putData("Reset_Heading", m_swerve.resetHeadingCommand());

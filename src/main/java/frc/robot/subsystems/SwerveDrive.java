@@ -40,6 +40,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.arm.ArmToPos;
+import frc.robot.commands.arm.SpinEndEffectorMotor;
+import frc.robot.commands.elevator.ElevatorPosition;
+import frc.robot.commands.elevator.ElevatorToPosition;
+import frc.robot.commands.intake_indexer.RunIntakeWithIndexer;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.IOConstants;
 
@@ -213,7 +218,7 @@ public class SwerveDrive extends SubsystemBase
     return states;
   }
 
-  public void driveRobotRelative(ChassisSpeeds speeds) { 
+  public void driveRobotRelative(ChassisSpeeds speeds){
     //ChassisSpeeds dis = ChassisSpeeds.discretize(speeds, 0.02); //needed to correct skew whilst rotating and translating simultaneously.
     SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
     setModuleStates(states);
@@ -228,18 +233,30 @@ public class SwerveDrive extends SubsystemBase
 
   
 
-  public SwerveDrive() 
+  public SwerveDrive(ElevatorToPosition m_elevatorToGround, ElevatorToPosition m_elevatorToL4, ArmToPos m_armToGroundIntake, ArmToPos m_armToL4, SpinEndEffectorMotor m_intakeEndEffector, SpinEndEffectorMotor m_outtakeEndEffector, RunIntakeWithIndexer m_spinIntakeIndexerRollers, RunIntakeWithIndexer m_outtakeIntakeIndexerRollers) 
   {
     SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
     CanandEventLoop.getInstance();
     // Leaving one here so I can remember how to do this later;
     // NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
 
+
+    NamedCommands.registerCommand("Stow Elevator", m_elevatorToGround);
+    NamedCommands.registerCommand("L4 Elevator", m_elevatorToL4);
+    NamedCommands.registerCommand("Stow Arm", m_armToGroundIntake);
+    NamedCommands.registerCommand("L4 Arm", m_armToL4);
+    NamedCommands.registerCommand("Outtake End Effector", m_outtakeEndEffector);
+    NamedCommands.registerCommand("Intake End Effector", m_intakeEndEffector);
+
+    NamedCommands.registerCommand("Intake/Indexer Intake", m_spinIntakeIndexerRollers);
+    NamedCommands.registerCommand("Intake/Indexer Outtake", m_outtakeIntakeIndexerRollers);
+
+
     // m_odometryThread = new OdometryThread();
     // m_odometryThread.start();
 
-    try 
-    {
+    // try 
+    // {
       Translation2d[] t = {new Translation2d(0.368 - 0.0667, 0.368 - 0.0667),
         new Translation2d(0.368  - 0.0667, -0.368 + 0.0667),
         new Translation2d(-0.368 + 0.0667,  0.368 - 0.0667),
@@ -291,11 +308,11 @@ public class SwerveDrive extends SubsystemBase
             System.out.println("ERROR in sleep thread: " + e);
           }
         }).start();
-    }
-    catch(Exception e)
-    {
-      System.out.println("RobotConfig GUI Settings error");
-    }
+    // }
+    // catch(Exception e)
+    // {
+    //   System.out.println("RobotConfig GUI Settings error");
+    // }
   }
   
   
