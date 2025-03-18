@@ -359,9 +359,8 @@ public class RobotContainer {
           Commands.sequence( new WaitCommand(0.5), m_getCageServo, m_getCage) // need to wait (0.5s) to make sure the arm is mostly out of the way
         ).until(() -> m_climbButton.getAsBoolean()), 
 
-        m_retractCageServo,
-        m_retractCage
-      
+        m_retractCage,
+        m_retractCageServo
       )
     );
 
