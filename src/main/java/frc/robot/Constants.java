@@ -122,9 +122,9 @@ public final class Constants {
 
     public static final class ClimbConstants{
         // climb motor is a neo vortex hooked up to a spark flex
-        public static final int kClimbMotorID = 31; // dummy 31
+        public static final int kClimbMotorID = 31; // dummy 31 // to change!!
         public static final double kVortexRotationsTolerance = 0.1; 
-        public static final int kServoPort = 11; // pwm port (probably on the navx)
+        public static final int kServoPort = 11; // pwm port (probably on the navx) // to change!!
         public static final double kServoTolerance = 0.01; // 1% tolerance
         
     }

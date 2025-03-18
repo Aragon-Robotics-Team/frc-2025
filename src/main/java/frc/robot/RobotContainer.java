@@ -98,8 +98,8 @@ public class RobotContainer {
 
   // private final POVButton m_dealgaeButton = new POVButton(m_driverJoystick, 0);
 
-  private final POVButton m_L2DealgaeButton = new POVButton(m_secondJoystick, 270);
-  private final POVButton m_L3DealgaeButton = new POVButton(m_secondJoystick, 90);
+  private final POVButton m_L2DealgaeButton = new POVButton(m_secondJoystick, 270); // left d-pad
+  private final POVButton m_L3DealgaeButton = new POVButton(m_secondJoystick, 90); // right d-pad
 
   private final Arm m_arm = new Arm(); 
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
@@ -250,13 +250,15 @@ public class RobotContainer {
 
   private Climb m_climb = new Climb();
   // check these speeds and rotations
-  private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 3); // first command
+  private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 5); // first command
   private SpinVortexRotations m_retractCage = new SpinVortexRotations(m_climb, -0.8, 5); // second command
 
-  private ServoMovement m_moveServo = new ServoMovement(m_climb, 1.0); // move from 0.0 to 1.0???
+  private ServoMovement m_getCageServo = new ServoMovement(m_climb, 1); // move from 0.0 to 1.0???
+  private ServoMovement m_retractCageServo = new ServoMovement(m_climb, 0); // move back
+  
 
 
-  private JoystickButton m_climbButton = new JoystickButton(m_driverJoystick, 0); // to fix
+  private final POVButton m_climbButton = new POVButton(m_secondJoystick, 0); // up d-pad button
 
   // see below (bindings) for the actual command being run
   // private RunCommand m_climbCommand = new RunCommand(
@@ -354,14 +356,12 @@ public class RobotContainer {
         // new WaitCommand(0.1), would be here to unpress but there's another wait command down there
         Commands.parallel(
           m_armToL1,
-          Commands.sequence( new WaitCommand(0.5), m_getCage) // need to wait (0.5s) to make sure the arm is mostly out of the way
+          Commands.sequence( new WaitCommand(0.5), m_getCageServo, m_getCage) // need to wait (0.5s) to make sure the arm is mostly out of the way
         ).until(() -> m_climbButton.getAsBoolean()), 
 
-        Commands.parallel(
-          m_moveServo,
-          m_retractCage
-        )
-        
+        m_retractCageServo,
+        m_retractCage
+      
       )
     );
 
