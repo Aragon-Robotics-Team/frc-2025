@@ -16,9 +16,11 @@ public class ServoMovement extends Command {
 
   private Climb m_climb;
   private double m_servoPos;
-  public ServoMovement(Climb climb, double pos) {
+  private boolean kMoveVortex;
+  public ServoMovement(Climb climb, double pos, boolean moveVortex) {
     m_climb = climb;
     m_servoPos = pos;
+    kMoveVortex = moveVortex;
     addRequirements(climb);
   }
 
@@ -30,6 +32,10 @@ public class ServoMovement extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    if (kMoveVortex){
+      m_climb.setClimbMotorSpeed(0.015); 
+      // small constant in case the hex shaft gets stuck and the motor doesn't have enough power to move the shaft
+    }
     m_climb.setServoPosition(m_servoPos);
   }
 
@@ -40,9 +46,6 @@ public class ServoMovement extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (
-      (m_climb.getServoPosition() - m_servoPos < ClimbConstants.kServoTolerance) ||
-      (m_servoPos - m_climb.getServoPosition() < ClimbConstants.kServoTolerance)
-    );
+    return false;
   }
 }
