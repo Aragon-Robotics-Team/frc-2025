@@ -37,7 +37,7 @@ public class Climb extends SubsystemBase {
   public Climb(){
     m_config.idleMode(IdleMode.kBrake);
     // idk if these limit constants are ok
-    m_config.smartCurrentLimit(20, 40);
+    m_config.smartCurrentLimit(80, 60); // might be slightly unsafe
     m_climbMotor.configure(m_config, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
   }
 
