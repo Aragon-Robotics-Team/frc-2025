@@ -240,7 +240,7 @@ public class RobotContainer {
 
 
   
-  private SendableChooser<Command> m_autoChooser = AutoBuilder.buildAutoChooser();
+  private SendableChooser<Command> m_autoChooser;
   
 
 
@@ -267,7 +267,7 @@ public class RobotContainer {
     
 
     bindSubsystemCommands();
-    // m_autoChooser = AutoBuilder.buildAutoChooser();
+    m_autoChooser = AutoBuilder.buildAutoChooser();
 
     // non path planner autos
     // m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
