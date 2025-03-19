@@ -4,50 +4,41 @@
 
 package frc.robot.commands.climb;
 
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.Climb;
-import frc.robot.Constants.ClimbConstants; // capital constants
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class SpinVortexRotations extends Command {
-  /** Creates a new SpinVortex. */
+public class JoystickServo extends Command {
+  /** Creates a new JoystickServo. */
+  private Joystick m_joystick;
   private Climb m_climb;
-  private double m_speed; 
-  private double m_rotations; // amount of rotations to spin
-
-  public SpinVortexRotations(Climb climb, double speed, double rotations) {
-
+  public JoystickServo(Joystick joystick, Climb climb) {
+    m_joystick = joystick;
     m_climb = climb;
-    m_speed = speed;
-    m_rotations = rotations;
-    addRequirements(climb);
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(m_climb);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    System.out.println("We starting the cage thing");
+    m_climb.setServoPosition(0.598333); // copied from robot container
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Climb Motor Rotations", m_climb.getMotorRotations());
-    m_climb.setClimbMotorSpeed(m_speed);
+    m_climb.setServoPosition(m_climb.getServoPosition() + m_joystick.getRawAxis(0)*0.05); // 0.05 constant to stop servo from moving super fast
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_climb.setClimbMotorSpeed(0);
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return (
-      Math.abs(m_rotations - m_climb.getMotorRotations()) < ClimbConstants.kVortexRotationsTolerance
-    );
+    return false;
   }
 }

@@ -13,6 +13,7 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ClimbConstants;
 
@@ -31,7 +32,7 @@ public class Climb extends SubsystemBase {
   private SparkFlex m_climbMotor = new SparkFlex(ClimbConstants.kClimbMotorID, MotorType.kBrushless);
   private SparkFlexConfig m_config = new SparkFlexConfig();
 
-  private Servo m_servo = new Servo(ClimbConstants.kServoPort);
+  private Servo m_servo = new Servo(ClimbConstants.kServoPWMPort);
   
   public Climb(){
     m_config.idleMode(IdleMode.kBrake);
@@ -60,5 +61,7 @@ public class Climb extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Servo Position", m_servo.get());
+    SmartDashboard.putNumber("Climb Motor Rotations", getMotorRotations());
   }
 }
