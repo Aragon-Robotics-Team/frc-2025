@@ -47,7 +47,6 @@ public class ArmToPos extends Command {
   public void execute() {
     
     currentPos = m_arm.getEncoderPosition();
-    System.out.println(currentPos);
 
     // this is assuming ticks == rotations
     // 0.727 == when torque = 0
