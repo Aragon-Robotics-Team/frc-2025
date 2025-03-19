@@ -253,7 +253,7 @@ public class RobotContainer {
   private Climb m_climb = new Climb();
   // check these speeds and rotations
   private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 55.692);
-  private SpinVortexRotations m_retractCage = new SpinVortexRotations(m_climb, -0.8, 0.5); // move motor back to 5 rotations
+  private SpinVortexRotations m_retractCage = new SpinVortexRotations(m_climb, -0.95, 0.5); // move motor back to 5 rotations
 
   private ServoMovement m_getCageServo = new ServoMovement(m_climb, 0.24666666666, true); // move from 0.0 to 1.0???
   private ServoMovement m_retractCageServo = new ServoMovement(m_climb, 0.5983333, false); // move back
@@ -369,8 +369,8 @@ public class RobotContainer {
           // Commands.sequence( new WaitCommand(0.5), m_getCage) // need to wait (0.5s) to make sure the arm is mostly out of the way
           ).until(() -> m_climbButton.getAsBoolean()), 
 
-        m_retractCage,
-        Commands.deadline(new WaitCommand(0.3), m_retractCageServo)
+        Commands.deadline(new WaitCommand(0.3), m_retractCageServo),
+        m_retractCage
       )
     );
 
