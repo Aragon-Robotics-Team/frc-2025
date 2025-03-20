@@ -10,6 +10,8 @@ import com.reduxrobotics.sensors.canandgyro.Canandgyro;
 import com.reduxrobotics.canand.CanandEventLoop;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.jar.Attributes.Name;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.BaseStatusSignal;
@@ -235,7 +237,7 @@ public class SwerveDrive extends SubsystemBase
 
   
 
-  public SwerveDrive(ElevatorToPosition m_elevatorToGround, ElevatorToPosition m_elevatorToL4, ArmToPos m_armToGroundIntake, ArmToPos m_armToL4, SpinEndEffectorMotor m_intakeEndEffector, SpinEndEffectorMotor m_outtakeEndEffector, RunIntakeWithIndexer m_spinIntakeIndexerRollers, RunIntakeWithIndexer m_outtakeIntakeIndexerRollers) 
+  public SwerveDrive(Command elevatorToL2, Command elevatorToL3, Command elevatorToL4, Command armToL4) 
   {
     SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
     CanandEventLoop.getInstance();
@@ -257,18 +259,19 @@ public class SwerveDrive extends SubsystemBase
     // m_odometryThread = new OdometryThread();
     // m_odometryThread.start();
 
-    // try 
-    // {
+    try 
+    {
+
       Translation2d[] t = {new Translation2d(0.368 - 0.0667, 0.368 - 0.0667),
         new Translation2d(0.368  - 0.0667, -0.368 + 0.0667),
         new Translation2d(-0.368 + 0.0667,  0.368 - 0.0667),
         new Translation2d(-0.368 + 0.0667, -0.368 + 0.0667)};
+        
       //RobotConfig config = RobotConfig.fromGUISettings();
-
-      // i dont see any use for these guys but ok
-      DCMotor motor = new DCMotor(kModuleCount, kModuleCount, m_yStartPose, m_xStartPose, kUpdateFrequency, kModuleCount);
-      ModuleConfig config3 = new ModuleConfig(1, 1, 1, motor, 1, 2);
-      RobotConfig config2 = new RobotConfig(50, 1, config3, t);
+      // DCMotor m_krakenConfig = new DCMotor(12, 7.09, 366.0, 2.0, 628.0, 1);
+      // ModuleConfig m_moduleConfig = new ModuleConfig(0.051, 5.0, 1.2, m_krakenConfig, 130, 1);
+      //RobotConfig m_robotConfig = new RobotConfig(51, 4.6, m_moduleConfig, t);
+      RobotConfig m_robotConfig = RobotConfig.fromGUISettings();
       
       AutoBuilder.configure
       (
@@ -277,7 +280,7 @@ public class SwerveDrive extends SubsystemBase
         this::getChassisSpeeds, 
         this::driveRobotRelative, 
         new PPHolonomicDriveController(DriveConstants.kTranslationConstants, DriveConstants.kRotationConstants), 
-        config2,
+        m_robotConfig,
         () -> 
         {
           // Boolean supplier that controls when the path will be mirrored for the red alliance
@@ -293,10 +296,13 @@ public class SwerveDrive extends SubsystemBase
       this
       );
 
+      System.out.println("configured auto");
 
-      SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
+
+
+      //SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
       double m_angle = SmartDashboard.getNumber("Driving/Adjust angle", 0);
-      SmartDashboard.putNumber("Driving/Adjust angle", m_angle);
+      //SmartDashboard.putNumber("Driving/Adjust angle", m_angle);
       adjustAngle(m_angle);
 
       new Thread(() -> {
@@ -315,6 +321,7 @@ public class SwerveDrive extends SubsystemBase
     // {
     //   System.out.println("RobotConfig GUI Settings error");
     // }
+      }
   }
   
   
@@ -412,16 +419,14 @@ public class SwerveDrive extends SubsystemBase
     m_modulePositions = getModulePositions();
     m_moduleStates = getModuleStates();
     m_odo.update(getAngle(), m_modulePositions);
-
+    SmartDashboard.putNumber("X", m_odo.getPoseMeters().getX());
+    SmartDashboard.putNumber("Y", m_odo.getPoseMeters().getY());
 
     m_field.setRobotPose(m_odo.getPoseMeters());
     // SmartDashboard.putData("Swerve/Odo/Field", m_field);
 
     // SmartDashboard.putNumber("X", getPoseMeters().getX());
     // SmartDashboard.putNumber("Y", getPoseMeters().getY());
-    Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
-    SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
-    SmartDashboard.putNumber("Angle", getAngle().getDegrees());
     
     // SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
   }

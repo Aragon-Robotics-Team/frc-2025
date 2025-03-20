@@ -124,8 +124,8 @@ public class SwerveModule extends SubsystemBase {
     m_driveMotor.set(ff + pid);
     m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians()));
 
-    Logger.recordOutput(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());
-    SmartDashboard.putNumber(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());
+    //Logger.recordOutput(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());
+    //SmartDashboard.putNumber(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());
     
 
     //SmartDashboard.putString("Swerve_" + m_moduleId + "_state", state.toString());
