@@ -7,6 +7,7 @@ package frc.robot;
 
 import java.util.jar.Attributes.Name;
 
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
@@ -297,19 +298,14 @@ public class RobotContainer {
     NamedCommands.registerCommand("L2 Arm", m_armToL2);
     NamedCommands.registerCommand("L3 Arm", m_armToL3);
     NamedCommands.registerCommand("L4 Arm", m_armToL4);
-    NamedCommands.registerCommand("L2 Dealgae", m_armToL2Dealgae);
-    NamedCommands.registerCommand("L3 Dealgae", m_armToL3Dealgae);
     NamedCommands.registerCommand("Substation Arm", m_armToSubstationIntake);
     NamedCommands.registerCommand("Ground Arm", m_armToGroundIntake);
     NamedCommands.registerCommand("Spin End Effector", m_intakeEndEffector);
+    NamedCommands.registerCommand("Outtake End Effector", m_outtakeEndEffectorAuto);
     NamedCommands.registerCommand("In Indexer", m_indexerIn);
     NamedCommands.registerCommand("Out Indexer", m_indexerOut);
     NamedCommands.registerCommand("Intake w/ Indexer", m_spinIntakeIndexerRollers);
     NamedCommands.registerCommand("Outtake w/ Indexer", m_outtakeIntakeIndexerRollers);
-    NamedCommands.registerCommand("Get Cage", m_getCage);
-    NamedCommands.registerCommand("Retract Cage", m_retractCage);
-    NamedCommands.registerCommand("Get Cage Servo", m_getCageServo);
-    NamedCommands.registerCommand("Retract Cage Servo", m_retractCageServo);
 
     m_autoChooser = AutoBuilder.buildAutoChooser();
     System.out.println("build auto chooser");
