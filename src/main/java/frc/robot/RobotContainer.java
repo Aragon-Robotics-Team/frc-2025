@@ -258,6 +258,7 @@ public class RobotContainer {
   private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 55.692);
   private SpinVortexRotations m_retractCage = new SpinVortexRotations(m_climb, -0.95, 0.5); // move motor back to 5 rotations
 
+  private ServoMovement m_lockServo = new ServoMovement(m_climb, 0.59833333, false);
   private ServoMovement m_getCageServo = new ServoMovement(m_climb, 0.24666666666, true); // move from 0.0 to 1.0???
   private ServoMovement m_retractCageServo = new ServoMovement(m_climb, 0.5983333, false); // move back
   
@@ -279,10 +280,10 @@ public class RobotContainer {
 
   // servo position testing
   
-  private Joystick testJoystick = new Joystick(2);
-  private JoystickServo m_moveServoWithJoystick = new JoystickServo(testJoystick, m_climb);
+  // private Joystick testJoystick = new Joystick(2);
+  // private JoystickServo m_moveServoWithJoystick = new JoystickServo(testJoystick, m_climb);
 
-  public final SwerveDrive m_swerve = new SwerveDrive(m_elevatorToL2, m_elevatorToL3, m_elevatorToL4, m_armToL4);
+  public final SwerveDrive m_swerve = new SwerveDrive();
   public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private final InstantCommand m_resetHeadingCommand = m_swerve.resetHeadingCommand();
   
@@ -549,8 +550,9 @@ public class RobotContainer {
   private void bindSubsystemCommands() {
     ////// 
     m_swerve.setDefaultCommand(m_swerveJoystick);
+    m_lockServo.schedule();
     // m_pivot.setDefaultCommand(m_arcadePivot);
-    m_climb.setDefaultCommand(m_moveServoWithJoystick);
+    // m_climb.setDefaultCommand(m_moveServoWithJoystick);
   }
 }
   
