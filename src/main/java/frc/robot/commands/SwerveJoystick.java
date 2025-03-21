@@ -42,9 +42,9 @@ public class SwerveJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double xSpeed = m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
-    double ySpeed = m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
-    double turningSpeed = m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
+    double xSpeed = -m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
+    double ySpeed = -m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
+    double turningSpeed = -m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
 
 
     // if (m_driveMode == 0) { //standard mode;
