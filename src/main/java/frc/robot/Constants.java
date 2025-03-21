@@ -38,7 +38,7 @@ public final class Constants {
 
     // This is the max acceleration tolerated by trapezoidal. Units are in ticks/s^2
     public static final double kMaxAcceleration = 150;
-
+ 
     public static final double kP = 0.05;
     public static final double kI = 0.007;
     public static final double kD = 0.0;
