@@ -256,8 +256,9 @@ public class RobotContainer {
 
   private Climb m_climb = new Climb();
   // check these speeds and rotations
-  private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 55.692);
-  private SpinVortexRotations m_retractCage = new SpinVortexRotations(m_climb, -0.95, 0.5); // move motor back to 5 rotations
+  private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 55.5);
+  private SpinVortexRotations m_retractCage = new SpinVortexRotations(m_climb, -0.95, 0.5);
+  private SpinVortexRotations m_retractCage2 = new SpinVortexRotations(m_climb, -0.95, 0.8); // move motor back to 5 rotations
 
   private ServoMovement m_lockServo = new ServoMovement(m_climb, 0.59833333, false);
   private ServoMovement m_getCageServo = new ServoMovement(m_climb, 0.24666666666, true); // move from 0.0 to 1.0???
@@ -342,7 +343,7 @@ public class RobotContainer {
     m_outtakeEndEffectorButton.whileTrue(m_outtakeEndEffector);
     m_intakeEndEffectorButton.whileTrue(m_intakeEndEffector);
     
-    // m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
+    m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
 
     // note:
     // if a line is commented out using "/////" (5 in a row), that is for testing purposes (and has not been tested)
@@ -385,7 +386,7 @@ public class RobotContainer {
           ).until(() -> m_climbButton.getAsBoolean()),
 
         Commands.deadline(new WaitCommand(0.3), m_retractCageServo),
-        m_retractCage
+         m_retractCage2
       )
     );
 
