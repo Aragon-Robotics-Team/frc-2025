@@ -10,6 +10,8 @@ import com.reduxrobotics.sensors.canandgyro.Canandgyro;
 import com.reduxrobotics.canand.CanandEventLoop;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.jar.Attributes.Name;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.ctre.phoenix6.BaseStatusSignal;
@@ -40,8 +42,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.commands.arm.ArmToPos;
+import frc.robot.commands.arm.SpinEndEffectorMotor;
+import frc.robot.commands.elevator.ElevatorPosition;
+import frc.robot.commands.elevator.ElevatorToPosition;
+import frc.robot.commands.intake_indexer.RunIntakeWithIndexer;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.IOConstants;
+
+@SuppressWarnings("unused")
 
 public class SwerveDrive extends SubsystemBase 
 {
@@ -213,7 +222,7 @@ public class SwerveDrive extends SubsystemBase
     return states;
   }
 
-  public void driveRobotRelative(ChassisSpeeds speeds) { 
+  public void driveRobotRelative(ChassisSpeeds speeds){
     //ChassisSpeeds dis = ChassisSpeeds.discretize(speeds, 0.02); //needed to correct skew whilst rotating and translating simultaneously.
     SwerveModuleState[] states = DriveConstants.kDriveKinematics.toSwerveModuleStates(speeds);
     setModuleStates(states);
@@ -228,26 +237,28 @@ public class SwerveDrive extends SubsystemBase
 
   
 
-  public SwerveDrive() 
-  {
+  public SwerveDrive() {
     SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
     CanandEventLoop.getInstance();
     // Leaving one here so I can remember how to do this later;
     // NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
 
+
+  
     // m_odometryThread = new OdometryThread();
     // m_odometryThread.start();
 
-    try 
-    {
+    try{
       Translation2d[] t = {new Translation2d(0.368 - 0.0667, 0.368 - 0.0667),
         new Translation2d(0.368  - 0.0667, -0.368 + 0.0667),
         new Translation2d(-0.368 + 0.0667,  0.368 - 0.0667),
         new Translation2d(-0.368 + 0.0667, -0.368 + 0.0667)};
+        
       //RobotConfig config = RobotConfig.fromGUISettings();
-      DCMotor motor = new DCMotor(kModuleCount, kModuleCount, m_yStartPose, m_xStartPose, kUpdateFrequency, kModuleCount);
-      ModuleConfig config3 = new ModuleConfig(1, 1, 1, motor, 1, 2);
-      RobotConfig config2 = new RobotConfig(50, 1, config3, t);
+      // DCMotor m_krakenConfig = new DCMotor(12, 7.09, 366.0, 2.0, 628.0, 1);
+      // ModuleConfig m_moduleConfig = new ModuleConfig(0.051, 5.0, 1.2, m_krakenConfig, 130, 1);
+      //RobotConfig m_robotConfig = new RobotConfig(51, 4.6, m_moduleConfig, t);
+      RobotConfig m_robotConfig = RobotConfig.fromGUISettings();
       
       AutoBuilder.configure
       (
@@ -256,7 +267,7 @@ public class SwerveDrive extends SubsystemBase
         this::getChassisSpeeds, 
         this::driveRobotRelative, 
         new PPHolonomicDriveController(DriveConstants.kTranslationConstants, DriveConstants.kRotationConstants), 
-        config2,
+        m_robotConfig,
         () -> 
         {
           // Boolean supplier that controls when the path will be mirrored for the red alliance
@@ -271,12 +282,14 @@ public class SwerveDrive extends SubsystemBase
         },
       this
       );
-      System.out.println("KD;kjfasd");
+
+      System.out.println("configured auto");
 
 
-      SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
+
+      //SmartDashboard.putData("Swerve/Distance/reset", new InstantCommand(this::resetAllDistances));
       double m_angle = SmartDashboard.getNumber("Driving/Adjust angle", 0);
-      SmartDashboard.putNumber("Driving/Adjust angle", m_angle);
+      //SmartDashboard.putNumber("Driving/Adjust angle", m_angle);
       adjustAngle(m_angle);
 
       new Thread(() -> {
@@ -290,11 +303,15 @@ public class SwerveDrive extends SubsystemBase
             System.out.println("ERROR in sleep thread: " + e);
           }
         }).start();
-    }
-    catch(Exception e)
-    {
-      System.out.println("RobotConfig GUI Settings error");
-    }
+    // }
+    // catch(Exception e)
+    // {
+    //   System.out.println("RobotConfig GUI Settings error");
+    // }
+      } catch (Exception e) {
+        
+      }
+
   }
   
   
@@ -392,16 +409,14 @@ public class SwerveDrive extends SubsystemBase
     m_modulePositions = getModulePositions();
     m_moduleStates = getModuleStates();
     m_odo.update(getAngle(), m_modulePositions);
-
+    SmartDashboard.putNumber("X", m_odo.getPoseMeters().getX());
+    SmartDashboard.putNumber("Y", m_odo.getPoseMeters().getY());
 
     m_field.setRobotPose(m_odo.getPoseMeters());
     // SmartDashboard.putData("Swerve/Odo/Field", m_field);
 
     // SmartDashboard.putNumber("X", getPoseMeters().getX());
     // SmartDashboard.putNumber("Y", getPoseMeters().getY());
-    Logger.recordOutput("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
-    SmartDashboard.putNumber("Omega", m_imu.getAngularVelocityYaw() * 2 * Math.PI);
-    SmartDashboard.putNumber("Angle", getAngle().getDegrees());
     
     // SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
   }

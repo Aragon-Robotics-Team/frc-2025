@@ -26,6 +26,8 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DutyCycleSim;
 import edu.wpi.first.wpilibj.DigitalGlitchFilter;
 
+@SuppressWarnings("unused")
+
 
 
 public class Pivot extends SubsystemBase {

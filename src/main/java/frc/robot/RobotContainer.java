@@ -5,7 +5,11 @@
 package frc.robot;
 
 
+import java.util.jar.Attributes.Name;
+
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.SwerveJoystick;
@@ -14,11 +18,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.PivotConstants;
@@ -34,6 +41,7 @@ import frc.robot.commands.arm.ArmToPos;
 import frc.robot.commands.arm.SpinEndEffectorMotor;
 import frc.robot.commands.auto.DriveForwardL4;
 import frc.robot.commands.auto.MoveForTime;
+
 import frc.robot.subsystems.EndEffector;
 
 // elevator imports
@@ -47,7 +55,6 @@ import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Intake;
 import frc.robot.commands.intake_indexer.RunIndexer;
 import frc.robot.commands.intake_indexer.RunIntake;
-// import frc.robot.commands.intake_indexer.RunIntake;
 import frc.robot.commands.intake_indexer.RunIntakeWithIndexer;
 import frc.robot.commands.intake_indexer.RunIntakeWithIndexerJoystick;
 
@@ -56,6 +63,12 @@ import frc.robot.subsystems.Pivot;
 import frc.robot.commands.pivot.ArcadePivot;
 import frc.robot.commands.pivot.PIDForPivot;
 
+import frc.robot.subsystems.Climb;
+import frc.robot.commands.climb.JoystickServo;
+import frc.robot.commands.climb.ServoMovement;
+import frc.robot.commands.climb.SpinVortexRotations;
+
+@SuppressWarnings("unused") // thanks 254
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -67,16 +80,11 @@ public class RobotContainer {
  
   // The robot's subsystems and  are defined here...
 
-  public final SwerveDrive m_swerve = new SwerveDrive();
   private final Joystick m_driverJoystick = new Joystick(0);
   private final Joystick m_secondJoystick = new Joystick(1);
 
 
-  public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
-  private SendableChooser<Command> m_autoChooser = new SendableChooser<>();
 
-
-  private final InstantCommand m_resetHeadingCommand = m_swerve.resetHeadingCommand();
   private final JoystickButton m_resetHeadingButton = new JoystickButton(m_driverJoystick, IOConstants.kResetHeadingButtonID);
 
 
@@ -97,8 +105,8 @@ public class RobotContainer {
 
   // private final POVButton m_dealgaeButton = new POVButton(m_driverJoystick, 0);
 
-  private final POVButton m_L2DealgaeButton = new POVButton(m_secondJoystick, 270);
-  private final POVButton m_L3DealgaeButton = new POVButton(m_secondJoystick, 90);
+  private final POVButton m_L2DealgaeButton = new POVButton(m_secondJoystick, 270); // left d-pad
+  private final POVButton m_L3DealgaeButton = new POVButton(m_secondJoystick, 90); // right d-pad
 
   private final Arm m_arm = new Arm(); 
   private final ArcadeArm m_arcadeArm = new ArcadeArm(m_arm, m_secondJoystick);
@@ -118,6 +126,7 @@ public class RobotContainer {
 
   // see https://docs.google.com/spreadsheets/d/1hX9_6sB4cpDO8FewZYjP8up_QC9e0-G85cX7ijPXfBs/ for google sheet constants
   private final ArmToPos m_armToL1 = new ArmToPos(m_arm, ArmConstants.kL1ArmTickPosition);
+  private final ArmToPos m_armToL1v2 = new ArmToPos(m_arm, ArmConstants.kL1ArmTickPosition);
   private final ArmToPos m_armToL2 = new ArmToPos(m_arm, ArmConstants.kL2ArmTickPosition);
   private final ArmToPos m_armToL3 = new ArmToPos(m_arm, ArmConstants.kL3ArmTickPosition);
   private final ArmToPos m_armToL4 = new ArmToPos(m_arm, ArmConstants.kL4ArmTickPosition);
@@ -207,7 +216,7 @@ public class RobotContainer {
 
   // begin intake/indexer
   private Intake m_intake = new Intake();
-  private final double kIntakeIndexerSpeed = 0.6;
+  private final double kIntakeIndexerSpeed = 0.9;
   // private RunIntake m_intakeIn = new RunIntake(m_intake, kIntakeIndexerSpeed); // positive speed == intake in
   // private RunIntake m_intakeOut = new RunIntake(m_intake, -kIntakeIndexerSpeed);
 
@@ -239,18 +248,74 @@ public class RobotContainer {
 
   private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_secondJoystick, IOConstants.kGroundIntakeCoralButtonID);
   // end intake/indexer
-  private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, 0, -0.6, 0);
-  private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
+  //private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, 0, -0.6, 0);
+  //private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
+
+
+
+
+  private Climb m_climb = new Climb();
+  // check these speeds and rotations
+  private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 55.692);
+  private SpinVortexRotations m_retractCage = new SpinVortexRotations(m_climb, -0.95, 0.5); // move motor back to 5 rotations
+
+  private ServoMovement m_lockServo = new ServoMovement(m_climb, 0.59833333, false);
+  private ServoMovement m_getCageServo = new ServoMovement(m_climb, 0.24666666666, true); // move from 0.0 to 1.0???
+  private ServoMovement m_retractCageServo = new ServoMovement(m_climb, 0.5983333, false); // move back
+  
+
+
+  private final POVButton m_climbButton = new POVButton(m_secondJoystick, 0); // up d-pad button
+
+  // see below (bindings) for the actual command being run
+  // private RunCommand m_climbCommand = new RunCommand(
+  //   () -> (new WaitUntilCommand(() -> !m_climbButton.getAsBoolean()))
+  //   .andThen(() -> m_getCage.schedule())
+  //   .until(() -> m_climbButton.getAsBoolean())
+  //   .andThen(() -> m_moveServo.schedule())
+  //   .andThen(() -> m_retractCage.schedule()), 
+  //   m_climb
+  // );
+
+  
+
+  // servo position testing
+  
+  // private Joystick testJoystick = new Joystick(2);
+  // private JoystickServo m_moveServoWithJoystick = new JoystickServo(testJoystick, m_climb);
+
+  public final SwerveDrive m_swerve = new SwerveDrive();
+  public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
+  private final InstantCommand m_resetHeadingCommand = m_swerve.resetHeadingCommand();
+  
+  private SendableChooser<Command> m_autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
-    bindSubsystemCommands();
-    // m_autoChooser = AutoBuilder.buildAutoChooser();
-    m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
-    m_autoChooser.addOption("Move Auto", m_leaveAuto);
+    NamedCommands.registerCommand("L2 Elevator", m_elevatorToL2);
+    NamedCommands.registerCommand("L3 Elevator", m_elevatorToL3);
+    NamedCommands.registerCommand("L4 Elevator", m_elevatorToL4);
+    NamedCommands.registerCommand("L1 Arm", m_armToL1);
+    NamedCommands.registerCommand("L2 Arm", m_armToL2);
+    NamedCommands.registerCommand("L3 Arm", m_armToL3);
+    NamedCommands.registerCommand("L4 Arm", m_armToL4);
+    NamedCommands.registerCommand("Substation Arm", m_armToSubstationIntake);
+    NamedCommands.registerCommand("Ground Arm", m_armToGroundIntake);
+    NamedCommands.registerCommand("Spin End Effector", m_intakeEndEffector);
+    NamedCommands.registerCommand("Outtake End Effector", m_outtakeEndEffectorAuto);
+    NamedCommands.registerCommand("In Indexer", m_indexerIn);
+    NamedCommands.registerCommand("Out Indexer", m_indexerOut);
+    NamedCommands.registerCommand("Intake w/ Indexer", m_spinIntakeIndexerRollers);
+    NamedCommands.registerCommand("Outtake w/ Indexer", m_outtakeIntakeIndexerRollers);
+
+    m_autoChooser = AutoBuilder.buildAutoChooser();
+    System.out.println("build auto chooser");
+    //m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
+    //m_autoChooser.addOption("Move Auto", m_leaveAuto);
     
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
     // SmartDashboard.putData("Reset_Heading", m_swerve.resetHeadingCommand());
     // Configure the trigger bindings
+    bindSubsystemCommands();
     configureBindings();
   }
 
@@ -302,6 +367,24 @@ public class RobotContainer {
 
 // 02/28 -- reprogramming George's joystick
 
+
+    // climb command
+    m_climbButton.onTrue(
+      Commands.sequence(
+        new WaitCommand(0.1), // would be here to unpress but there's another wait command down there
+        Commands.parallel(
+          m_armToL1v2,
+          Commands.sequence( new WaitCommand(0.3),
+            Commands.deadline(new WaitCommand(0.3), m_getCageServo),
+            Commands.sequence( new WaitCommand(0.5), m_getCage)
+          ) // need to wait (0.5s) to make sure the arm is mostly out of the way
+          // Commands.sequence( new WaitCommand(0.5), m_getCage) // need to wait (0.5s) to make sure the arm is mostly out of the way
+          ).until(() -> m_climbButton.getAsBoolean()),
+
+        Commands.deadline(new WaitCommand(0.3), m_retractCageServo),
+        m_retractCage
+      )
+    );
 
     // button 7 -- the middle button
     m_elevatorArmManualControlButton.onTrue(
@@ -463,7 +546,9 @@ public class RobotContainer {
   private void bindSubsystemCommands() {
     ////// 
     m_swerve.setDefaultCommand(m_swerveJoystick);
+    m_lockServo.schedule();
     // m_pivot.setDefaultCommand(m_arcadePivot);
+    // m_climb.setDefaultCommand(m_moveServoWithJoystick);
   }
 }
   

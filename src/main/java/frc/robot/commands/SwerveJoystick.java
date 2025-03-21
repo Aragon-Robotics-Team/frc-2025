@@ -64,13 +64,13 @@ public class SwerveJoystick extends Command {
     //   turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -0.1;
     // }
 
-      //Makes the speed response exponential in relation to the joystick input.
-      //That way, the first little bit of joystick input gives more control.  
-      xSpeed = Math.signum(xSpeed) * (Math.pow(2, Math.abs(xSpeed)) -1) * -1;
-      ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -1;
-      turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -1;
-      //xSpeed = Math.pow(xSpeed, 5);
-      // ySpeed = Math.pow(ySpeed, 5);
+
+      // xSpeed = Math.signum(xSpeed) * (Math.pow(2, Math.abs(xSpeed)) -1) * -1;
+      // ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -1;
+      // turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -1;
+
+      xSpeed = Math.signum(xSpeed) * Math.pow(Math.abs(xSpeed), 1.75);
+      ySpeed = Math.signum(ySpeed) * Math.pow(Math.abs(ySpeed), 1.75);
       // turningSpeed = Math.pow(turningSpeed, 5);
     
     
