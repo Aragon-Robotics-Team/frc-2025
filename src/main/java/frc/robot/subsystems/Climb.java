@@ -46,6 +46,7 @@ public class Climb extends SubsystemBase {
   }
 
   public double getMotorRotations(){
+    // return m_climbMotor.getAbsoluteEncoder().getPosition();
     return m_climbMotor.getEncoder().getPosition(); // i think this works -- TODO check what kind of encoder the spark flex has
   }
 
@@ -63,5 +64,6 @@ public class Climb extends SubsystemBase {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Servo Position", m_servo.get());
     SmartDashboard.putNumber("Climb Motor Rotations", getMotorRotations());
+    SmartDashboard.putNumber("Servo speed", m_servo.getSpeed());
   }
 }

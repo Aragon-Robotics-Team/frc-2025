@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.522245901639344,
-        "y": 5.615334016393442
+        "x": 2.9232692307692303,
+        "y": 5.923974358974359
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.859,
-        "y": 5.89301282051282
+        "x": 1.3855128205128198,
+        "y": 6.852820512820513
       },
       "prevControl": {
-        "x": 1.7568846153846147,
-        "y": 5.769166666666667
+        "x": 2.3246794871794867,
+        "y": 7.492692307692307
       },
       "nextControl": null,
       "isLocked": false,
@@ -104,7 +104,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 171.67434966957316
+    "rotation": -143.74616226255526
   },
   "reversed": false,
   "folder": "1+1 Barge Lollipop",
