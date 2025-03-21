@@ -291,6 +291,7 @@ public class RobotContainer {
   private SendableChooser<Command> m_autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    NamedCommands.registerCommand("Stow Elevator", m_elevatorToGround);
     NamedCommands.registerCommand("L2 Elevator", m_elevatorToL2);
     NamedCommands.registerCommand("L3 Elevator", m_elevatorToL3);
     NamedCommands.registerCommand("L4 Elevator", m_elevatorToL4);
@@ -299,12 +300,14 @@ public class RobotContainer {
     NamedCommands.registerCommand("L3 Arm", m_armToL3);
     NamedCommands.registerCommand("L4 Arm", m_armToL4);
     NamedCommands.registerCommand("Substation Arm", m_armToSubstationIntake);
-    NamedCommands.registerCommand("Ground Arm", m_armToGroundIntake);
-    NamedCommands.registerCommand("Spin End Effector", m_intakeEndEffector);
+    NamedCommands.registerCommand("Stow Arm", m_armToGroundIntake);
+    NamedCommands.registerCommand("Intake End Effector", m_intakeEndEffector);
     NamedCommands.registerCommand("Outtake End Effector", m_outtakeEndEffectorAuto);
+
     NamedCommands.registerCommand("In Indexer", m_indexerIn);
     NamedCommands.registerCommand("Out Indexer", m_indexerOut);
-    NamedCommands.registerCommand("Intake w/ Indexer", m_spinIntakeIndexerRollers);
+    
+    NamedCommands.registerCommand("Intake/Indexer Intake", m_spinIntakeIndexerRollers);
     NamedCommands.registerCommand("Outtake w/ Indexer", m_outtakeIntakeIndexerRollers);
 
     m_autoChooser = AutoBuilder.buildAutoChooser();
