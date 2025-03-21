@@ -237,31 +237,18 @@ public class SwerveDrive extends SubsystemBase
 
   
 
-  public SwerveDrive() 
-  {
+  public SwerveDrive() {
     SmartDashboard.putData("Reset_Heading", resetHeadingCommand());
     CanandEventLoop.getInstance();
     // Leaving one here so I can remember how to do this later;
     // NamedCommands.registerCommand("Print", new PrintCommand("Print command is running!!!"));
 
 
-    NamedCommands.registerCommand("Stow Elevator", m_elevatorToGround);
-    NamedCommands.registerCommand("L4 Elevator", m_elevatorToL4);
-    NamedCommands.registerCommand("Stow Arm", m_armToGroundIntake);
-    NamedCommands.registerCommand("L4 Arm", m_armToL4);
-    NamedCommands.registerCommand("Outtake End Effector", m_outtakeEndEffector);
-    NamedCommands.registerCommand("Intake End Effector", m_intakeEndEffector);
-
-    NamedCommands.registerCommand("Intake/Indexer Intake", m_spinIntakeIndexerRollers);
-    NamedCommands.registerCommand("Intake/Indexer Outtake", m_outtakeIntakeIndexerRollers);
-
-
+  
     // m_odometryThread = new OdometryThread();
     // m_odometryThread.start();
 
-    try 
-    {
-
+    try{
       Translation2d[] t = {new Translation2d(0.368 - 0.0667, 0.368 - 0.0667),
         new Translation2d(0.368  - 0.0667, -0.368 + 0.0667),
         new Translation2d(-0.368 + 0.0667,  0.368 - 0.0667),
@@ -321,7 +308,10 @@ public class SwerveDrive extends SubsystemBase
     // {
     //   System.out.println("RobotConfig GUI Settings error");
     // }
+      } catch (Exception e) {
+        
       }
+
   }
   
   
