@@ -27,11 +27,14 @@ public class ServoMovement extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    System.out.println("Servo init");
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+
     if (kMoveVortex){
       m_climb.setClimbMotorSpeed(0.015); 
       // small constant in case the hex shaft gets stuck and the motor doesn't have enough power to move the shaft
