@@ -173,8 +173,9 @@ public class RobotContainer {
   // private JoystickButton m_elevatorTestButton = new JoystickButton(m_secondJoystick, ElevatorConstants.kElevatorTestButtonID);
   // private ElevatorToPosition m_elevatorTest = new ElevatorToPosition(m_elevator, 15);
   // private JoystickButton m_elevatorResetButton = new JoystickButton(m_driverJoystick, IOConstants.kElevatorResetButtonID);
-  private POVButton m_elevatorResetButton = new POVButton(m_secondJoystick, 180);
+  // private POVButton m_elevatorResetButton = new POVButton(m_secondJoystick, 180);
 
+  private ElevatorToPosition m_elevatorToL1 = new ElevatorToPosition(m_elevator, ElevatorConstants.kL1ElevatorHeight);
   private ElevatorToPosition m_elevatorToL2 = new ElevatorToPosition(m_elevator, ElevatorConstants.kL2ElevatorHeight);
   private ElevatorToPosition m_elevatorToL3 = new ElevatorToPosition(m_elevator, ElevatorConstants.kL3ElevatorHeight);
   private ElevatorToPosition m_elevatorToL4 = new ElevatorToPosition(m_elevator, ElevatorConstants.kL4ElevatorHeight);
@@ -248,9 +249,6 @@ public class RobotContainer {
 
   private JoystickButton m_groundIntakeCoralButton = new JoystickButton(m_secondJoystick, IOConstants.kGroundIntakeCoralButtonID);
   // end intake/indexer
-  //private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, 0, -0.6, 0);
-  //private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
-
 
 
 
@@ -267,6 +265,7 @@ public class RobotContainer {
 
 
   private final POVButton m_climbButton = new POVButton(m_secondJoystick, 0); // up d-pad button
+  private final POVButton m_climb2Button = new POVButton(m_secondJoystick, 180);
 
   // see below (bindings) for the actual command being run
   // private RunCommand m_climbCommand = new RunCommand(
@@ -288,6 +287,9 @@ public class RobotContainer {
   public final SwerveDrive m_swerve = new SwerveDrive();
   public final SwerveJoystick m_swerveJoystick = new SwerveJoystick(m_swerve, m_driverJoystick);
   private final InstantCommand m_resetHeadingCommand = m_swerve.resetHeadingCommand();
+  private MoveForTime m_leaveAuto = new MoveForTime(m_swerve, 4, -0.6, 0, 0);
+  private DriveForwardL4 m_driveForwardL4 = new DriveForwardL4(m_swerve, m_arm, m_elevator, m_endEffector, m_secondJoystick);
+
   
   private SendableChooser<Command> m_autoChooser;
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -314,7 +316,9 @@ public class RobotContainer {
     m_autoChooser = AutoBuilder.buildAutoChooser();
     System.out.println("build auto chooser");
     //m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
-    //m_autoChooser.addOption("Move Auto", m_leaveAuto);
+    m_autoChooser.addOption("Drive, L4", m_driveForwardL4);
+    m_autoChooser.addOption("Move Auto", m_leaveAuto);
+    SmartDashboard.putData("Elevator Reset Heading", m_elevator.resetElevatorEncoder());
     
     SmartDashboard.putData("Auto Chooser", m_autoChooser);
     // SmartDashboard.putData("Reset_Heading", m_swerve.resetHeadingCommand());
@@ -343,7 +347,7 @@ public class RobotContainer {
     m_outtakeEndEffectorButton.whileTrue(m_outtakeEndEffector);
     m_intakeEndEffectorButton.whileTrue(m_intakeEndEffector);
     
-    m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
+    // m_elevatorResetButton.whileTrue(m_elevator.resetElevatorEncoder());
 
     // note:
     // if a line is commented out using "/////" (5 in a row), that is for testing purposes (and has not been tested)
@@ -383,10 +387,19 @@ public class RobotContainer {
             Commands.sequence( new WaitCommand(0.5), m_getCage)
           ) // need to wait (0.5s) to make sure the arm is mostly out of the way
           // Commands.sequence( new WaitCommand(0.5), m_getCage) // need to wait (0.5s) to make sure the arm is mostly out of the way
-          ).until(() -> m_climbButton.getAsBoolean()),
+          )
+            // ).until(() -> m_climbButton.getAsBoolean()),
 
-        Commands.deadline(new WaitCommand(0.3), m_retractCageServo),
-         m_retractCage2
+        // Commands.deadline(new WaitCommand(0.3), m_retractCageServo),
+        //  m_retractCage2
+      )
+    );
+
+    m_climb2Button.onTrue(
+      Commands.sequence(
+        Commands.deadline(
+          new WaitCommand(0.3), m_retractCageServo
+        ), m_retractCage2
       )
     );
 
@@ -460,8 +473,8 @@ public class RobotContainer {
     m_L1ScoringButton.onTrue(
       Commands.parallel(
         // m_armToL1.until(m_armToL1::atSetpoint),
-        m_armToL1,
-        m_elevatorToGround3
+        m_elevatorToL1,
+        Commands.sequence(new WaitCommand(0.2), m_armToL1)
       )
     );
     

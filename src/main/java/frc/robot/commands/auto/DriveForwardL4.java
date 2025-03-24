@@ -30,7 +30,7 @@ public class DriveForwardL4 extends ParallelCommandGroup {
     addCommands(
       new ElevatorToPosition(elevator, ElevatorConstants.kL4ElevatorHeight),
       new SequentialCommandGroup(new WaitCommand(0.2), new ArmToPos(arm, ArmConstants.kL4ArmTickPosition)),
-      new MoveForTime(swerve, 5, 0, -0.5, 0), // this is the move command
+      new MoveForTime(swerve, 5, -0.5, 0, 0), // this is the move command
       
       // new SequentialCommandGroup(new WaitCommand(1), new MoveForTime(swerve, 8, 0.3, 0, 0))
       

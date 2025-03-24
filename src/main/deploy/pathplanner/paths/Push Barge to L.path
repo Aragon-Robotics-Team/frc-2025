@@ -1,0 +1,102 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.109,
+        "y": 7.555
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 7.921965039355893,
+        "y": 7.653096057470661
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.926538461538461,
+        "y": 7.555
+      },
+      "prevControl": {
+        "x": 5.273219380995527,
+        "y": 7.55847455700166
+      },
+      "nextControl": {
+        "x": 6.8907260684936835,
+        "y": 7.549872146091498
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.763589743589742,
+        "y": 7.555
+      },
+      "prevControl": {
+        "x": 6.590817910435595,
+        "y": 7.494117605342182
+      },
+      "nextControl": {
+        "x": 8.52215143994124,
+        "y": 7.594379401230474
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.965641025641025,
+        "y": 7.379166666666666
+      },
+      "prevControl": {
+        "x": 4.573846828432353,
+        "y": 7.852347848393249
+      },
+      "nextControl": {
+        "x": 3.407468877979966,
+        "y": 6.944911427362839
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.305,
+        "y": 4.882
+      },
+      "prevControl": {
+        "x": 3.500409779334471,
+        "y": 6.263923666858405
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 119.99999999999999
+  },
+  "reversed": false,
+  "folder": "1+1 Barge Lollipop",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
