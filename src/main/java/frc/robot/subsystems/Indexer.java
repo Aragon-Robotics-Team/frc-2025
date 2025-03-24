@@ -19,7 +19,7 @@ public class Indexer extends SubsystemBase {
 
   /** Creates a new Indexer. */
   public Indexer() {
-    config.smartCurrentLimit(25); // 25a
+    config.smartCurrentLimit(40); // 25a
     // really draws 12a max cause we limit the speed to 0.6
     m_indexerMotor.configure(config, SparkBase.ResetMode.kResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
   }
