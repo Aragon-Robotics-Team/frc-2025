@@ -320,7 +320,7 @@ public class SwerveJoystick extends Command {
         m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
       } else if (m_joystick.getRawButton(IOConstants.kVisionRightAlignButtonID)) {
         m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
-        m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_fieldLayout)];
+        m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_targetPose)];
         SmartDashboard.putNumber("Target ID", m_targetID);
         m_targetAngle = m_targetPose.getRotation().getDegrees() - 180;
         // m_targetX = m_polePoses.get(m_targetID).get("Right").getX();
