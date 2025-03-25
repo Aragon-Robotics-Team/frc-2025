@@ -300,7 +300,7 @@ public class SwerveJoystick extends Command {
         m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
       } else if (m_joystick.getRawButton(IOConstants.kVisionLeftAlignButtonID)) {
         m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
-        m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_targetPose)];
+        m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_fieldLayout)];
         System.out.println("Tag IDs");
         m_targetAngle = m_targetPose.getRotation().getDegrees() - 180;
         
