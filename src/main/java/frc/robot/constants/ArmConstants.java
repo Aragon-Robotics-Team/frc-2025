@@ -19,8 +19,8 @@ public final class ArmConstants {
   public static final int kArmManualControlAxis = 1;
   public static final double kArmMultiplier = 0.5;
 
-  public static final double kP = 1;
-  public static final double kI = 0.01;
+  public static final double kP = 1.6;
+  public static final double kI = 0;
   public static final double kD = 0;
   public static final double kIZone = 0.05;
 
@@ -48,7 +48,7 @@ public final class ArmConstants {
   public static final double kL3DealgaeArmTickPosition = 0.872;
 
   public static final double kSubstationTickPosition = 0.420;
-  public static final double kGroundIntakeTickPosition = 0.473; // this is verified by testing
+  public static final double kGroundIntakeTickPosition = 0.477; // this is verified by testing
   
   
 }

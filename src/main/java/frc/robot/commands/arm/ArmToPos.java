@@ -17,7 +17,7 @@ public class ArmToPos extends Command {
   private Arm m_arm;
   private double m_speed;
 
-  private double ffc = 0.035; 
+  private double ffc = 0.025; 
   private double ff;
   private double currentPos;
   
