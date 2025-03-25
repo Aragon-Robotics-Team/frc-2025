@@ -37,6 +37,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.Timer;
@@ -426,12 +427,12 @@ public class SwerveDrive extends SubsystemBase
     // SmartDashboard.putNumber("X", getPoseMeters().getX());
     // SmartDashboard.putNumber("Y", getPoseMeters().getY());
 
-    SmartDashboard.putNumber("X", getEstimatedPosition().getX());
-    SmartDashboard.putNumber("Y", getEstimatedPosition().getY());
-    SmartDashboard.putNumber("Pose Rotation", getEstimatedPosition().getRotation().getDegrees());
-
     Logger.recordOutput("Omega", m_poseEstimatorThread.getAngularVelocityYaw() * 2 * Math.PI);
-    SmartDashboard.putNumber("Omega", m_poseEstimatorThread.getAngularVelocityYaw() * 2 * Math.PI);
-    SmartDashboard.putNumber("Angle", getAngle().getDegrees());
+  }
+
+  @Override
+  public void initSendable(SendableBuilder builder){
+    builder.addDoubleProperty("Omega", () -> m_poseEstimatorThread.getAngularVelocityYaw() * 2 * Math.PI, null);
+    builder.addDoubleProperty("Angle", () -> getAngle().getDegrees(), null);
   }
 }

@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.units.measure.*;
+import edu.wpi.first.util.sendable.SendableBuilder;
 
 
 public class SwerveModule extends SubsystemBase {
@@ -71,8 +72,6 @@ public class SwerveModule extends SubsystemBase {
 
 
     SmartDashboard.putData("Swerve/Distance/reset_" + m_moduleId,  new InstantCommand(() -> resetEncoders()));
-    
-
   }
 
   // in meters.
@@ -124,8 +123,8 @@ public class SwerveModule extends SubsystemBase {
     m_driveMotor.set(ff + pid);
     m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians()));
 
-    //Logger.recordOutput(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());
-    //SmartDashboard.putNumber(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());
+    Logger.recordOutput(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());
+    // SmartDashboard.putNumber(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());
     
 
     //SmartDashboard.putString("Swerve_" + m_moduleId + "_state", state.toString());
@@ -170,5 +169,14 @@ public class SwerveModule extends SubsystemBase {
     //SmartDashboard.putNumber("turn" + m_moduleId, getTurningPosition());
     // SmartDashboard.putNumber("Swerve/Speed/Measured/Module_" + m_moduleId, getDriveVelocity());
     // SmartDashboard.putNumber("Swerve/Distance/Module_" + m_moduleId, getDrivePosition());
+  }
+
+  @Override
+  public void initSendable(SendableBuilder builder) {
+    builder.addDoubleProperty("Turning position " + m_moduleId, () -> getTurningPosition(), null);
+    builder.addDoubleProperty("Drive velocity " + m_moduleId, () -> getDriveVelocity(), null);
+    builder.addDoubleProperty("Drive position " + m_moduleId, () -> getDrivePosition(), null);
+    builder.addStringProperty("Module state " + m_moduleId, () -> getState().toString(), null);
+    builder.addStringProperty("Module position " + m_moduleId, () -> getPosition().toString(), null);
   }
 } 
