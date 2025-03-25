@@ -25,6 +25,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -32,7 +33,8 @@ public class Vision extends SubsystemBase {
 
   private PhotonCamera m_cam = new PhotonCamera("Arducam_OV9281_USB_Camera"); //TODO: Change to actual camera name
   // private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.305, 0.305, 0.211), new Rotation3d(0,1.222,3.578)); //TODO: Change this later!
-  private Transform3d m_robotToCam = new Transform3d(new Translation3d(-0.308, 0.307, 0.211), new Rotation3d(0, Math.toRadians(25), Math.toRadians(155.75)));
+  // private Transform3d m_robotToCam = new Transform3d(new Translation3d(-0.50, 0.65, Units.inchesToMeters(8.756)), new Rotation3d(0, Math.toRadians(10), Math.toRadians(148.5)));
+  private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.393, 0.11, Units.inchesToMeters(8.756)), new Rotation3d(0, Math.toRadians(10), Math.toRadians(148.5)));
   // private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.305, 0.305, 0.211), new Rotation3d(0, 0, 0));
 
   private PhotonPipelineResult m_result;

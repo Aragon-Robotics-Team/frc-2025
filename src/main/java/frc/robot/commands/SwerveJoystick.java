@@ -4,11 +4,15 @@
 
 package frc.robot.commands;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -46,12 +50,17 @@ public class SwerveJoystick extends Command {
   private PIDController m_xPID = new PIDController(DriveConstants.kDriveToXP, DriveConstants.kDriveToXI, DriveConstants.kDriveToXD);
   private PIDController m_yPID = new PIDController(DriveConstants.kDriveToYP, DriveConstants.kDriveToYI, DriveConstants.kDriveToYD);
   private double m_targetAngle, m_targetX, m_targetY;
+  private Pose2d m_targetPose;
   private double m_currentYaw;
   private double m_currentAngle;
   private int m_targetID = 0;
   private final Optional<Alliance> m_alliance = DriverStation.getAlliance();
+  private final AprilTagFieldLayout m_fieldLayout = AprilTagFields.k2025ReefscapeWelded.loadAprilTagLayoutField();
+  private List<Pose2d> m_tagPoses = new ArrayList<Pose2d>();
+  private List<Integer> m_frontTags = new ArrayList<Integer>();
+  private List<Integer> m_backTags = new ArrayList<Integer>();
   // // Tag ID --> Left/ Right --> Pose 2d with x, y, rotation
-  private HashMap<Integer, HashMap<String, Pose2d>> m_polePoses = new HashMap<Integer, HashMap<String, Pose2d>>();
+  // private HashMap<Integer, HashMap<String, Pose2d>> m_polePoses = new HashMap<Integer, HashMap<String, Pose2d>>();
   // Button ID --> Red/ Blue --> Left/ Right --> Pose 2d with x, y, rotation
   // private HashMap<Integer, HashMap<String, HashMap<String, Pose2d>>> m_polePoses = new HashMap<Integer, HashMap<String, HashMap<String, Pose2d>>>();
   // public SwerveJoystick(SwerveDrive swerveDrive, Joystick joystick, Vision vision, JoystickButton turnTo1stTag, JoystickButton turnTo2ndTag, JoystickButton turnTo3rdTag, JoystickButton turnTo4thTag, JoystickButton turnTo5thTag, JoystickButton turnTo6thTag, JoystickButton centerToTag) {
@@ -63,57 +72,73 @@ public class SwerveJoystick extends Command {
     m_swerveDrive = swerveDrive;
     m_vision = vision;
 
+    for (int tag : VisionConstants.kTagIDs){
+      m_tagPoses.add(m_fieldLayout.getTagPose(tag).get().toPose2d());
+    }
+
+    for (int tagID : VisionConstants.kFrontTagIDs) {
+      m_frontTags.add(tagID);
+    }
+
+    for (int tagID : VisionConstants.kBackTagIDs) {
+      m_backTags.add(tagID);
+    }
+
+    System.out.println(m_tagPoses);
+    System.out.println(m_frontTags);
+    System.out.println(m_backTags);
+
     // m_selectBestTag = selectBestTag;
     // m_centerToLeftPole = centerToLeftPole;
     // m_centerToRightPole = centerToRightPole;
 
-    m_polePoses.put(6, new HashMap<String, Pose2d>());
-    m_polePoses.get(6).put("Left", VisionConstants.kTag6Left);
-    m_polePoses.get(6).put("Right", VisionConstants.kTag6Right);
+    // m_polePoses.put(6, new HashMap<String, Pose2d>());
+    // m_polePoses.get(6).put("Left", VisionConstants.kTag6Left);
+    // m_polePoses.get(6).put("Right", VisionConstants.kTag6Right);
     
-    m_polePoses.put(7, new HashMap<String, Pose2d>());
-    m_polePoses.get(7).put("Left", VisionConstants.kTag7Left);
-    m_polePoses.get(7).put("Right", VisionConstants.kTag7Right);
+    // m_polePoses.put(7, new HashMap<String, Pose2d>());
+    // m_polePoses.get(7).put("Left", VisionConstants.kTag7Left);
+    // m_polePoses.get(7).put("Right", VisionConstants.kTag7Right);
     
-    m_polePoses.put(8, new HashMap<String, Pose2d>());
-    m_polePoses.get(8).put("Left", VisionConstants.kTag8Left);
-    m_polePoses.get(8).put("Right", VisionConstants.kTag8Right);
+    // m_polePoses.put(8, new HashMap<String, Pose2d>());
+    // m_polePoses.get(8).put("Left", VisionConstants.kTag8Left);
+    // m_polePoses.get(8).put("Right", VisionConstants.kTag8Right);
 
-    m_polePoses.put(9, new HashMap<String, Pose2d>());
-    m_polePoses.get(9).put("Left", VisionConstants.kTag9Left);
-    m_polePoses.get(9).put("Right", VisionConstants.kTag9Right);
+    // m_polePoses.put(9, new HashMap<String, Pose2d>());
+    // m_polePoses.get(9).put("Left", VisionConstants.kTag9Left);
+    // m_polePoses.get(9).put("Right", VisionConstants.kTag9Right);
 
-    m_polePoses.put(10, new HashMap<String, Pose2d>());
-    m_polePoses.get(10).put("Left", VisionConstants.kTag10Left);
-    m_polePoses.get(10).put("Right", VisionConstants.kTag10Right);
+    // m_polePoses.put(10, new HashMap<String, Pose2d>());
+    // m_polePoses.get(10).put("Left", VisionConstants.kTag10Left);
+    // m_polePoses.get(10).put("Right", VisionConstants.kTag10Right);
 
-    m_polePoses.put(11, new HashMap<String, Pose2d>());
-    m_polePoses.get(11).put("Left", VisionConstants.kTag11Left);
-    m_polePoses.get(11).put("Right", VisionConstants.kTag11Right);
+    // m_polePoses.put(11, new HashMap<String, Pose2d>());
+    // m_polePoses.get(11).put("Left", VisionConstants.kTag11Left);
+    // m_polePoses.get(11).put("Right", VisionConstants.kTag11Right);
 
-    m_polePoses.put(17, new HashMap<String, Pose2d>());
-    m_polePoses.get(17).put("Left", VisionConstants.kTag17Left);
-    m_polePoses.get(17).put("Right", VisionConstants.kTag17Right);
+    // m_polePoses.put(17, new HashMap<String, Pose2d>());
+    // m_polePoses.get(17).put("Left", VisionConstants.kTag17Left);
+    // m_polePoses.get(17).put("Right", VisionConstants.kTag17Right);
 
-    m_polePoses.put(18, new HashMap<String, Pose2d>());
-    m_polePoses.get(18).put("Left", VisionConstants.kTag18Left);
-    m_polePoses.get(18).put("Right", VisionConstants.kTag18Right);
+    // m_polePoses.put(18, new HashMap<String, Pose2d>());
+    // m_polePoses.get(18).put("Left", VisionConstants.kTag18Left);
+    // m_polePoses.get(18).put("Right", VisionConstants.kTag18Right);
 
-    m_polePoses.put(19, new HashMap<String, Pose2d>());
-    m_polePoses.get(19).put("Left", VisionConstants.kTag19Left);
-    m_polePoses.get(19).put("Right", VisionConstants.kTag19Right);
+    // m_polePoses.put(19, new HashMap<String, Pose2d>());
+    // m_polePoses.get(19).put("Left", VisionConstants.kTag19Left);
+    // m_polePoses.get(19).put("Right", VisionConstants.kTag19Right);
 
-    m_polePoses.put(20, new HashMap<String, Pose2d>());
-    m_polePoses.get(20).put("Left", VisionConstants.kTag20Left);
-    m_polePoses.get(20).put("Right", VisionConstants.kTag20Right);
+    // m_polePoses.put(20, new HashMap<String, Pose2d>());
+    // m_polePoses.get(20).put("Left", VisionConstants.kTag20Left);
+    // m_polePoses.get(20).put("Right", VisionConstants.kTag20Right);
 
-    m_polePoses.put(21, new HashMap<String, Pose2d>());
-    m_polePoses.get(21).put("Left", VisionConstants.kTag21Left);
-    m_polePoses.get(21).put("Right", VisionConstants.kTag21Right);
+    // m_polePoses.put(21, new HashMap<String, Pose2d>());
+    // m_polePoses.get(21).put("Left", VisionConstants.kTag21Left);
+    // m_polePoses.get(21).put("Right", VisionConstants.kTag21Right);
 
-    m_polePoses.put(22, new HashMap<String, Pose2d>());
-    m_polePoses.get(22).put("Left", VisionConstants.kTag22Left);
-    m_polePoses.get(22).put("Right", VisionConstants.kTag22Right);
+    // m_polePoses.put(22, new HashMap<String, Pose2d>());
+    // m_polePoses.get(22).put("Left", VisionConstants.kTag22Left);
+    // m_polePoses.get(22).put("Right", VisionConstants.kTag22Right);
 
     
 
@@ -190,93 +215,123 @@ public class SwerveJoystick extends Command {
     //Logger.recordOutput(getName(), desiredSwerveModuleStates);
 
     
-    switch (DriverStation.getStickButtons(2)) {
-      case 1: // Button A on joystick
-        switch (m_alliance.get()) {
-          case Red:
-            m_targetID = 10;
-            break;
-          case Blue:
-            m_targetID = 21;
-            break;
-        }
-        break;
-      case 2: // Button B on joystick
-        switch (m_alliance.get()) {
-          case Red:
-            m_targetID = 9;
-            break;
-          case Blue:
-            m_targetID = 22;
-            break;
-        }
-        break;
-      case 4: // Button X on Joystick
-        switch (m_alliance.get()) {
-          case Red:
-            m_targetID = 8;
-            break;
-          case Blue:
-            m_targetID = 17;
-            break;
-        }
-        break;
-      case 8: // Button Y on Joystick
-        switch (m_alliance.get()) {
-          case Red:
-            m_targetID = 7;
-            break;
-          case Blue:
-            m_targetID = 18;
-            break;
-        }
-        break;
-      case 16: // Left bumper on Joystick
-        switch (m_alliance.get()) {
-          case Red:
-            m_targetID = 6;
-            break;
-          case Blue:
-            m_targetID = 19;
-            break;
-        }
-        break;
-      case 32: // Right bumper on Joystick
-        switch (m_alliance.get()) {
-          case Red:
-            m_targetID = 11;
-          case Blue:
-            m_targetID = 20;
-        }
-        break;
-    }
+    // switch (DriverStation.getStickButtons(2)) {
+    //   case 1: // Button A on joystick
+    //     switch (m_alliance.get()) {
+    //       case Red:
+    //         m_targetID = 10;
+    //         break;
+    //       case Blue:
+    //         m_targetID = 21;
+    //         break;
+    //     }
+    //     break;
+    //   case 2: // Button B on joystick
+    //     switch (m_alliance.get()) {
+    //       case Red:
+    //         m_targetID = 9;
+    //         break;
+    //       case Blue:
+    //         m_targetID = 22;
+    //         break;
+    //     }
+    //     break;
+    //   case 4: // Button X on Joystick
+    //     switch (m_alliance.get()) {
+    //       case Red:
+    //         m_targetID = 8;
+    //         break;
+    //       case Blue:
+    //         m_targetID = 17;
+    //         break;
+    //     }
+    //     break;
+    //   case 8: // Button Y on Joystick
+    //     switch (m_alliance.get()) {
+    //       case Red:
+    //         m_targetID = 7;
+    //         break;
+    //       case Blue:
+    //         m_targetID = 18;
+    //         break;
+    //     }
+    //     break;
+    //   case 16: // Left bumper on Joystick
+    //     switch (m_alliance.get()) {
+    //       case Red:
+    //         m_targetID = 6;
+    //         break;
+    //       case Blue:
+    //         m_targetID = 19;
+    //         break;
+    //     }
+    //     break;
+    //   case 32: // Right bumper on Joystick
+    //     switch (m_alliance.get()) {
+    //       case Red:
+    //         m_targetID = 11;
+    //       case Blue:
+    //         m_targetID = 20;
+    //     }
+    //     break;
+    // }
 
     m_currentAngle = m_swerveDrive.getAngle().getDegrees();
     SmartDashboard.putNumber("Current angle", m_currentAngle);
     System.out.println("Target ID: " + m_targetID);
     System.out.println("Constants tag 8 angle: " + VisionConstants.kTag8Left.getRotation().getDegrees());
-    if (m_targetID != 0) {
+    
       if (m_joystick.getRawButton(IOConstants.kVisionSnapToAngleButtonID)) {
-        m_targetAngle = m_polePoses.get(m_targetID).get("Left").getRotation().getDegrees();
+        m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
+        m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_targetPose)];
+        System.out.println("Tag IDs");
+        m_targetAngle = m_targetPose.getRotation().getDegrees() - 180;
+
+        // m_targetAngle = m_polePoses.get(m_targetID).get("Left").getRotation().getDegrees();
         System.out.println("Target angle: " + m_targetAngle);
 
         m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
       } else if (m_joystick.getRawButton(IOConstants.kVisionLeftAlignButtonID)) {
-        m_targetX = m_polePoses.get(m_targetID).get("Left").getX();
-        m_targetY = m_polePoses.get(m_targetID).get("Left").getY();
+        m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
+        m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_fieldLayout)];
+        System.out.println("Tag IDs");
+        m_targetAngle = m_targetPose.getRotation().getDegrees() - 180;
+        
+        // m_targetX = m_polePoses.get(m_targetID).get("Left").getX();
+        // m_targetY = m_polePoses.get(m_targetID).get("Left").getY();
 
         m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+        if (m_frontTags.contains(m_targetID)) {
+          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() + VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90);
+          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() + VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90);
+        } else if (m_backTags.contains(m_targetID)) {
+          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() - VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90);
+          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() - VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90);
+        }
+
         m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
         m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
       } else if (m_joystick.getRawButton(IOConstants.kVisionRightAlignButtonID)) {
-        m_targetX = m_polePoses.get(m_targetID).get("Right").getX();
-        m_targetY = m_polePoses.get(m_targetID).get("Right").getY();
+        m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
+        m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_fieldLayout)];
+        System.out.println("Tag IDs");
+        m_targetAngle = m_targetPose.getRotation().getDegrees() - 180;
+        // m_targetX = m_polePoses.get(m_targetID).get("Right").getX();
+        // m_targetY = m_polePoses.get(m_targetID).get("Right").getY();
 
         m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+
+        if (m_frontTags.contains(m_targetID)) {
+          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() - VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90);
+          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() - VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90);
+        } else if (m_backTags.contains(m_targetID)) {
+          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() + VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90);
+          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() + VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90);
+        }
+
         m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
         m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
       }
-    }
     // if (m_selectBestTag.getAsBoolean()) {
     //   // if (m_vision.hasTargets()) { 
     //     m_targetID = m_vision.getID();

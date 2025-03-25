@@ -2,9 +2,13 @@ package frc.robot.constants;
 
 import static edu.wpi.first.units.Units.Degrees;
 
+import java.util.List;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.Angle;
 
 public final class VisionConstants {
@@ -60,6 +64,10 @@ public final class VisionConstants {
     public static final Pose2d kTag22Left = new Pose2d(new Translation2d(187.497*0.0254, 126.935*0.0254), new Rotation2d(Math.toRadians(kTag22Angle)));
     public static final Pose2d kTag22Right = new Pose2d(new Translation2d(198.703*0.0254, 133.405*0.0254), new Rotation2d(Math.toRadians(kTag22Angle)));
 
+    public static final int[] kTagIDs = {6, 7, 8, 9, 10, 11, 17, 18, 19, 20, 21, 22};
+    public static final int[] kFrontTagIDs = {6, 7, 8, 17, 18, 19};
+    public static final int[] kBackTagIDs = {9, 10, 11, 20, 21, 22};
+    public static final double kPoleDistance = Units.inchesToMeters(6.47);
 
     public static final int[] kTagAngles = {kTag6Angle, kTag7Angle, kTag8Angle, kTag9Angle, kTag10Angle, kTag11Angle, 0, 0, 0, 0, 0, kTag17Angle, kTag18Angle, kTag19Angle, kTag20Angle, kTag21Angle, kTag22Angle};
 }
