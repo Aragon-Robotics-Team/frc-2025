@@ -3,8 +3,9 @@
   "robotLength": 0.914,
   "holonomicMode": true,
   "pathFolders": [
+    "1+1 Barge Lollipop",
     "1+2 Barge Side Sub",
-    "1+1 Barge Lollipop"
+    "MUAHAHHAAH"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
@@ -19,7 +20,7 @@
   "driveGearing": 6.122,
   "maxDriveSpeed": 5.45,
   "driveMotorType": "krakenX60",
-  "driveCurrentLimit": 60.0,
+  "driveCurrentLimit": 70.0,
   "wheelCOF": 0.9,
   "flModuleX": 0.295,
   "flModuleY": 0.292,

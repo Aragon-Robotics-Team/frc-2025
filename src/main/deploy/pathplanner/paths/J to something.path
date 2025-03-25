@@ -1,0 +1,70 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.008,
+        "y": 5.253
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.286666666666666,
+        "y": 6.357435897435897
+      },
+      "isLocked": false,
+      "linkedName": "Scoring at J"
+    },
+    {
+      "anchor": {
+        "x": 1.4680769230769226,
+        "y": 6.904423076923077
+      },
+      "prevControl": {
+        "x": 0.9520512820512816,
+        "y": 7.874551282051281
+      },
+      "nextControl": {
+        "x": 1.9841025641025634,
+        "y": 5.934294871794873
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 3.9553205128205127,
+        "y": 5.253
+      },
+      "prevControl": {
+        "x": 3.6766666666666667,
+        "y": 5.299442307692309
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 120.95844339164525
+  },
+  "reversed": false,
+  "folder": "MUAHAHHAAH",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 59.99999999999999
+  },
+  "useDefaultConstraints": true
+}

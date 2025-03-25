@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 7.12371794871795,
+        "y": 7.533974358974359
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.896666666666665,
+        "y": 6.935384615384615
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.008,
+        "y": 5.253
+      },
+      "prevControl": {
+        "x": 5.7209072938012016,
+        "y": 6.093877099469405
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "Scoring at J"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 59.99999999999999
+  },
+  "reversed": false,
+  "folder": "MUAHAHHAAH",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
