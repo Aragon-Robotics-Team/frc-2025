@@ -14,10 +14,12 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Joystick;
@@ -46,9 +48,14 @@ public class SwerveJoystick extends Command {
   // private final JoystickButton m_turnTo1stTag, m_turnTo2ndTag, m_turnTo3rdTag, m_turnTo4thTag, m_turnTo5thTag, m_turnTo6thTag, m_centerToTag;
   // private final JoystickButton m_selectBestTag, m_centerToLeftPole, m_centerToRightPole;
   // private final JoystickButton m_turnToTag6Left, m_turnToTag6Right, m_turnToTag7Left, m_turnToTag7Right, m_turnToTag8Left, m_turnToTag8Right, m_turnToTag9Left, m_turnToTag9Right, m_turnToTag10Left, m_turnToTag10Right, m_turnToTag11Left, m_turnToTag11Right, m_turnToTag17Left, m_turnToTag17Right, m_turnToTag18Left, m_turnToTag18Right, m_turnToTag19Left, m_turnToTag19Right, m_turnToTag20Left, m_turnToTag20Right, m_turnToTag21Left, m_turnToTag21Right, m_turnToTag22Left, m_turnToTag22Right;
-  private PIDController m_turningPID = new PIDController(DriveConstants.kTurnToAngleP, DriveConstants.kTurnToAngleI, DriveConstants.kTurnToAngleD);
-  private PIDController m_xPID = new PIDController(DriveConstants.kDriveToXP, DriveConstants.kDriveToXI, DriveConstants.kDriveToXD);
-  private PIDController m_yPID = new PIDController(DriveConstants.kDriveToYP, DriveConstants.kDriveToYI, DriveConstants.kDriveToYD);
+  private Constraints m_trapezoidalConstraints = new Constraints(DriveConstants.kMaxTranslationalMetersPerSecond, DriveConstants.kMaxTurningRadiansPerSecond);
+  // private PIDController m_turningPID = new PIDController(DriveConstants.kTurnToAngleP, DriveConstants.kTurnToAngleI, DriveConstants.kTurnToAngleD);
+  // private PIDController m_xPID = new PIDController(DriveConstants.kDriveToXP, DriveConstants.kDriveToXI, DriveConstants.kDriveToXD);
+  // private PIDController m_yPID = new PIDController(DriveConstants.kDriveToYP, DriveConstants.kDriveToYI, DriveConstants.kDriveToYD);
+  private ProfiledPIDController m_turningPID = new ProfiledPIDController(DriveConstants.kTurnToAngleP, DriveConstants.kTurnToAngleI, DriveConstants.kTurnToAngleD, m_trapezoidalConstraints);
+  private ProfiledPIDController m_xPID = new ProfiledPIDController(DriveConstants.kDriveToXP, DriveConstants.kDriveToXI, DriveConstants.kDriveToXD, m_trapezoidalConstraints);
+  private ProfiledPIDController m_yPID = new ProfiledPIDController(DriveConstants.kDriveToYP, DriveConstants.kDriveToYI, DriveConstants.kDriveToYD, m_trapezoidalConstraints);
+  
   private double m_targetAngle, m_targetX, m_targetY;
   private Pose2d m_targetPose;
   private double m_currentYaw;
@@ -314,7 +321,7 @@ public class SwerveJoystick extends Command {
       } else if (m_joystick.getRawButton(IOConstants.kVisionRightAlignButtonID)) {
         m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
         m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_fieldLayout)];
-        System.out.println("Tag IDs");
+        SmartDashboard.putNumber("Target ID", m_targetID);
         m_targetAngle = m_targetPose.getRotation().getDegrees() - 180;
         // m_targetX = m_polePoses.get(m_targetID).get("Right").getX();
         // m_targetY = m_polePoses.get(m_targetID).get("Right").getY();
