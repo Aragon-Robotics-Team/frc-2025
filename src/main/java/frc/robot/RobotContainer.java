@@ -474,7 +474,7 @@ public class RobotContainer {
       Commands.parallel(
         // m_armToL1.until(m_armToL1::atSetpoint),
         m_elevatorToL1,
-        Commands.sequence(new WaitCommand(0.2), m_armToL1)
+        Commands.sequence(new WaitCommand(0.1), m_armToL1)
       )
     );
     
@@ -483,7 +483,7 @@ public class RobotContainer {
         // m_elevatorToL2.until(m_elevatorToL2::atSetpoint),
         // m_armToL2.until(m_armToL2::atSetpoint)
         m_elevatorToL2,
-        Commands.sequence(new WaitCommand(0.2), m_armToL2)
+        Commands.sequence(new WaitCommand(0.1), m_armToL2)
       )
     );
     
@@ -495,7 +495,7 @@ public class RobotContainer {
         // m_elevatorToL3.until(m_elevatorToL3::atSetpoint),
         // m_armToL3.until(m_armToL3::atSetpoint)
         m_elevatorToL3,
-        Commands.sequence(new WaitCommand(0.2), m_armToL3)
+        Commands.sequence(new WaitCommand(0.1), m_armToL3)
         // m_pivotPIDToIntake2
       )
     );
@@ -507,7 +507,7 @@ public class RobotContainer {
         // m_elevatorToL4.until(m_elevatorToL4::atSetpoint),
         // m_armToL4.until(m_armToL4::atSetpoint)
         m_elevatorToL4,
-        Commands.sequence(new WaitCommand(0.2), m_armToL4)
+        Commands.sequence(new WaitCommand(0.5), m_armToL4)
         // m_pivotPIDToIntake3
       )
     );
@@ -538,13 +538,13 @@ public class RobotContainer {
 
     // what it does is move the pivot up (only)
     m_groundIntakeCoralButton.onFalse(
-      Commands.parallel(
-        // m_pivotPIDToStow1,
-        m_intakeEndEffector3.withTimeout(1),
-        Commands.sequence( // todo: put a beam break thing
-          m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1)
-        )
-      )
+      // Commands.parallel(
+      //   // m_pivotPIDToStow1,
+      //   m_intakeEndEffector3.withTimeout(1),
+      //   Commands.sequence( // todo: put a beam break thing
+      //     m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1)
+      //   )
+      m_outtakeIntakeIndexerRollers1.withTimeout(1)
     );
     
     
