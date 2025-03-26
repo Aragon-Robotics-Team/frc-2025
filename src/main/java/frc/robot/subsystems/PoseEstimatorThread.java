@@ -127,6 +127,7 @@ public class PoseEstimatorThread implements Runnable {
     public void run(){
       m_poseEstimator.update(getAngle(), getModulePositions());
       if (m_vision.getRobotPose() != null) {
+        System.out.println("Pose: " + m_vision.getRobotPose().toPose2d());
         // System.out.println("Pose estimated rotation degrees: " + m_vision.getRobotPose().toPose2d().getRotation().getDegrees());
         m_poseEstimator.addVisionMeasurement(m_vision.getRobotPose().toPose2d(), Timer.getFPGATimestamp());
       }

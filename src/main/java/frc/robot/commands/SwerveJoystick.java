@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
+import org.littletonrobotics.junction.networktables.LoggedNetworkNumber;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -53,10 +55,29 @@ public class SwerveJoystick extends Command {
   // private PIDController m_turningPID = new PIDController(DriveConstants.kTurnToAngleP, DriveConstants.kTurnToAngleI, DriveConstants.kTurnToAngleD);
   // private PIDController m_xPID = new PIDController(DriveConstants.kDriveToXP, DriveConstants.kDriveToXI, DriveConstants.kDriveToXD);
   // private PIDController m_yPID = new PIDController(DriveConstants.kDriveToYP, DriveConstants.kDriveToYI, DriveConstants.kDriveToYD);
-  private ProfiledPIDController m_turningPID = new ProfiledPIDController(DriveConstants.kTurnToAngleP, DriveConstants.kTurnToAngleI, DriveConstants.kTurnToAngleD, m_trapezoidalConstraints);
-  private ProfiledPIDController m_xPID = new ProfiledPIDController(DriveConstants.kDriveToXP, DriveConstants.kDriveToXI, DriveConstants.kDriveToXD, m_trapezoidalConstraints);
-  private ProfiledPIDController m_yPID = new ProfiledPIDController(DriveConstants.kDriveToYP, DriveConstants.kDriveToYI, DriveConstants.kDriveToYD, m_trapezoidalConstraints);
+  // private ProfiledPIDController m_turningPID = new ProfiledPIDController(DriveConstants.kTurnToAngleP, DriveConstants.kTurnToAngleI, DriveConstants.kTurnToAngleD, m_trapezoidalConstraints);
+  // private ProfiledPIDController m_xPID = new ProfiledPIDController(DriveConstants.kDriveToXP, DriveConstants.kDriveToXI, DriveConstants.kDriveToXD, m_trapezoidalConstraints);
+  // private ProfiledPIDController m_yPID = new ProfiledPIDController(DriveConstants.kDriveToYP, DriveConstants.kDriveToYI, DriveConstants.kDriveToYD, m_trapezoidalConstraints);
+  private double m_xP = 0.1;
+  private double m_xI = 0;
+  private double m_xD = 0;
+
+  private double m_yP = 0.2;
+  private double m_yI = 0;
+  private double m_yD = 0;
+
+  private double m_turningP = 0.1;
+  private double m_turningI = 0;
+  private double m_turningD = 0;
   
+  // private ProfiledPIDController m_xPID = new ProfiledPIDController(m_xP, m_xI, m_xD, m_trapezoidalConstraints);
+  // private ProfiledPIDController m_yPID = new ProfiledPIDController(m_yP, m_yI, m_yD, m_trapezoidalConstraints);
+  // private ProfiledPIDController m_turningPID = new ProfiledPIDController(m_turningP, m_turningI, m_turningD, m_trapezoidalConstraints);
+  
+  private PIDController m_xPID = new PIDController(m_xP, m_xI, m_xD);
+  private PIDController m_yPID = new PIDController(m_yP, m_yI, m_yD);
+  private PIDController m_turningPID = new PIDController(m_turningP, m_turningI, m_turningD);
+
   private double m_targetAngle, m_targetX, m_targetY;
   private Pose2d m_targetPose;
   private double m_currentYaw;
@@ -166,20 +187,41 @@ public class SwerveJoystick extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-<<<<<<< HEAD
+
     double xSpeed = -m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
     double ySpeed = -m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
     double turningSpeed = -m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
-=======
-    // m_xSpeed = -m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
-    // m_ySpeed = m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
-    // m_turningSpeed = m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
 
-    // Positive X is forward, Positive Y is left
-    m_xSpeed = m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
-    m_ySpeed = m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
-    m_turningSpeed = m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
->>>>>>> 64a656f (Added sendable builders to drive stuff)
+    SmartDashboard.putData("X PID", m_xPID);
+    SmartDashboard.putData("Y PID", m_yPID);
+    SmartDashboard.putData("Turning PID", m_turningPID);
+
+    SmartDashboard.putNumber("XP", m_xP);
+    // SmartDashboard.putNumber("XI", m_xI);
+    // SmartDashboard.putNumber("XD", m_xD);
+    SmartDashboard.putNumber("yP", m_yP);
+    // SmartDashboard.putNumber("yI", m_yI);
+    // SmartDashboard.putNumber("yD", m_yD);
+    SmartDashboard.putNumber("turningP", m_turningP);
+    // SmartDashboard.putNumber("turningI", m_turningI);  
+    SmartDashboard.putNumber("Turning Speed", m_turningSpeed);
+    SmartDashboard.putNumber("X speed", m_xSpeed);
+    SmartDashboard.putNumber("Y speed", m_ySpeed);
+    SmartDashboard.putNumber("Target X", m_targetX);
+    SmartDashboard.putNumber("Target Y", m_targetY);
+    SmartDashboard.putNumber("Target Angle", m_targetAngle);
+    SmartDashboard.putNumber("Target ID", m_targetID);
+
+    // m_xPID.setP(m_xP);
+    // m_xPID.setI(m_xI);
+    // m_xPID.setD(m_xD);
+    // m_yPID.setP(m_yP);
+    // m_yPID.setI(m_yI);
+    // m_yPID.setD(m_yD);
+    // m_turningPID.setP(0.7);
+    // m_turningPID.setI(0);
+    // m_turningPID.setD(0);
+
 
 
     // if (m_driveMode == 0) { //standard mode;
@@ -296,6 +338,8 @@ public class SwerveJoystick extends Command {
         // m_targetAngle = m_polePoses.get(m_targetID).get("Left").getRotation().getDegrees();
 
         m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+        
+        m_turningSpeed = m_turningPID.calculate(m_currentAngle, -120);
       } else if (m_joystick.getRawButton(IOConstants.kVisionLeftAlignButtonID)) {
         m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
         m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_targetPose)];
@@ -304,7 +348,7 @@ public class SwerveJoystick extends Command {
         // m_targetX = m_polePoses.get(m_targetID).get("Left").getX();
         // m_targetY = m_polePoses.get(m_targetID).get("Left").getY();
 
-        m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+        // m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
         if (m_frontTags.contains(m_targetID)) {
           m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() + VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90);
           m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() + VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90);
@@ -322,7 +366,7 @@ public class SwerveJoystick extends Command {
         // m_targetX = m_polePoses.get(m_targetID).get("Right").getX();
         // m_targetY = m_polePoses.get(m_targetID).get("Right").getY();
 
-        m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+        // m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
 
         if (m_frontTags.contains(m_targetID)) {
           m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() - VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90);
@@ -371,9 +415,6 @@ public class SwerveJoystick extends Command {
     } else if (m_ySpeed > DriveConstants.kMaxTranslationalMetersPerSecond) {
       m_ySpeed = DriveConstants.kMaxTranslationalMetersPerSecond;
     }
-    SmartDashboard.putData("X PID", m_xPID);
-    SmartDashboard.putData("Y PID", m_yPID);
-    SmartDashboard.putData("Turning PID", m_turningPID);
 
     m_swerveDrive.driveRobotRelative(ChassisSpeeds.fromFieldRelativeSpeeds(m_xSpeed, m_ySpeed, m_turningSpeed, m_swerveDrive.getAngle()));
   }

@@ -13,18 +13,18 @@ import edu.wpi.first.units.measure.Angle;
 
 public final class VisionConstants {
     // 6.47 in between each Tag and pole left/ right to it
-    public static final int kTag6Angle = 120; //TODO: Change these
+    public static final int kTag6Angle = -120; //TODO: Change these
     public static final int kTag7Angle = 180;
-    public static final int kTag8Angle = -120;
-    public static final int kTag9Angle = -60;
+    public static final int kTag8Angle = 120;
+    public static final int kTag9Angle = 60;
     public static final int kTag10Angle = 0;
-    public static final int kTag11Angle = 60;
-    public static final int kTag17Angle = -120;
+    public static final int kTag11Angle = -60;
+    public static final int kTag17Angle = 120;
     public static final int kTag18Angle = 180;
-    public static final int kTag19Angle = 120;
-    public static final int kTag20Angle = 60;
+    public static final int kTag19Angle = -120;
+    public static final int kTag20Angle = -60;
     public static final int kTag21Angle = 0;
-    public static final int kTag22Angle = -60;
+    public static final int kTag22Angle = 60;
 
     // Red
     public static final Pose2d kTag6Left = new Pose2d(new Translation2d(524.887*0.0254, 126.935*0.0254), new Rotation2d(Math.toRadians(kTag6Angle)));

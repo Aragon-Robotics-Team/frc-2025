@@ -34,7 +34,9 @@ public class Vision extends SubsystemBase {
   private PhotonCamera m_cam = new PhotonCamera("Arducam_OV9281_USB_Camera"); //TODO: Change to actual camera name
   // private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.305, 0.305, 0.211), new Rotation3d(0,1.222,3.578)); //TODO: Change this later!
   // private Transform3d m_robotToCam = new Transform3d(new Translation3d(-0.50, 0.65, Units.inchesToMeters(8.756)), new Rotation3d(0, Math.toRadians(10), Math.toRadians(148.5)));
-  private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.393, 0.11, Units.inchesToMeters(8.756)), new Rotation3d(0, Math.toRadians(10), Math.toRadians(148.5)));
+  // private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.393, 0.11, Units.inchesToMeters(8.756)), new Rotation3d(0, Math.toRadians(10), Math.toRadians(148.5)));
+  // private Transform3d m_robotToCam = new Transform3d(-Units.inchesToMeters(6.643), Units.inchesToMeters(12.333), Units.inchesToMeters(8.756), new Rotation3d(0, Math.toRadians(-10), Math.toRadians(148.15)));
+  private Transform3d m_robotToCam = new Transform3d(0.435, 0.11, Units.inchesToMeters(8.756), new Rotation3d(0, Math.toRadians(10), Math.toRadians(148.15)));
   // private Transform3d m_robotToCam = new Transform3d(new Translation3d(0.305, 0.305, 0.211), new Rotation3d(0, 0, 0));
 
   private PhotonPipelineResult m_result;
@@ -175,7 +177,12 @@ public class Vision extends SubsystemBase {
        m_corners = m_bestTarget.getDetectedCorners();
        m_ID = m_bestTarget.getFiducialId();
        m_poseAmbiguity = m_bestTarget.getPoseAmbiguity();
-       m_robotPose = PhotonUtils.estimateFieldToRobotAprilTag(m_camToTarget, m_aprilTagFieldLayout.getTagPose(m_ID).get(), m_robotToCam);
+       if (m_hasTargets) {
+        m_robotPose = PhotonUtils.estimateFieldToRobotAprilTag(m_camToTarget, m_aprilTagFieldLayout.getTagPose(m_ID).get(), m_robotToCam);
+       } else {
+        System.out.println("Setting robot pose to null");
+        m_robotPose = null;
+       }
       }
    
   }
