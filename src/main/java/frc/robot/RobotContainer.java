@@ -387,6 +387,7 @@ public class RobotContainer {
     bindSubsystemCommands();
     configureBindings();
     SmartDashboard.putData("Swerve/Odo/Reset_Heading", new InstantCommand(() -> m_swerve.resetHeading()));
+    SmartDashboard.putData("Reset Odo to Pose", new InstantCommand(() -> m_swerve.resetOdoToPose()));
   }
 
   /**

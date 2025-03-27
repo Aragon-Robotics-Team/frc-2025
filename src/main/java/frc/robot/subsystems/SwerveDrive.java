@@ -234,8 +234,8 @@ public class SwerveDrive extends SubsystemBase
     setModuleStates(states);
   }
 
-  public void resetOdoToPose(double xStartPose, double yStartPose){
-    m_poseEstimatorThread.resetOdoToPose(xStartPose, yStartPose);
+  public void resetOdoToPose(){
+    m_poseEstimatorThread.resetOdoToPose(m_xStartPose, m_yStartPose);
   }
 
   private void poseEstimatorThreadInit(){
@@ -437,11 +437,14 @@ public class SwerveDrive extends SubsystemBase
     // }
 
 
-    m_field.setRobotPose(m_odo.getPoseMeters());
-    // SmartDashboard.putData("Swerve/Odo/Field", m_field);
-
-    // SmartDashboard.putNumber("X", getPoseMeters().getX());
-    // SmartDashboard.putNumber("Y", getPoseMeters().getY());
+    m_field.setRobotPose(getEstimatedPosition());
+    SmartDashboard.putData("Field", m_field);
+    
+    
+    m_xStartPose = SmartDashboard.getNumber("X Start Pose", 0);
+    m_yStartPose = SmartDashboard.getNumber("Y Start Pose", 0);
+    SmartDashboard.putNumber("X Start Pose", m_xStartPose);
+    SmartDashboard.putNumber("Y Start Pose", m_yStartPose);
 
     Logger.recordOutput("Omega", m_poseEstimatorThread.getAngularVelocityYaw() * 2 * Math.PI);
   }
