@@ -356,11 +356,11 @@ public class SwerveJoystick extends Command {
 
         // m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
         if (m_frontTags.contains(m_targetID)) {
-          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() + VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90);
-          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() + VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90);
+          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() + VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90) + VisionConstants.kBotWidthWithBumpers/2*Math.cos(m_targetPose.getRotation().getDegrees());
+          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() + VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90) + VisionConstants.kBotWidthWithBumpers/2*Math.sin(m_targetPose.getRotation().getDegrees());
         } else if (m_backTags.contains(m_targetID)) {
-          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() - VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90);
-          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() - VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90);
+          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() - VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90) + VisionConstants.kBotWidthWithBumpers/2*Math.cos(m_targetPose.getRotation().getDegrees());
+          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() - VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90) + VisionConstants.kBotWidthWithBumpers/2*Math.sin(m_targetPose.getRotation().getDegrees());
         }
 
         // m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
@@ -382,11 +382,11 @@ public class SwerveJoystick extends Command {
         // m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
 
         if (m_frontTags.contains(m_targetID)) {
-          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() - VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90);
-          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() - VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90);
+          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() - VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90) + VisionConstants.kBotWidthWithBumpers/2*Math.cos(m_targetPose.getRotation().getDegrees());
+          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() - VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90) + VisionConstants.kBotWidthWithBumpers/2*Math.sin(m_targetPose.getRotation().getDegrees());
         } else if (m_backTags.contains(m_targetID)) {
-          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() + VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90);
-          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() + VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90);
+          m_targetX = m_fieldLayout.getTagPose(m_targetID).get().getX() + VisionConstants.kPoleDistance*Math.cos(m_targetAngle - 90) + VisionConstants.kBotWidthWithBumpers/2*Math.cos(m_targetPose.getRotation().getDegrees());
+          m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() + VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90) + VisionConstants.kBotWidthWithBumpers/2*Math.sin(m_targetPose.getRotation().getDegrees());
         }
 
         // m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
