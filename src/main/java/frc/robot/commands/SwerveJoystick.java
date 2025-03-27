@@ -334,6 +334,9 @@ public class SwerveJoystick extends Command {
         m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
         m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_targetPose)];
         m_targetAngle = m_targetPose.getRotation().getDegrees() - 180;
+        if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle *= -1;
+        }
 
         // m_targetAngle = m_polePoses.get(m_targetID).get("Left").getRotation().getDegrees();
 
@@ -344,7 +347,10 @@ public class SwerveJoystick extends Command {
         m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
         m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_targetPose)];
         m_targetAngle = m_targetPose.getRotation().getDegrees() - 180;
-        
+        if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle *= -1;
+        }
+
         // m_targetX = m_polePoses.get(m_targetID).get("Left").getX();
         // m_targetY = m_polePoses.get(m_targetID).get("Left").getY();
 
@@ -363,6 +369,9 @@ public class SwerveJoystick extends Command {
         m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
         m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_targetPose)];
         m_targetAngle = m_targetPose.getRotation().getDegrees() - 180;
+        if (m_alliance.get() == Alliance.Blue) {
+          m_targetAngle *= -1;
+        }
         // m_targetX = m_polePoses.get(m_targetID).get("Right").getX();
         // m_targetY = m_polePoses.get(m_targetID).get("Right").getY();
 
