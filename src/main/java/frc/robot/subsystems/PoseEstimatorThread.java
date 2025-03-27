@@ -134,6 +134,9 @@ public class PoseEstimatorThread implements Runnable {
       SmartDashboard.putNumber("Angle", getAngleDegrees());
       SmartDashboard.putNumber("Pose X", getEstimatedPosition().getX());
       SmartDashboard.putNumber("Pose Y", getEstimatedPosition().getY());
+      SmartDashboard.putNumber("Vision X Pose", m_vision.getRobotPose().toPose2d().getX());
+      SmartDashboard.putNumber("Vision Y Pose", m_vision.getRobotPose().toPose2d().getY());
+      SmartDashboard.putNumber("Vision Rotation Pose", m_vision.getRobotPose().toPose2d().getRotation().getDegrees());
     }
 
 }
