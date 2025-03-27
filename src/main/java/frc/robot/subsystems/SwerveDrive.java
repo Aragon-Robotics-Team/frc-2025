@@ -423,11 +423,12 @@ public class SwerveDrive extends SubsystemBase
     m_modulePositions = getModulePositions();
     m_moduleStates = getModuleStates();
 
-    m_odo.update(getAngle(), m_modulePositions);
+    // m_odo.update(getAngle(), m_modulePositions);
 
     if (m_vision.getRobotPose() != null) {
       System.out.println("Pose estimated rotation degrees: " + m_vision.getRobotPose().toPose2d().getRotation().getDegrees());
-      m_poseEstimator.addVisionMeasurement(m_vision.getRobotPose().toPose2d(), Timer.getFPGATimestamp());
+      // ???
+      // m_poseEstimator.addVisionMeasurement(m_vision.getRobotPose().toPose2d(), Timer.getFPGATimestamp());
     }
     
 
