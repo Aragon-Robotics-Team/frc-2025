@@ -130,13 +130,13 @@ public class PoseEstimatorThread implements Runnable {
         System.out.println("Pose: " + m_vision.getRobotPose().toPose2d());
         // System.out.println("Pose estimated rotation degrees: " + m_vision.getRobotPose().toPose2d().getRotation().getDegrees());
         m_poseEstimator.addVisionMeasurement(m_vision.getRobotPose().toPose2d(), Timer.getFPGATimestamp());
-      }
+        SmartDashboard.putNumber("Vision X Pose", m_vision.getRobotPose().toPose2d().getX());
+        SmartDashboard.putNumber("Vision Y Pose", m_vision.getRobotPose().toPose2d().getY());
+        SmartDashboard.putNumber("Vision Rotation Pose", m_vision.getRobotPose().toPose2d().getRotation().getDegrees());
+    }
       SmartDashboard.putNumber("Angle", getAngleDegrees());
       SmartDashboard.putNumber("Pose X", getEstimatedPosition().getX());
       SmartDashboard.putNumber("Pose Y", getEstimatedPosition().getY());
-      SmartDashboard.putNumber("Vision X Pose", m_vision.getRobotPose().toPose2d().getX());
-      SmartDashboard.putNumber("Vision Y Pose", m_vision.getRobotPose().toPose2d().getY());
-      SmartDashboard.putNumber("Vision Rotation Pose", m_vision.getRobotPose().toPose2d().getRotation().getDegrees());
-    }
+       }
 
 }

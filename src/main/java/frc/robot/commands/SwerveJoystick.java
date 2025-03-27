@@ -104,6 +104,7 @@ public class SwerveJoystick extends Command {
     m_joystick = joystick;
     m_swerveDrive = swerveDrive;
     m_vision = vision;
+    m_turningPID.enableContinuousInput(-180, 180);
 
     for (int tag : VisionConstants.kTagIDs){
       m_tagPoses.add(m_fieldLayout.getTagPose(tag).get().toPose2d());
