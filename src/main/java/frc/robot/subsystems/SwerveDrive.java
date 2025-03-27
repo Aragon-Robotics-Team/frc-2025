@@ -37,6 +37,7 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Threads;
@@ -54,6 +55,7 @@ import frc.robot.commands.elevator.ElevatorToPosition;
 import frc.robot.commands.intake_indexer.RunIntakeWithIndexer;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.IOConstants;
+import frc.robot.subsystems.SwerveModule.SwerveModuleSendable;
 
 @SuppressWarnings("unused")
 
@@ -119,6 +121,16 @@ public class SwerveDrive extends SubsystemBase
   private double m_turningSpeed;
 
   private Vision m_vision;
+  
+  private SwerveDriveSendable m_sendable = new SwerveDriveSendable();
+
+  // public SwerveModuleSendable[] getModuleSendables() {
+  //   return new SwerveModuleSendable[] {m_frontLeft.getSendable(), m_frontRight.getSendable(), m_backLeft.getSendable(), m_backRight.getSendable()};
+  // }
+
+  public SwerveModule[] getModules() {
+    return m_modules;
+  }
 
   public void resetHeading() {
     m_poseEstimatorThread.resetHeading();;
@@ -229,6 +241,10 @@ public class SwerveDrive extends SubsystemBase
   private void poseEstimatorThreadInit(){
     ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     scheduler.scheduleAtFixedRate(m_poseEstimatorThread, 4, 10, TimeUnit.MILLISECONDS);
+  }
+
+  public SwerveDriveSendable getSendable(){
+    return m_sendable;
   }
 
   public SwerveDrive(Vision vision) {
@@ -430,9 +446,13 @@ public class SwerveDrive extends SubsystemBase
     Logger.recordOutput("Omega", m_poseEstimatorThread.getAngularVelocityYaw() * 2 * Math.PI);
   }
 
-  @Override
-  public void initSendable(SendableBuilder builder){
-    builder.addDoubleProperty("Omega", () -> m_poseEstimatorThread.getAngularVelocityYaw() * 2 * Math.PI, null);
-    builder.addDoubleProperty("Angle", () -> getAngle().getDegrees(), null);
+  public class SwerveDriveSendable implements Sendable {
+
+    @Override
+    public void initSendable(SendableBuilder builder){
+      builder.setSmartDashboardType("Swerve Drive");
+      builder.addDoubleProperty("Omega", () -> m_poseEstimatorThread.getAngularVelocityYaw() * 2 * Math.PI, null);
+      builder.addDoubleProperty("Angle", () -> getAngle().getDegrees(), null);
+    }
   }
 }

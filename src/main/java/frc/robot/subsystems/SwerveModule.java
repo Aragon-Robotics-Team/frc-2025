@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import edu.wpi.first.units.measure.*;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
 
 
@@ -40,6 +41,16 @@ public class SwerveModule extends SubsystemBase {
 
   private StatusSignal<Angle> m_drivePos;
   private StatusSignal<AngularVelocity> m_driveVel;
+
+  private SwerveModuleSendable m_sendable = new SwerveModuleSendable();
+
+  public SwerveModuleSendable getSendable() {
+    return m_sendable;
+  }
+
+  public String getID() {
+    return m_moduleId;
+  }
 
   public SwerveModule(int driveId, int turnId, int absoluteEncoderPort, double absoluteEncoderOffset,boolean driveReversed, boolean turningReversed, String moduleId) 
   {
@@ -171,12 +182,15 @@ public class SwerveModule extends SubsystemBase {
     // SmartDashboard.putNumber("Swerve/Distance/Module_" + m_moduleId, getDrivePosition());
   }
 
-  @Override
-  public void initSendable(SendableBuilder builder) {
-    builder.addDoubleProperty("Turning position " + m_moduleId, () -> getTurningPosition(), null);
-    builder.addDoubleProperty("Drive velocity " + m_moduleId, () -> getDriveVelocity(), null);
-    builder.addDoubleProperty("Drive position " + m_moduleId, () -> getDrivePosition(), null);
-    builder.addStringProperty("Module state " + m_moduleId, () -> getState().toString(), null);
-    builder.addStringProperty("Module position " + m_moduleId, () -> getPosition().toString(), null);
+  public class SwerveModuleSendable implements Sendable {
+    @Override
+    public void initSendable(SendableBuilder builder) {
+      builder.setSmartDashboardType("Swerve Module " + m_moduleId);
+      builder.addDoubleProperty("Turning position " + m_moduleId, () -> getTurningPosition(), null);
+      builder.addDoubleProperty("Drive velocity " + m_moduleId, () -> getDriveVelocity(), null);
+      builder.addDoubleProperty("Drive position " + m_moduleId, () -> getDrivePosition(), null);
+      builder.addStringProperty("Module state " + m_moduleId, () -> getState().toString(), null);
+      builder.addStringProperty("Module position " + m_moduleId, () -> getPosition().toString(), null);
+    }
   }
 } 

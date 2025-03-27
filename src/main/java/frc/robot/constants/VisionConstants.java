@@ -68,6 +68,7 @@ public final class VisionConstants {
     public static final int[] kFrontTagIDs = {6, 7, 8, 17, 18, 19};
     public static final int[] kBackTagIDs = {9, 10, 11, 20, 21, 22};
     public static final double kPoleDistance = Units.inchesToMeters(6.47);
+    public static final double kBotWidthWithBumpers = Units.inchesToMeters(35.5);
 
     public static final int[] kTagAngles = {kTag6Angle, kTag7Angle, kTag8Angle, kTag9Angle, kTag10Angle, kTag11Angle, 0, 0, 0, 0, 0, kTag17Angle, kTag18Angle, kTag19Angle, kTag20Angle, kTag21Angle, kTag22Angle};
 }

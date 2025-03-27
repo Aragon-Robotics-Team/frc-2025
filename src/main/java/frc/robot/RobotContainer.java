@@ -12,8 +12,10 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Threads;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -90,6 +92,7 @@ import frc.robot.commands.intake_indexer.RunIndexer;
 import frc.robot.commands.intake_indexer.RunIntake;
 import frc.robot.commands.intake_indexer.RunIntakeWithIndexer;
 import frc.robot.subsystems.Intake;
+import frc.robot.subsystems.SwerveModule;
 import frc.robot.subsystems.Vision;
 
 import frc.robot.subsystems.Climb;
@@ -359,9 +362,22 @@ public class RobotContainer {
     NamedCommands.registerCommand("Outtake w/ Indexer", m_outtakeIntakeIndexerRollers);
 
     m_autoChooser = AutoBuilder.buildAutoChooser();
-    System.out.println("build auto chooser");
-    //m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
-    m_autoChooser.addOption("Drive, L4", m_driveForwardL4);
+
+    bindSubsystemCommands();
+    SendableRegistry.add(m_swerveJoystick.getSendable(), "Swerve Joystick");
+    SendableRegistry.add(m_swerve.getSendable(), "Swerve Drive");
+    Shuffleboard.getTab("SmartDashboard").add(m_swerve.getSendable()).withWidget("Swerve Drive");
+    Shuffleboard.getTab("SmartDashboard").add(m_swerveJoystick.getSendable()).withWidget("Swerve Joystick");
+    
+    
+    for (SwerveModule module : m_swerve.getModules()) {
+      SendableRegistry.add(module.getSendable(), "Swerve Module " + module.getID());
+      Shuffleboard.getTab("SmartDashboard").add(module.getSendable()).withWidget("Swerve Module " + module.getID());
+    }
+
+
+    // m_autoChooser = AutoBuilder.buildAutoChooser();
+    m_autoChooser.setDefaultOption("Drive, L4", m_driveForwardL4);
     m_autoChooser.addOption("Move Auto", m_leaveAuto);
     SmartDashboard.putData("Elevator Reset Heading", m_elevator.resetElevatorEncoder());
     

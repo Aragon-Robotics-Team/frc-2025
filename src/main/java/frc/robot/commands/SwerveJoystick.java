@@ -22,7 +22,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.util.sendable.SendableBuilder;
+import edu.wpi.first.util.sendable.SendableRegistry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.Joystick;
@@ -38,6 +40,8 @@ import frc.robot.subsystems.Vision;
 
 public class SwerveJoystick extends Command {
   /** Creates a new SwerveJoystick. */
+
+  private SwerveJoystickSendable m_sendable = new SwerveJoystickSendable();
 
   private final Joystick m_joystick;
   private final SlewRateLimiter m_xSlewRateLimiter;
@@ -450,16 +454,25 @@ public class SwerveJoystick extends Command {
     return false;
   }
 
-  @Override
-  public void initSendable(SendableBuilder builder){
-    builder.addDoubleProperty("X speed", () -> m_xSpeed, null);
-    builder.addDoubleProperty("Y speed", () -> m_ySpeed, null);
-    builder.addDoubleProperty("Turning speed", () -> m_turningSpeed, null);
-    builder.addDoubleProperty("X Pose", () -> m_swerveDrive.getEstimatedPosition().getX(), null);
-    builder.addDoubleProperty("Y pose", () -> m_swerveDrive.getEstimatedPosition().getY(), null);
-    builder.addDoubleProperty("Target ID", () -> m_targetID, null);
-    builder.addDoubleProperty("Target Angle", () -> m_targetAngle, null);
-    builder.addDoubleProperty("Target X", () -> m_targetX, null);
-    builder.addDoubleProperty("Target Y", () -> m_targetY, null);
+  public SwerveJoystickSendable getSendable(){
+    return m_sendable;
   }
+
+  public class SwerveJoystickSendable implements Sendable {
+
+    @Override
+    public void initSendable(SendableBuilder builder){
+      builder.setSmartDashboardType("SwerveJoystick");
+      builder.addDoubleProperty("X speed", () -> m_xSpeed, null);
+      builder.addDoubleProperty("Y speed", () -> m_ySpeed, null);
+      builder.addDoubleProperty("Turning speed", () -> m_turningSpeed, null);
+      builder.addDoubleProperty("X Pose", () -> m_swerveDrive.getEstimatedPosition().getX(), null);
+      builder.addDoubleProperty("Y pose", () -> m_swerveDrive.getEstimatedPosition().getY(), null);
+      builder.addDoubleProperty("Target ID", () -> m_targetID, null);
+      builder.addDoubleProperty("Target Angle", () -> m_targetAngle, null);
+      builder.addDoubleProperty("Target X", () -> m_targetX, null);
+      builder.addDoubleProperty("Target Y", () -> m_targetY, null);
+    }
+  }
+
 }
