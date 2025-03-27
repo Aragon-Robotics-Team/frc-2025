@@ -340,9 +340,9 @@ public class SwerveJoystick extends Command {
 
         // m_targetAngle = m_polePoses.get(m_targetID).get("Left").getRotation().getDegrees();
 
-        m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+        // m_turningSpeed = m_turningPID.calculate(m_currentAngle, m_targetAngle);
+        m_turningSpeed = m_turningPID.calculate(m_currentAngle, 120); // Just for PID tuning!!!
         
-        m_turningSpeed = m_turningPID.calculate(m_currentAngle, -120);
       } else if (m_joystick.getRawButton(IOConstants.kVisionLeftAlignButtonID)) {
         m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
         m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_targetPose)];
@@ -363,8 +363,12 @@ public class SwerveJoystick extends Command {
           m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() - VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90);
         }
 
-        m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
-        m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
+        // m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
+        // m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
+
+        // Just for PID tuning purposes
+        m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), 2);
+        m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), 2);
       } else if (m_joystick.getRawButton(IOConstants.kVisionRightAlignButtonID)) {
         m_targetPose = m_swerveDrive.getEstimatedPosition().nearest(m_tagPoses);
         m_targetID = VisionConstants.kTagIDs[m_tagPoses.indexOf(m_targetPose)];
@@ -385,8 +389,12 @@ public class SwerveJoystick extends Command {
           m_targetY = m_fieldLayout.getTagPose(m_targetID).get().getY() + VisionConstants.kPoleDistance*Math.sin(m_targetAngle - 90);
         }
 
-        m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
-        m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
+        // m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), m_targetX);
+        // m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), m_targetY);
+
+        // Just for PID tuning purposes
+        m_xSpeed = m_xPID.calculate(m_swerveDrive.getEstimatedPosition().getX(), 2);
+        m_ySpeed = m_yPID.calculate(m_swerveDrive.getEstimatedPosition().getY(), 2);
       }
     // if (m_selectBestTag.getAsBoolean()) {
     //   // if (m_vision.hasTargets()) { 
