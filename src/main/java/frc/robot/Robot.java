@@ -51,6 +51,7 @@ public class Robot extends LoggedRobot {
 
     Logger.addDataReceiver(new WPILOGWriter("/home/lvuser/logs")); 
     Logger.start();
+    m_robotContainer.threatRTCommand().schedule();
   }
   
   /**

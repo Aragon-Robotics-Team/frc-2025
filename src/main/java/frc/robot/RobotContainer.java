@@ -13,6 +13,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Threads;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -632,6 +633,16 @@ public class RobotContainer {
     m_lockServo.schedule();
     // m_pivot.setDefaultCommand(m_arcadePivot);
     // m_climb.setDefaultCommand(m_moveServoWithJoystick);
+  }
+
+  public Command threatRTCommand() {
+    return Commands.sequence(
+      Commands.waitSeconds(20),
+      Commands.runOnce(() -> {
+        Threads.setCurrentThreadPriority(true, 10);
+        System.err.println("Set main thread RT priority");
+      })
+    ).ignoringDisable(true);
   }
 }
   
