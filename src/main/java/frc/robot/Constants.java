@@ -51,7 +51,7 @@ public final class Constants {
     
     public static final double kL1ElevatorHeight = 5.6;
     public static final double kL2ElevatorHeight = 11.476; // units in inches
-    public static final double kL3ElevatorHeight = 28.571;
+    public static final double kL3ElevatorHeight = 29;
     public static final double kL4ElevatorHeight = 60;
     public static final double kL2DealgaeElevatorHeight = 21.38;
     public static final double kL3DealgaeElevatorHeight = 35.85;

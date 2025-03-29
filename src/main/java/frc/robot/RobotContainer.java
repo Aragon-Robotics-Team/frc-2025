@@ -217,7 +217,7 @@ public class RobotContainer {
 
   // begin intake/indexer
   private Intake m_intake = new Intake();
-  private final double kIntakeIndexerSpeed = 0.9;
+  private final double kIntakeIndexerSpeed = 0.6;
   // private RunIntake m_intakeIn = new RunIntake(m_intake, kIntakeIndexerSpeed); // positive speed == intake in
   // private RunIntake m_intakeOut = new RunIntake(m_intake, -kIntakeIndexerSpeed);
 
@@ -254,7 +254,7 @@ public class RobotContainer {
 
   private Climb m_climb = new Climb();
   // check these speeds and rotations
-  private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 55.5);
+  private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 60.5);
   private SpinVortexRotations m_retractCage = new SpinVortexRotations(m_climb, -0.95, 0.5);
   private SpinVortexRotations m_retractCage2 = new SpinVortexRotations(m_climb, -0.95, 0.8); // move motor back to 5 rotations
 

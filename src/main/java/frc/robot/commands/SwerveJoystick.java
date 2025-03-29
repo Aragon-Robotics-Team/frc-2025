@@ -69,8 +69,8 @@ public class SwerveJoystick extends Command {
       // ySpeed = Math.signum(ySpeed) * (Math.pow(2, Math.abs(ySpeed)) -1) * -1;
       // turningSpeed = Math.signum(turningSpeed) * (Math.pow(2, Math.abs(turningSpeed)) -1) * -1;
 
-      xSpeed = Math.signum(xSpeed) * Math.pow(Math.abs(xSpeed), 1.75);
-      ySpeed = Math.signum(ySpeed) * Math.pow(Math.abs(ySpeed), 1.75);
+      xSpeed = Math.signum(xSpeed) * Math.pow(Math.abs(xSpeed), 1.8);
+      ySpeed = Math.signum(ySpeed) * Math.pow(Math.abs(ySpeed), 1.8);
       // turningSpeed = Math.pow(turningSpeed, 5);
     
     

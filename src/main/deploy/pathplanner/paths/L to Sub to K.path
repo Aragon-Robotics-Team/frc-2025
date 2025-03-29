@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.707628205128205,
-        "y": 5.088012820512821
+        "x": 3.8390625,
+        "y": 4.877571022727272
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.109038461538461,
-        "y": 5.573076923076924
+        "x": 3.2404727564102562,
+        "y": 5.362635125291375
       },
       "isLocked": false,
       "linkedName": "Scoring at L"
     },
     {
       "anchor": {
-        "x": 1.3855128205120426,
-        "y": 6.914743589746641
+        "x": 0.7977272727272726,
+        "y": 6.732286931818181
       },
       "prevControl": {
-        "x": -0.12962894321808505,
-        "y": 5.188186696193705
+        "x": -0.717414491002855,
+        "y": 5.005730038265245
       },
       "nextControl": {
-        "x": 1.829294871794094,
-        "y": 7.4204487179517695
+        "x": 1.2415093240093242,
+        "y": 7.237992060023309
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.9862820512820516,
-        "y": 5.253141025641026
+        "x": 4.128238636363636,
+        "y": 5.007201704545454
       },
       "prevControl": {
-        "x": 3.0058333333325544,
-        "y": 7.038589743592795
+        "x": 3.147789918414139,
+        "y": 6.792650422497224
       },
       "nextControl": null,
       "isLocked": false,
@@ -56,7 +56,7 @@
   ],
   "constraintZones": [
     {
-      "name": "Constraints Zone",
+      "name": "Intake",
       "minWaypointRelativePos": 0.718068535825545,
       "maxWaypointRelativePos": 1.2725856697819313,
       "constraints": {
@@ -67,10 +67,54 @@
         "nominalVoltage": 12.0,
         "unlimited": false
       }
+    },
+    {
+      "name": "Raise",
+      "minWaypointRelativePos": 1.8302180685358258,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 2.5,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.7149532710280374,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "deadline",
+        "data": {
+          "commands": [
+            {
+              "type": "wait",
+              "data": {
+                "waitTime": 2.0
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake/Indexer Intake"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake End Effector"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
