@@ -113,7 +113,6 @@ public class OdometryThread implements Runnable {
     @Override
     public void run(){
       m_odometry.update(getAngle(), getModulePositions());
-      System.out.println("Running odometry thread");
       SmartDashboard.putNumber("Angle", getAngleDegrees());
       SmartDashboard.putNumber("Pose X", getPoseMeters().getX());
       SmartDashboard.putNumber("Pose Y", getPoseMeters().getY());

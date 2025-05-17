@@ -365,15 +365,11 @@ public class SwerveDrive extends SubsystemBase
   
 
   @Override
-  public void periodic() 
-  {
-    m_modulePositions = getModulePositions();
-    m_moduleStates = getModuleStates();
-    m_odo.update(getAngle(), m_modulePositions);
-    SmartDashboard.putNumber("X", m_odo.getPoseMeters().getX());
-    SmartDashboard.putNumber("Y", m_odo.getPoseMeters().getY());
+  public void periodic() {
+    SmartDashboard.putNumber("X", m_odoThread.getPoseMeters().getX());
+    SmartDashboard.putNumber("Y", m_odoThread.getPoseMeters().getY());
 
-    m_field.setRobotPose(m_odo.getPoseMeters());
+    m_field.setRobotPose(m_odoThread.getPoseMeters());
     // SmartDashboard.putData("Swerve/Odo/Field", m_field);
 
     // SmartDashboard.putNumber("X", getPoseMeters().getX());

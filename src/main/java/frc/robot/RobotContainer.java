@@ -254,9 +254,9 @@ public class RobotContainer {
 
   private Climb m_climb = new Climb();
   // check these speeds and rotations
-  private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 60.5);
+  private SpinVortexRotations m_getCage = new SpinVortexRotations(m_climb, 0.8, 62);
   private SpinVortexRotations m_retractCage = new SpinVortexRotations(m_climb, -0.95, 0.5);
-  private SpinVortexRotations m_retractCage2 = new SpinVortexRotations(m_climb, -0.95, 0.8); // move motor back to 5 rotations
+  private SpinVortexRotations m_retractCage2 = new SpinVortexRotations(m_climb, -0.95, -5); // move motor back to 5 rotations
 
   private ServoMovement m_lockServo = new ServoMovement(m_climb, 0.59833333, false);
   private ServoMovement m_getCageServo = new ServoMovement(m_climb, 0.24666666666, true); // move from 0.0 to 1.0???
@@ -538,13 +538,13 @@ public class RobotContainer {
 
     // what it does is move the pivot up (only)
     m_groundIntakeCoralButton.onFalse(
-      // Commands.parallel(
-      //   // m_pivotPIDToStow1,
-      //   m_intakeEndEffector3.withTimeout(1),
-      //   Commands.sequence( // todo: put a beam break thing
-      //     m_spinIntakeIndexerRollers1.withTimeout(1), m_outtakeIntakeIndexerRollers1.withTimeout(1)
-      //   )
-      m_outtakeIntakeIndexerRollers1.withTimeout(1)
+      Commands.parallel(
+        // m_pivotPIDToStow1,
+        m_intakeEndEffector3.withTimeout(0.5),
+        Commands.sequence( // todo: put a beam break thing
+          m_spinIntakeIndexerRollers1.withTimeout(0.5), m_outtakeIntakeIndexerRollers1.withTimeout(1)
+        )
+      )
     );
     
     

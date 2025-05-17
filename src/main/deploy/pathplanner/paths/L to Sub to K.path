@@ -16,16 +16,16 @@
     },
     {
       "anchor": {
-        "x": 0.7977272727272726,
-        "y": 6.732286931818181
+        "x": 1.1428369195922992,
+        "y": 6.643587202718006
       },
       "prevControl": {
-        "x": -0.717414491002855,
-        "y": 5.005730038265245
+        "x": -0.3723048441378285,
+        "y": 4.91703030916507
       },
       "nextControl": {
-        "x": 1.2415093240093242,
-        "y": 7.237992060023309
+        "x": 1.5866189708743512,
+        "y": 7.149292330923134
       },
       "isLocked": false,
       "linkedName": null
@@ -95,7 +95,7 @@
             {
               "type": "wait",
               "data": {
-                "waitTime": 2.0
+                "waitTime": 4.0
               }
             },
             {
@@ -116,8 +116,8 @@
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 3.0,
-    "maxAcceleration": 3.0,
+    "maxVelocity": 4.5,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
