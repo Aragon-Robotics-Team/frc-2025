@@ -16,6 +16,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.DriveConstants;
 
 public class YAGSLSwerveDrive extends SubsystemBase {
   /** Creates a new YAGSLSwerveDrive. */
@@ -27,12 +28,12 @@ public class YAGSLSwerveDrive extends SubsystemBase {
   public YAGSLSwerveDrive() {
     m_swerveModules = new SwerveModule[4];
     m_kinematics = new SwerveDriveKinematics(
-      new Translation2d(Units.inchesToMeters(0), Units.inchesToMeters(0)),
-      new Translation2d(Units.inchesToMeters(0), Units.inchesToMeters(0)),
-      new Translation2d(Units.inchesToMeters(0), Units.inchesToMeters(0)),
-      new Translation2d(Units.inchesToMeters(0), Units.inchesToMeters(0))
+      new Translation2d(+0.295, +0.295),
+      new Translation2d(+0.295, -0.295),
+      new Translation2d(-0.295, +0.295),
+      new Translation2d(-0.295, -0.295)
     );
-    m_gyro = new Canandgyro(0);
+    m_gyro = new Canandgyro(DriveConstants.kIMUCanID);
     m_odometry = new SwerveDriveOdometry(
       m_kinematics,
       m_gyro.getRotation2d(),
