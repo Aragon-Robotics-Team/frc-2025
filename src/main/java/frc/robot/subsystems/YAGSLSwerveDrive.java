@@ -60,6 +60,10 @@ public class YAGSLSwerveDrive extends SubsystemBase {
     };
   }
 
+  public Rotation2d getAngle() {
+    return m_swerveModules[0].getRotation();
+  }
+
   @Override
   public void periodic() {
     m_odometry.update(m_gyro.getRotation2d(), getCurrentSwerveModulePositions());
