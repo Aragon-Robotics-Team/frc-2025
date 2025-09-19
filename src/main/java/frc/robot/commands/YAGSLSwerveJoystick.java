@@ -30,11 +30,12 @@ public class YAGSLSwerveJoystick extends Command {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {/*should something be here?*/}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    //this whole thing is basically copied
     double xSpeed = -m_joystick.getRawAxis(IOConstants.kJoystickXAxis);
     double ySpeed = m_joystick.getRawAxis(IOConstants.kJoystickYAxis);
     double turnSpeed = m_joystick.getRawAxis(IOConstants.kJoystickRotAxis);
@@ -55,12 +56,14 @@ public class YAGSLSwerveJoystick extends Command {
     SmartDashboard.putNumber("Joystick/ySpeed", ySpeed);
     SmartDashboard.putNumber("Joystick/turningSpeed", turnSpeed);
 
-    
+    //somehow set the speed and stuff here...
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    m_swerveDrive.stop();
+  }
 
   // Returns true when the command should end.
   @Override

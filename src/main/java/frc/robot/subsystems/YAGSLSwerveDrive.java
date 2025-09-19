@@ -60,8 +60,11 @@ public class YAGSLSwerveDrive extends SubsystemBase {
     };
   }
 
-  public Rotation2d getAngle() {
-    return m_swerveModules[0].getRotation();
+  public void stop() {
+    m_swerveModules[0].stop();
+    m_swerveModules[1].stop();
+    m_swerveModules[2].stop();
+    m_swerveModules[3].stop();
   }
 
   @Override
