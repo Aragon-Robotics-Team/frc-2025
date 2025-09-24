@@ -9,6 +9,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.Joystick;
 import frc.robot.commands.SwerveJoystick;
+import frc.robot.commands.YAGSLSwerveJoystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -26,7 +27,7 @@ import frc.robot.constants.ArmConstants;
 import frc.robot.constants.IOConstants;
 
 import frc.robot.subsystems.SwerveDrive;
-
+import frc.robot.subsystems.YAGSLSwerveDrive;
 // arm imports
 import frc.robot.subsystems.Arm;
 import frc.robot.commands.arm.ArcadeArm;
@@ -105,6 +106,9 @@ public class RobotContainer {
   private final ArcadeArm m_arcadeArm1 = new ArcadeArm(m_arm, m_secondJoystick);
   private final ArcadeArm m_arcadeArm2 = new ArcadeArm(m_arm, m_secondJoystick);
 
+
+  private final YAGSLSwerveDrive m_yagslSwerve = new YAGSLSwerveDrive();
+  public final YAGSLSwerveJoystick m_yagslSwerveJoystick = new YAGSLSwerveJoystick(m_yagslSwerve, m_driverJoystick);
 
   // unused
   /*
@@ -462,7 +466,8 @@ public class RobotContainer {
 
   private void bindSubsystemCommands() {
     ////// 
-    m_swerve.setDefaultCommand(m_swerveJoystick);
+    //m_swerve.setDefaultCommand(m_swerveJoystick);
+    m_yagslSwerve.setDefaultCommand(m_yagslSwerveJoystick);
     // m_pivot.setDefaultCommand(m_arcadePivot);
   }
 }

@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -57,6 +58,7 @@ public class YAGSLSwerveJoystick extends Command {
     SmartDashboard.putNumber("Joystick/turningSpeed", turnSpeed);
 
     //somehow set the speed and stuff here...
+    m_swerveDrive.drive(ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed,ySpeed,turnSpeed, m_swerveDrive.getCurrentSwerveModulePositions().angle));
   }
 
   // Called once the command ends or is interrupted.

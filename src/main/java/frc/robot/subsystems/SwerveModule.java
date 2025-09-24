@@ -107,22 +107,22 @@ public class SwerveModule extends SubsystemBase {
   }
 
 
-  public void setDesiredState(SwerveModuleState state) {
-    if (Math.abs(state.speedMetersPerSecond) < DriveConstants.kTranslationalDeadbandMetersPerSecond) {
+  public void setDesiredState(SwerveModuleState swerveModuleStates) {
+    if (Math.abs(swerveModuleStates.speedMetersPerSecond) < DriveConstants.kTranslationalDeadbandMetersPerSecond) {
       stop();
       return;
     }
 
-    state.optimize(getState().angle); //NEW check if working
+    swerveModuleStates.optimize(getState().angle); //NEW check if working
     // SmartDashboard.putNumber("Swerve/Speed/Commanded/Module_" + m_moduleId, state.speedMetersPerSecond);
     // SmartDashboard.putNumber("Swerve/Commanded/Angle_" + m_moduleId, state.angle.getRadians());
     // SmartDashboard.putNumber("steer" + m_moduleId, getRotation().getRadians());
 
-    double ff = state.speedMetersPerSecond / DriveConstants.kMaxTranslationalMetersPerSecond;
-    double pid = m_drivingPIDController.calculate(getDriveVelocity(), state.speedMetersPerSecond);
+    double ff = swerveModuleStates.speedMetersPerSecond / DriveConstants.kMaxTranslationalMetersPerSecond;
+    double pid = m_drivingPIDController.calculate(getDriveVelocity(), swerveModuleStates.speedMetersPerSecond);
 
     m_driveMotor.set(ff + pid);
-    m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), state.angle.getRadians()));
+    m_turnMotor.set(m_turningPIDController.calculate(getRotation().getRadians(), swerveModuleStates.angle.getRadians()));
 
     Logger.recordOutput(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());
     SmartDashboard.putNumber(m_moduleId + "Speed", m_driveMotor.getVelocity().refresh().getValueAsDouble());

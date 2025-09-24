@@ -42,9 +42,9 @@ public class YAGSLSwerveDrive extends SubsystemBase {
     );
   }
 
-  public void drive() {
-    ChassisSpeeds testSpeeds = new ChassisSpeeds(Units.inchesToMeters(0), Units.degreesToRadians(0), Units.degreesToRadians(0));
-    SwerveModuleState[] swerveModuleStates = m_kinematics.toSwerveModuleStates(testSpeeds);
+  public void drive(ChassisSpeeds speeds) {
+    //ChassisSpeeds testSpeeds = new ChassisSpeeds(Units.inchesToMeters(14), Units.degreesToRadians(4), Units.degreesToRadians(30));
+    SwerveModuleState[] swerveModuleStates = m_kinematics.toSwerveModuleStates(speeds);
     m_swerveModules[0].setDesiredState(swerveModuleStates[0]);
     m_swerveModules[1].setDesiredState(swerveModuleStates[1]);
     m_swerveModules[2].setDesiredState(swerveModuleStates[2]);
