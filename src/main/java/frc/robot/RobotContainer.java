@@ -466,8 +466,8 @@ public class RobotContainer {
 
   private void bindSubsystemCommands() {
     ////// 
-    //m_swerve.setDefaultCommand(m_swerveJoystick);
-    m_yagslSwerve.setDefaultCommand(m_yagslSwerveJoystick);
+    m_swerve.setDefaultCommand(m_swerveJoystick);
+    //m_yagslSwerve.setDefaultCommand(m_yagslSwerveJoystick);
     // m_pivot.setDefaultCommand(m_arcadePivot);
   }
 }

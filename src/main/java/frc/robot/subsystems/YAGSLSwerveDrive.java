@@ -20,10 +20,10 @@ import frc.robot.constants.DriveConstants;
 
 public class YAGSLSwerveDrive extends SubsystemBase {
   /** Creates a new YAGSLSwerveDrive. */
-  SwerveDriveKinematics m_kinematics;
-  SwerveDriveOdometry m_odometry;
-  Canandgyro m_gyro;
-  SwerveModule[] m_swerveModules;
+  private SwerveDriveKinematics m_kinematics;
+  private SwerveDriveOdometry m_odometry;
+  private Canandgyro m_gyro;
+  private SwerveModule[] m_swerveModules;
 
   public YAGSLSwerveDrive() {
     m_swerveModules = new SwerveModule[4];
