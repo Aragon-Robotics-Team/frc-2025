@@ -72,7 +72,8 @@ public class SwerveJoystick extends Command {
       xSpeed = Math.signum(xSpeed) * Math.pow(Math.abs(xSpeed), 1.75);
       ySpeed = Math.signum(ySpeed) * Math.pow(Math.abs(ySpeed), 1.75);
       // turningSpeed = Math.pow(turningSpeed, 5);
-    
+    xSpeed *= 0.25;
+    ySpeed *= 0.25;
     
 
     // SmartDashboard.putNumber("Joystick/xSpeedRaw", xSpeed);

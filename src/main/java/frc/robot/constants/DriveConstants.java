@@ -38,7 +38,7 @@ public final class DriveConstants {
     public static final boolean kFrontLeftDriveReversed = true;
     public static final boolean kFrontLeftTurningReversed = true;
         
-    public static final int kFrontRightDriveId = 4; //CAN
+    public static final int kFrontRightDriveId = 5; //CAN
     public static final int kFrontRightTurnId = 14; //CAN
     public static final int kFrontRightTurnEncoderPort = 3; //PWM
     public static final double kFrontRightTurnEncoderOffset = 5.91 + 1.54;
